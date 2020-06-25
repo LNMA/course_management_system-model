@@ -5,16 +5,16 @@ import com.louay.model.util.pool.DBConnectionConfig;
 import com.louay.model.util.queue.MyList;
 import com.louay.model.util.queue.MyQueue;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Scope;
+import org.springframework.context.annotation.*;
+import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
+import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
 @Configuration
+@ComponentScan(basePackages = {"com.louay.model"})
 public class BeansFactory {
 
     @Bean(name = "queue")
@@ -52,5 +52,16 @@ public class BeansFactory {
         context.scan("com.louay.model");
         context.refresh();
         return context;
+    }
+
+    @Bean
+    public DataSource mysqlDataSource(){
+        DriverManagerDataSource dataSource = new DriverManagerDataSource();
+        dataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
+        dataSource.setUrl("jdbc:mysql://localhost:3306/course_management_system?useSSL=false");
+        dataSource.setUsername("root");
+        dataSource.setPassword("1729384#General");
+
+        return dataSource;
     }
 }
