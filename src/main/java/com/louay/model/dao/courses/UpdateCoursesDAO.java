@@ -6,9 +6,9 @@ import com.louay.model.chains.courses.members.UsersAttendance;
 
 public interface UpdateCoursesDAO {
 
-    int updateCourses(Courses course);
+    int updateCoursesByCourseID(Courses course);
 
-    int updateCourseMembers(CourseMembers courseMembers);
+    int updateCourseMembersByCourseID(CourseMembers courseMembers);
 
-    int updateStudentsAttendances(UsersAttendance usersAttendance);
+    int updateStudentsAttendancesByUserID(UsersAttendance usersAttendance);
 }

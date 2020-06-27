@@ -11,7 +11,7 @@ import java.util.Objects;
 @Component
 @Scope("prototype")
 public class Courses {
-    private Double courseID;
+    private Long courseID;
     private String courseName;
     private java.sql.Timestamp startDate;
     private java.sql.Timestamp endDate;
@@ -22,11 +22,11 @@ public class Courses {
         this.instructor = instructor;
     }
 
-    public Double getCourseID() {
+    public Long getCourseID() {
         return courseID;
     }
 
-    public void setCourseID(Double courseID) {
+    public void setCourseID(Long courseID) {
         this.courseID = courseID;
     }
 

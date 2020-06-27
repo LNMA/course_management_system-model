@@ -6,8 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import java.util.Objects;
-
 @Component
 @Scope("prototype")
 public class LinksMaterials extends Materials{
@@ -28,20 +26,6 @@ public class LinksMaterials extends Materials{
 
     public void setLinkAuxiliary(String link) {
         this.link = new StringBuilder(link);
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof LinksMaterials)) return false;
-        if (!super.equals(o)) return false;
-        LinksMaterials that = (LinksMaterials) o;
-        return getLink().toString().compareTo(that.getLink().toString()) == 0;
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(super.hashCode(), getLink());
     }
 
     @Override

@@ -6,7 +6,7 @@ import com.louay.model.chains.material.Materials;
 
 public interface CreateMaterialsDAO {
 
-    int createCoursesMaterials(Materials materials);
+    Long createCoursesMaterials(Materials materials);
 
     int createMaterialsFiles(FileMaterials fileMaterials);
 

@@ -1,14 +1,14 @@
 package com.louay.model.dao.status;
 
-import com.louay.model.chains.status.AccountStatus;
+import com.louay.model.chains.status.UserStatus;
 import com.louay.model.chains.status.CourseJoinStatus;
 import com.louay.model.chains.status.SignInStatus;
 
 public interface DeleteStatusDAO {
 
-    int deleteUsersSignInDate(SignInStatus signInStatus);
+    int deleteUsersSignInDateByUserSignInID(SignInStatus signInStatus);
 
-    int deleteUsersStatus(AccountStatus accountStatus);
+    int deleteUsersStatusByUserID(UserStatus userStatus);
 
-    int deleteUsersCourseJoin(CourseJoinStatus courseJoinStatus);
+    int deleteUsersCourseJoinByUserID(CourseJoinStatus courseJoinStatus);
 }

@@ -1,9 +1,6 @@
 package com.louay.model.dao.accounts;
 
-import com.louay.model.chains.users.Accounts;
-import com.louay.model.chains.users.Instructor;
-import com.louay.model.chains.users.Student;
-import com.louay.model.chains.users.Users;
+import com.louay.model.chains.users.*;
 
 public interface CreateAccountsDAO {
 
@@ -15,9 +12,9 @@ public interface CreateAccountsDAO {
 
     int createInstructorsDetails(Instructor instructor);
 
-    int createUsersRoles(Accounts account);
+    int createUsersRoles(AccountsRoles accountsRoles);
 
-    int createRole(Accounts account);
+    Long createRole(AccountsRoles accountsRoles);
 
     int createUsersProfilePicture(Accounts account);
 }

@@ -1,9 +1,9 @@
 package com.louay.model.chains.users.constant;
 
 public enum UserRole {
-    ADMIN("Admin"), INSTRUCTOR("Instructor"), STUDENT("Student");
+    ADMIN("ADMIN"), INSTRUCTOR("INSTRUCTOR"), STUDENT("STUDENT");
 
-    private String role;
+    private final String role;
 
     UserRole(String role) {
         this.role = role;

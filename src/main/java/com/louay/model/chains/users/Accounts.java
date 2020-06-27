@@ -2,9 +2,8 @@ package com.louay.model.chains.users;
 
 import com.louay.model.chains.users.constant.UserRole;
 
-import java.sql.Blob;
-import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.util.Arrays;
 import java.util.Base64;
 import java.util.Objects;
 
@@ -14,7 +13,7 @@ public abstract class Accounts implements Comparable<Accounts> {
     private String surname;
     private String password;
     private java.sql.Timestamp joinDate;
-    private java.sql.Blob picture;
+    private byte[] picture;
     private java.sql.Timestamp uploadPicDate;
 
     public Accounts() {
@@ -60,11 +59,11 @@ public abstract class Accounts implements Comparable<Accounts> {
         this.joinDate = joinDate;
     }
 
-    public Blob getPicture() {
+    public byte[] getPicture() {
         return picture;
     }
 
-    public void setPicture(Blob picture) {
+    public void setPicture(byte[] picture) {
         this.picture = picture;
     }
 
@@ -78,13 +77,8 @@ public abstract class Accounts implements Comparable<Accounts> {
 
     public StringBuilder getBase64() {
         StringBuilder stringBase46 = new StringBuilder();
-        int size;
-        try {
-            size = (int) this.picture.length();
-            stringBase46.append(Base64.getEncoder().encodeToString(this.picture.getBytes(1, size)));
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-        }
+        stringBase46.append(Base64.getEncoder().encodeToString(this.picture));
+
         return stringBase46;
     }
 
@@ -98,7 +92,7 @@ public abstract class Accounts implements Comparable<Accounts> {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Accounts accounts = (Accounts) o;
-        return getEmail().compareTo(accounts.getEmail()) == 0;
+        return getEmail().equals(accounts.getEmail());
     }
 
     @Override
@@ -106,7 +100,7 @@ public abstract class Accounts implements Comparable<Accounts> {
         return Objects.hash(getEmail());
     }
 
-    abstract UserRole getUserRole();
+    abstract public UserRole getUserRole();
 
     @Override
     public String toString() {
@@ -116,7 +110,7 @@ public abstract class Accounts implements Comparable<Accounts> {
                 ", surname='" + surname + '\'' +
                 ", password='" + password + '\'' +
                 ", joinDate=" + joinDate +
-                ", picture=" + picture +
+                ", picture=" + Arrays.toString(picture) +
                 ", uploadPicDate=" + uploadPicDate +
                 '}';
     }

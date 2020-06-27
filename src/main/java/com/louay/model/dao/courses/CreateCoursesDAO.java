@@ -6,7 +6,7 @@ import com.louay.model.chains.courses.members.UsersAttendance;
 
 public interface CreateCoursesDAO {
 
-    int createCourses(Courses course);
+    Long createCourses(Courses course);
 
     int createCourseMembers(CourseMembers courseMembers);
 

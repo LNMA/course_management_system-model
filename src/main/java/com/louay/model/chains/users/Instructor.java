@@ -64,11 +64,11 @@ public class Instructor extends Users{
         if (!(o instanceof Instructor)) return false;
         if (!super.equals(o)) return false;
         Instructor that = (Instructor) o;
-        return Objects.equals(getHeadline(), that.getHeadline()) &&
-                Objects.equals(getSpecialty(), that.getSpecialty()) &&
-                Objects.equals(getNickname(), that.getNickname()) &&
-                Objects.equals(getPortfolio(), that.getPortfolio()) &&
-                Objects.equals(getProfileVisibility(), that.getProfileVisibility());
+        return getHeadline().equals(that.getHeadline()) &&
+                getSpecialty().equals(that.getSpecialty()) &&
+                getNickname().equals(that.getNickname()) &&
+                getPortfolio().equals(that.getPortfolio()) &&
+                getProfileVisibility().equals(that.getProfileVisibility());
     }
 
     @Override
@@ -77,7 +77,7 @@ public class Instructor extends Users{
     }
 
     @Override
-    UserRole getUserRole() {
+    public UserRole getUserRole() {
         return UserRole.INSTRUCTOR;
     }
 

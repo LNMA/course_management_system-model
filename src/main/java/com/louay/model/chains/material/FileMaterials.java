@@ -6,45 +6,38 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import java.sql.Blob;
-import java.util.Objects;
+import java.util.Arrays;
+import java.util.Base64;
 
 @Component
 @Scope("prototype")
 public class FileMaterials extends Materials {
-    private java.sql.Blob file;
+    private byte[] file;
 
     @Autowired
     public FileMaterials(UserFactoryProducer userFactoryProducer, Courses course) {
         super(userFactoryProducer, course);
     }
 
-    public Blob getFile() {
+    public byte[] getFile() {
         return file;
     }
 
-    public void setFile(Blob file) {
+    public void setFile(byte[] file) {
         this.file = file;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof FileMaterials)) return false;
-        if (!super.equals(o)) return false;
-        FileMaterials that = (FileMaterials) o;
-        return Objects.equals(getFile(), that.getFile());
-    }
+    public StringBuilder getBase64() {
+        StringBuilder stringBase46 = new StringBuilder();
+        stringBase46.append(Base64.getEncoder().encodeToString(this.file));
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(super.hashCode(), getFile());
+        return stringBase46;
     }
 
     @Override
     public String toString() {
         return super.toString() + ", FileMaterials{" +
-                "file=" + file +
+                "file=" + Arrays.toString(file) +
                 '}';
     }
 }

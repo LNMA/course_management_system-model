@@ -7,12 +7,12 @@ import com.louay.model.chains.feedback.comment.Comment;
 
 public interface DeleteFeedbackDAO {
 
-    int deleteCoursesFeedback(Feedback feedback);
+    int deleteCoursesFeedbackByFeedbackID(Feedback feedback);
 
-    int deleteFeedbackFiles(FileFeedback fileFeedback);
+    int deleteFeedbackFilesByFeedbackID(FileFeedback fileFeedback);
 
-    int deleteFeedbackMessages(MessageFeedback messageFeedback);
+    int deleteFeedbackMessagesByFeedbackID(MessageFeedback messageFeedback);
 
-    int deleteFeedbackComments(Comment comment);
+    int deleteFeedbackCommentsByCommentID(Comment comment);
 
 }

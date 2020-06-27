@@ -7,11 +7,11 @@ import com.louay.model.chains.feedback.comment.Comment;
 
 public interface CreateFeedbackDAO {
 
-    int createCoursesFeedback(Feedback feedback);
+    Long createCoursesFeedback(Feedback feedback);
 
     int createFeedbackFiles(FileFeedback fileFeedback);
 
     int createFeedbackMessages(MessageFeedback messageFeedback);
 
-    int createFeedbackComments(Comment comment);
+    Long createFeedbackComments(Comment comment);
 }

@@ -6,9 +6,9 @@ import com.louay.model.chains.courses.members.UsersAttendance;
 
 public interface DeleteCoursesDAO {
 
-    int deleteCourses(Courses course);
+    int deleteCoursesByCourseID(Courses course);
 
-    int deleteCourseMembers(CourseMembers courseMembers);
+    int deleteCourseMembersByCourseID(CourseMembers courseMembers);
 
-    int deleteStudentsAttendances(UsersAttendance usersAttendance);
+    int deleteStudentsAttendancesByUserID(UsersAttendance usersAttendance);
 }

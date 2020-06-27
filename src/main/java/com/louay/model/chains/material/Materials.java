@@ -2,16 +2,17 @@ package com.louay.model.chains.material;
 
 import com.louay.model.chains.courses.Courses;
 import com.louay.model.chains.users.Users;
+import com.louay.model.chains.users.constant.UserRole;
 import com.louay.model.chains.users.factory.UserFactoryProducer;
 
 import java.sql.Timestamp;
 import java.util.Objects;
 
 public abstract class Materials {
-    private Double materialID;
+    private Long materialID;
     private Courses course;
     private Users user;
-    private UserFactoryProducer userFactoryProducer;
+    private final UserFactoryProducer userFactoryProducer;
     private String materialName;
     private java.sql.Timestamp uploadDate;
 
@@ -20,11 +21,11 @@ public abstract class Materials {
         this.course = course;
     }
 
-    public Double getMaterialID() {
+    public Long getMaterialID() {
         return materialID;
     }
 
-    public void setMaterialID(Double materialID) {
+    public void setMaterialID(Long materialID) {
         this.materialID = materialID;
     }
 
@@ -47,12 +48,8 @@ public abstract class Materials {
         this.user = user;
     }
 
-    public UserFactoryProducer getUserFactoryProducer() {
-        return userFactoryProducer;
-    }
-
-    public void setUserFactoryProducer(UserFactoryProducer userFactoryProducer) {
-        this.userFactoryProducer = userFactoryProducer;
+    public void setUserInstance(UserRole userRole){
+        this.user = this.userFactoryProducer.getFactory(userRole).getUsers();
     }
 
     public String getMaterialName() {
@@ -76,7 +73,7 @@ public abstract class Materials {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Materials materials = (Materials) o;
-        return getMaterialID().compareTo(materials.getMaterialID()) == 0;
+        return getMaterialID().equals(materials.getMaterialID());
     }
 
     @Override

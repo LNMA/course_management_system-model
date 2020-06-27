@@ -6,8 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import java.util.Objects;
-
 @Component
 @Scope("prototype")
 public class MessageFeedback extends Feedback {
@@ -28,20 +26,6 @@ public class MessageFeedback extends Feedback {
 
     public void setPostMessageAuxiliary(String postMessage) {
         this.postMessage = new StringBuilder(postMessage);
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof MessageFeedback)) return false;
-        if (!super.equals(o)) return false;
-        MessageFeedback that = (MessageFeedback) o;
-        return getPostMessage().toString().compareTo(that.getPostMessage().toString()) == 0;
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(super.hashCode(), getPostMessage());
     }
 
     @Override

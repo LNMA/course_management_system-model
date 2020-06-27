@@ -1,5 +1,6 @@
 package com.louay.model.chains.users.factory;
 
+import com.louay.model.chains.users.constant.UserRole;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -31,11 +32,13 @@ public class UserFactoryProducer {
         this.instructorFactory = instructorFactory;
     }
 
-    public AbstractFactoryUser getFactory(boolean student) {
-        if (student) {
+    public AbstractFactoryUser getFactory(UserRole userRole) {
+        if (UserRole.STUDENT.compareTo(userRole) == 0 ) {
             return this.getStudentFactory();
-        } else {
+        } else if (UserRole.INSTRUCTOR.compareTo(userRole) == 0){
             return this.getInstructorFactory();
+        }else {
+            throw new UnsupportedOperationException("UserRole may be STUDENT or INSTRUCTOR only.");
         }
     }
 }

@@ -1,23 +1,18 @@
 package com.louay.model.dao.accounts;
 
-import com.louay.model.chains.users.Accounts;
-import com.louay.model.chains.users.Instructor;
-import com.louay.model.chains.users.Student;
-import com.louay.model.chains.users.Users;
+import com.louay.model.chains.users.*;
 
 public interface UpdateAccountsDAO {
 
-    int updateUsers(Accounts account);
+    int updateUsersByEmail(Accounts account);
 
-    int updateUsersDetails(Users user);
+    int updateUsersDetailsByUserID(Users user);
 
-    int updateStudentsDetails(Student student);
+    int updateStudentsDetailsByStudentID(Student student);
 
-    int updateInstructorsDetails(Instructor instructor);
+    int updateInstructorsDetailsByInstructorID(Instructor instructor);
 
-    int updateUsersRoles(Accounts account);
+    int updateRoleByRoleID(AccountsRoles accountsRoles);
 
-    int updateRole(Accounts account);
-
-    int updateUsersProfilePicture(Accounts account);
+    int updateUsersProfilePictureByUserID(Accounts account);
 }

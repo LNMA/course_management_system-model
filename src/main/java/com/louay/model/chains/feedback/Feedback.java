@@ -2,15 +2,16 @@ package com.louay.model.chains.feedback;
 
 import com.louay.model.chains.courses.Courses;
 import com.louay.model.chains.users.Users;
+import com.louay.model.chains.users.constant.UserRole;
 import com.louay.model.chains.users.factory.UserFactoryProducer;
 
 import java.sql.Timestamp;
 import java.util.Objects;
 
 public abstract class Feedback implements Comparable<Feedback> {
-    private Double feedbackID;
+    private Long feedbackID;
     private Courses course;
-    private UserFactoryProducer userFactoryProducer;
+    private final UserFactoryProducer userFactoryProducer;
     private Users user;
     private java.sql.Timestamp feedbackDate;
 
@@ -19,11 +20,11 @@ public abstract class Feedback implements Comparable<Feedback> {
         this.userFactoryProducer = userFactoryProducer;
     }
 
-    public Double getFeedbackID() {
+    public Long getFeedbackID() {
         return feedbackID;
     }
 
-    public void setFeedbackID(Double feedbackID) {
+    public void setFeedbackID(Long feedbackID) {
         this.feedbackID = feedbackID;
     }
 
@@ -46,8 +47,8 @@ public abstract class Feedback implements Comparable<Feedback> {
         this.user = user;
     }
 
-    public void setUserInstance(boolean student){
-        this.user = this.userFactoryProducer.getFactory(student).getUsers();
+    public void setUserInstance(UserRole userRole){
+        this.user = this.userFactoryProducer.getFactory(userRole).getUsers();
     }
 
     public Timestamp getFeedbackDate() {
@@ -56,14 +57,6 @@ public abstract class Feedback implements Comparable<Feedback> {
 
     public void setFeedbackDate(Timestamp feedbackDate) {
         this.feedbackDate = feedbackDate;
-    }
-
-    public UserFactoryProducer getUserFactoryProducer() {
-        return userFactoryProducer;
-    }
-
-    public void setUserFactoryProducer(UserFactoryProducer userFactoryProducer) {
-        this.userFactoryProducer = userFactoryProducer;
     }
 
     @Override
@@ -76,7 +69,7 @@ public abstract class Feedback implements Comparable<Feedback> {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Feedback feedback = (Feedback) o;
-        return getFeedbackID().compareTo(feedback.getFeedbackID()) == 0;
+        return getFeedbackID().equals(feedback.getFeedbackID());
     }
 
     @Override

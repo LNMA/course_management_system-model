@@ -68,12 +68,12 @@ public abstract class Users extends Accounts {
         if (!(o instanceof Users)) return false;
         if (!super.equals(o)) return false;
         Users users = (Users) o;
-        return Objects.equals(getGender(), users.getGender()) &&
-                Objects.equals(getPhone(), users.getPhone()) &&
-                Objects.equals(getBirthday(), users.getBirthday()) &&
-                Objects.equals(getCountry(), users.getCountry()) &&
-                Objects.equals(getState(), users.getState()) &&
-                Objects.equals(getAddress(), users.getAddress());
+        return getGender().equals(users.getGender()) &&
+                getPhone().equals(users.getPhone()) &&
+                getBirthday().compareTo(users.getBirthday()) == 0&&
+                getCountry().equals(users.getCountry()) &&
+                getState().equals(users.getState()) &&
+                getAddress().equals(users.getAddress());
     }
 
     @Override

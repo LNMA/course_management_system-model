@@ -2,6 +2,7 @@ package com.louay.model.chains.courses.members;
 
 import com.louay.model.chains.courses.Courses;
 import com.louay.model.chains.users.Users;
+import com.louay.model.chains.users.constant.UserRole;
 import com.louay.model.chains.users.factory.UserFactoryProducer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -35,8 +36,8 @@ public class UsersAttendance {
         this.user = user;
     }
 
-    public void setUserInstance(boolean student){
-        this.user = this.userFactoryProducer.getFactory(student).getUsers();
+    public void setUserInstance(UserRole userRole){
+        this.user = this.userFactoryProducer.getFactory(userRole).getUsers();
     }
 
     public void setFactoryProducer(UserFactoryProducer producer) {

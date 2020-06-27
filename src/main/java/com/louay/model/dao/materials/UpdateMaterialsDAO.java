@@ -6,9 +6,9 @@ import com.louay.model.chains.material.Materials;
 
 public interface UpdateMaterialsDAO {
 
-    int updateCoursesMaterials(Materials materials);
+    int updateCoursesMaterialsByMaterialID(Materials materials);
 
-    int updateMaterialsFiles(FileMaterials fileMaterials);
+    int updateMaterialsFilesByMaterialID(FileMaterials fileMaterials);
 
-    int updateMaterialsLinks(LinksMaterials linksMaterials);
+    int updateMaterialsLinksByMaterialID(LinksMaterials linksMaterials);
 }

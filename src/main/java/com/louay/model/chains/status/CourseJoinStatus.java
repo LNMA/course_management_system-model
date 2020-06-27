@@ -10,7 +10,7 @@ import java.util.Objects;
 
 @Component
 @Scope("prototype")
-public class CourseJoinStatus extends UserStatus {
+public class CourseJoinStatus extends AccountStatus {
     private java.sql.Timestamp joinDate;
     private Boolean isBusy;
 

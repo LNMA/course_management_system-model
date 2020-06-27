@@ -37,8 +37,8 @@ public class Student extends Users {
         if (!(o instanceof Student)) return false;
         if (!super.equals(o)) return false;
         Student student = (Student) o;
-        return Objects.equals(getHeadline(), student.getHeadline()) &&
-                Objects.equals(getInterests(), student.getInterests());
+        return getHeadline().equals(student.getHeadline()) &&
+                getInterests().equals(student.getInterests());
     }
 
     @Override
@@ -47,7 +47,7 @@ public class Student extends Users {
     }
 
     @Override
-    UserRole getUserRole() {
+    public UserRole getUserRole() {
         return UserRole.STUDENT;
     }
 

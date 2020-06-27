@@ -7,12 +7,12 @@ import com.louay.model.chains.feedback.comment.Comment;
 
 public interface UpdateFeedbackDAO {
 
-    int updateCoursesFeedback(Feedback feedback);
+    int updateCoursesFeedbackByFeedbackID(Feedback feedback);
 
-    int updateFeedbackFiles(FileFeedback fileFeedback);
+    int updateFeedbackFilesByFeedbackID(FileFeedback fileFeedback);
 
-    int updateFeedbackMessages(MessageFeedback messageFeedback);
+    int updateFeedbackMessagesByFeedbackID(MessageFeedback messageFeedback);
 
-    int updateFeedbackComments(Comment comment);
+    int updateFeedbackCommentsByCommentID(Comment comment);
 
 }

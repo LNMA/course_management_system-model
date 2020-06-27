@@ -1,8 +1,10 @@
 package com.louay.model.chains.feedback.comment;
 
 import com.louay.model.chains.feedback.Feedback;
+import com.louay.model.chains.feedback.constant.FeedbackType;
 import com.louay.model.chains.feedback.factory.FeedbackFactoryProducer;
 import com.louay.model.chains.users.Users;
+import com.louay.model.chains.users.constant.UserRole;
 import com.louay.model.chains.users.factory.UserFactoryProducer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -14,11 +16,11 @@ import java.util.Objects;
 @Component
 @Scope("prototype")
 public class Comment {
-    private Double commentID;
+    private Long commentID;
     private Feedback feedback;
-    private FeedbackFactoryProducer feedbackFactoryProducer;
+    private final FeedbackFactoryProducer feedbackFactoryProducer;
     private Users user;
-    private UserFactoryProducer userFactoryProducer;
+    private final UserFactoryProducer userFactoryProducer;
     private StringBuilder commentMessage;
     private java.sql.Timestamp commentDate;
 
@@ -28,11 +30,11 @@ public class Comment {
         this.feedbackFactoryProducer = feedbackFactoryProducer;
     }
 
-    public Double getCommentID() {
+    public Long getCommentID() {
         return commentID;
     }
 
-    public void setCommentID(Double commentID) {
+    public void setCommentID(Long commentID) {
         this.commentID = commentID;
     }
 
@@ -47,8 +49,8 @@ public class Comment {
         this.feedback = feedback;
     }
 
-    public void setFeedbackInstance(boolean messageFeedback){
-        this.feedback = this.feedbackFactoryProducer.getFactory(messageFeedback).getFeedback();
+    public void setFeedbackInstance(FeedbackType feedbackType){
+        this.feedback = this.feedbackFactoryProducer.getFactory(feedbackType).getFeedback();
     }
 
     public Users getUser() {
@@ -62,16 +64,8 @@ public class Comment {
         this.user = user;
     }
 
-    public void setUserInstance(boolean student){
-        this.user = this.userFactoryProducer.getFactory(student).getUsers();
-    }
-
-    public UserFactoryProducer getUserFactoryProducer() {
-        return userFactoryProducer;
-    }
-
-    public void setUserFactoryProducer(UserFactoryProducer userFactoryProducer) {
-        this.userFactoryProducer = userFactoryProducer;
+    public void setUserInstance(UserRole userRole){
+        this.user = this.userFactoryProducer.getFactory(userRole).getUsers();
     }
 
     public StringBuilder getCommentMessage() {

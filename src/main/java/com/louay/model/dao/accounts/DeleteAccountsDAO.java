@@ -1,23 +1,20 @@
 package com.louay.model.dao.accounts;
 
-import com.louay.model.chains.users.Accounts;
-import com.louay.model.chains.users.Instructor;
-import com.louay.model.chains.users.Student;
-import com.louay.model.chains.users.Users;
+import com.louay.model.chains.users.*;
 
 public interface DeleteAccountsDAO {
 
-    int deleteUsers(Accounts account);
+    int deleteUsersByEmail(Accounts account);
 
-    int deleteUsersDetails(Users user);
+    int deleteUsersDetailsByUserID(Users user);
 
-    int deleteStudentsDetails(Student student);
+    int deleteStudentsDetailsByStudentID(Student student);
 
-    int deleteInstructorsDetails(Instructor instructor);
+    int deleteInstructorsDetailsByInstructorID(Instructor instructor);
 
-    int deleteUsersRoles(Accounts account);
+    int deleteUsersRolesByUserIDAndRoleID(AccountsRoles accountsRoles);
 
-    int deleteRole(Accounts account);
+    int deleteRoleByRoleID(AccountsRoles accountsRoles);
 
-    int deleteUsersProfilePicture(Accounts account);
+    int deleteUsersProfilePictureByUserID(Accounts account);
 }

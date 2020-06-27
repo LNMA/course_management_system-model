@@ -303,7 +303,7 @@ DROP TABLE IF EXISTS `roles`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `roles` (
-  `role_id` int NOT NULL,
+  `role_id` bigint NOT NULL AUTO_INCREMENT,
   `role_name` enum('ADMIN','INSTRUCTOR','STUDENT') NOT NULL,
   PRIMARY KEY (`role_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
@@ -484,9 +484,9 @@ DROP TABLE IF EXISTS `users_roles`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `users_roles` (
   `user_id` varchar(200) NOT NULL,
-  `role_id` int NOT NULL,
-  UNIQUE KEY `users_roles_role_id_UNIQUE` (`role_id`),
+  `role_id` bigint NOT NULL,
   UNIQUE KEY `users_roles_user_id_UNIQUE` (`user_id`),
+  UNIQUE KEY `users_roles_role_id_UNIQUE` (`role_id`),
   CONSTRAINT `fk_roles_role_id_users_roles_role_id` FOREIGN KEY (`role_id`) REFERENCES `roles` (`role_id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `fk_users_email_users_roles_user_id` FOREIGN KEY (`user_id`) REFERENCES `users` (`email`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
@@ -509,8 +509,10 @@ DROP TABLE IF EXISTS `users_sign_in_date`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `users_sign_in_date` (
+  `user_sign_in_id` bigint NOT NULL AUTO_INCREMENT,
   `user_id` varchar(200) NOT NULL,
   `sign_in_date` datetime NOT NULL,
+  PRIMARY KEY (`user_sign_in_id`),
   KEY `users_sign_in_date_user_id_IX` (`user_id`),
   CONSTRAINT `fk_users_email_users_sign_in_date_user_id` FOREIGN KEY (`user_id`) REFERENCES `users` (`email`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
@@ -559,4 +561,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-06-25  1:46:40
+-- Dump completed on 2020-06-28  2:10:53

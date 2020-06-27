@@ -6,9 +6,9 @@ import com.louay.model.chains.material.Materials;
 
 public interface DeleteMaterialsDAO {
 
-    int deleteCoursesMaterials(Materials materials);
+    int deleteCoursesMaterialsByMaterialID(Materials materials);
 
-    int deleteMaterialsFiles(FileMaterials fileMaterials);
+    int deleteMaterialsFilesByMaterialID(FileMaterials fileMaterials);
 
-    int deleteMaterialsLinks(LinksMaterials linksMaterials);
+    int deleteMaterialsLinksByMaterialID(LinksMaterials linksMaterials);
 }

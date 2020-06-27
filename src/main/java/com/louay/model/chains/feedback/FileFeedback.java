@@ -6,13 +6,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import java.sql.Blob;
-import java.util.Objects;
+import java.util.Arrays;
+import java.util.Base64;
 
 @Component
 @Scope("prototype")
 public class FileFeedback extends Feedback {
-    private java.sql.Blob file;
+    private byte[] file;
     private String fileExtension;
 
     @Autowired
@@ -20,11 +20,11 @@ public class FileFeedback extends Feedback {
         super(course, userFactoryProducer);
     }
 
-    public Blob getFile() {
+    public byte[] getFile() {
         return file;
     }
 
-    public void setFile(Blob file) {
+    public void setFile(byte[] file) {
         this.file = file;
     }
 
@@ -36,25 +36,17 @@ public class FileFeedback extends Feedback {
         this.fileExtension = fileExtension;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof FileFeedback)) return false;
-        if (!super.equals(o)) return false;
-        FileFeedback that = (FileFeedback) o;
-        return getFile().equals(that.getFile()) &&
-                getFileExtension().compareTo(that.getFileExtension()) == 0;
-    }
+    public StringBuilder getBase64() {
+        StringBuilder stringBase46 = new StringBuilder();
+        stringBase46.append(Base64.getEncoder().encodeToString(this.file));
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(super.hashCode(), getFile(), getFileExtension());
+        return stringBase46;
     }
 
     @Override
     public String toString() {
         return super.toString() + ", FileFeedback{" +
-                "file=" + file +
+                "file=" + Arrays.toString(file) +
                 ", fileExtension='" + fileExtension + '\'' +
                 '}';
     }

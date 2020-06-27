@@ -1,59 +1,58 @@
 package com.louay.model.chains.status;
 
-import com.louay.model.chains.users.Users;
 import com.louay.model.chains.users.factory.UserFactoryProducer;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
 import java.util.Objects;
 
-public abstract class UserStatus {
-    private UserFactoryProducer userFactoryProducer;
-    private Users user;
+@Component
+@Scope("prototype")
+public class UserStatus extends AccountStatus {
+    private Boolean isOnline;
+    private Boolean isValid;
 
+    @Autowired
     public UserStatus(UserFactoryProducer userFactoryProducer) {
-        this.userFactoryProducer = userFactoryProducer;
+        super(userFactoryProducer);
     }
 
-    public Users getUser() {
-        if (this.user == null){
-            throw new RuntimeException("User must be initialized by using setUserInstance() method.");
-        }
-        return user;
+    public Boolean getOnline() {
+        return isOnline;
     }
 
-    public void setUser(Users user) {
-        this.user = user;
+    public void setOnline(Boolean online) {
+        isOnline = online;
     }
 
-    public void setUserInstance(boolean student){
-        this.user = this.userFactoryProducer.getFactory(student).getUsers();
+    public Boolean getValid() {
+        return isValid;
     }
 
-    public UserFactoryProducer getUserFactoryProducer() {
-        return userFactoryProducer;
-    }
-
-    public void setUserFactoryProducer(UserFactoryProducer userFactoryProducer) {
-        this.userFactoryProducer = userFactoryProducer;
+    public void setValid(Boolean valid) {
+        isValid = valid;
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (!(o instanceof UserStatus)) return false;
         UserStatus that = (UserStatus) o;
-        return getUser().equals(that.getUser());
+        return isOnline == that.isOnline &&
+                isValid == that.isValid;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getUser());
+        return Objects.hash(isOnline, isValid);
     }
 
     @Override
     public String toString() {
-        return "UserStatus{" +
-                "user=" + user +
+        return super.toString() + ", AccountStatus{" +
+                "isOnline=" + isOnline +
+                ", isValid=" + isValid +
                 '}';
     }
 }

@@ -12,7 +12,7 @@ public class Admin extends Accounts {
     }
 
     @Override
-    UserRole getUserRole() {
+    public UserRole getUserRole() {
         return UserRole.ADMIN;
     }
 }

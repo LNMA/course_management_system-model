@@ -1,5 +1,6 @@
 package com.louay.model.chains.feedback.factory;
 
+import com.louay.model.chains.feedback.constant.FeedbackType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -31,11 +32,13 @@ public class FeedbackFactoryProducer {
         this.fileFeedbackFactoryFactory = fileFeedbackFactoryFactory;
     }
 
-    public AbstractFactoryFeedback getFactory(boolean message) {
-        if (message) {
+    public AbstractFactoryFeedback getFactory(FeedbackType feedbackType) {
+        if (FeedbackType.MESSAGE_FEEDBACK.compareTo(feedbackType) == 0) {
             return this.getMessageFeedbackFactoryFactory();
-        } else {
+        } else if (FeedbackType.FILE_FEEDBACK.compareTo(feedbackType) == 0 ){
             return this.getFileFeedbackFactoryFactory();
+        }else {
+            throw new UnsupportedOperationException("FeedbackType may be MESSAGE_FEEDBACK or FILE_FEEDBACK only.");
         }
     }
 }
