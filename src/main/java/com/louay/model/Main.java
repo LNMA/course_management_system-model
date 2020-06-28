@@ -2,7 +2,6 @@ package com.louay.model;
 
 import com.louay.model.chains.courses.Courses;
 import com.louay.model.chains.users.Accounts;
-import com.louay.model.chains.users.Instructor;
 import com.louay.model.chains.users.Student;
 import com.louay.model.dao.accounts.CreateAccountsDAO;
 import com.louay.model.dao.courses.CreateCoursesDAO;

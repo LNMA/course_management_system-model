@@ -5,11 +5,12 @@ import com.louay.model.dao.accounts.CreateAccountsDAO;
 import com.louay.model.dao.accounts.DeleteAccountsDAO;
 import com.louay.model.dao.accounts.UpdateAccountsDAO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.ApplicationContext;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.core.support.SqlLobValue;
-import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
@@ -19,10 +20,12 @@ import java.sql.Types;
 @Repository
 public class AccountsCUD implements CreateAccountsDAO, UpdateAccountsDAO, DeleteAccountsDAO {
     private final NamedParameterJdbcTemplate jdbcNamedTemplate;
+    private final ApplicationContext context;
 
     @Autowired
-    public AccountsCUD(DataSource dataSource) {
+    public AccountsCUD(DataSource dataSource, @Qualifier("buildAnnotationContextModel") ApplicationContext context) {
         this.jdbcNamedTemplate = new NamedParameterJdbcTemplate(dataSource);
+        this.context = context;
     }
 
     @Override
@@ -78,7 +81,7 @@ public class AccountsCUD implements CreateAccountsDAO, UpdateAccountsDAO, Delete
     @Override
     public Long createRole(AccountsRoles accountsRoles) {
         SqlParameterSource param = buildRolesParameter(accountsRoles);
-        KeyHolder keyHolder = new GeneratedKeyHolder();
+        KeyHolder keyHolder = (KeyHolder) this.context.getBean("buildKeyHolder");
 
         String query = "INSERT INTO `roles`(`role_name`) VALUES (:role_name);";
 
@@ -101,7 +104,7 @@ public class AccountsCUD implements CreateAccountsDAO, UpdateAccountsDAO, Delete
     }
 
     private SqlParameterSource buildUsersParameter(Accounts account){
-        MapSqlParameterSource param = new MapSqlParameterSource();
+        MapSqlParameterSource param = (MapSqlParameterSource) this.context.getBean("buildMapParameter");
         param.addValue("email", account.getEmail(), Types.VARCHAR);
         param.addValue("forename", account.getForename(), Types.VARCHAR);
         param.addValue("surname", account.getSurname(), Types.VARCHAR);
@@ -112,7 +115,7 @@ public class AccountsCUD implements CreateAccountsDAO, UpdateAccountsDAO, Delete
     }
 
     private SqlParameterSource buildUsersDetailsParameter(Users user){
-        MapSqlParameterSource param = new MapSqlParameterSource();
+        MapSqlParameterSource param = (MapSqlParameterSource) this.context.getBean("buildMapParameter");
         param.addValue("user_id", user.getEmail(), Types.VARCHAR);
         param.addValue("gender", user.getGender(), Types.VARCHAR);
         param.addValue("phone", user.getPhone(), Types.INTEGER);
@@ -125,7 +128,7 @@ public class AccountsCUD implements CreateAccountsDAO, UpdateAccountsDAO, Delete
     }
 
     private SqlParameterSource buildStudentsDetailsParameter(Student student){
-        MapSqlParameterSource param = new MapSqlParameterSource();
+        MapSqlParameterSource param = (MapSqlParameterSource) this.context.getBean("buildMapParameter");
         param.addValue("student_id", student.getEmail(), Types.VARCHAR);
         param.addValue("headline", student.getHeadline(), Types.VARCHAR);
         param.addValue("interests", student.getInterests(), Types.VARCHAR);
@@ -134,7 +137,7 @@ public class AccountsCUD implements CreateAccountsDAO, UpdateAccountsDAO, Delete
     }
 
     private SqlParameterSource buildInstructorsDetailsParameter(Instructor instructor){
-        MapSqlParameterSource param = new MapSqlParameterSource();
+        MapSqlParameterSource param = (MapSqlParameterSource) this.context.getBean("buildMapParameter");
         param.addValue("instructors_id", instructor.getEmail(), Types.VARCHAR);
         param.addValue("headline", instructor.getHeadline(), Types.VARCHAR);
         param.addValue("specialty", instructor.getSpecialty(), Types.VARCHAR);
@@ -146,7 +149,7 @@ public class AccountsCUD implements CreateAccountsDAO, UpdateAccountsDAO, Delete
     }
 
     private SqlParameterSource buildUsersRolesParameter(AccountsRoles accountsRoles){
-        MapSqlParameterSource param = new MapSqlParameterSource();
+        MapSqlParameterSource param = (MapSqlParameterSource) this.context.getBean("buildMapParameter");
         param.addValue("user_id", accountsRoles.getAccounts().getEmail(), Types.VARCHAR);
         param.addValue("role_id", accountsRoles.getRoleID(), Types.BIGINT);
 
@@ -154,7 +157,7 @@ public class AccountsCUD implements CreateAccountsDAO, UpdateAccountsDAO, Delete
     }
 
     private SqlParameterSource buildRolesParameter(AccountsRoles accountsRoles){
-        MapSqlParameterSource param = new MapSqlParameterSource();
+        MapSqlParameterSource param = (MapSqlParameterSource) this.context.getBean("buildMapParameter");
         param.addValue("role_id", accountsRoles.getRoleID(), Types.BIGINT);
         param.addValue("role_name", accountsRoles.getRoleName(), Types.VARCHAR);
 
@@ -162,7 +165,7 @@ public class AccountsCUD implements CreateAccountsDAO, UpdateAccountsDAO, Delete
     }
 
     private SqlParameterSource buildUserProfilePicture(Accounts account){
-        MapSqlParameterSource param = new MapSqlParameterSource();
+        MapSqlParameterSource param = (MapSqlParameterSource) this.context.getBean("buildMapParameter");
         param.addValue("user_id", account.getEmail());
         param.addValue("upload_date", account.getUploadPicDate(), Types.TIMESTAMP);
         param.addValue("picture", new SqlLobValue(account.getPicture()), Types.BLOB);

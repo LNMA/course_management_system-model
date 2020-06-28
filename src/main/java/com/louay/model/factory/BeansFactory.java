@@ -6,7 +6,10 @@ import com.louay.model.util.queue.MyList;
 import com.louay.model.util.queue.MyQueue;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.*;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
@@ -36,9 +39,9 @@ public class BeansFactory {
 
         Connection connection = null;
         try{
-            Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
+            Class.forName("com.mysql.cj.jdbc.Driver");
             connection = DriverManager.getConnection(db.getUrl(), db.getUsername(), db.getPassword());
-        } catch (ClassNotFoundException | SQLException | IllegalAccessException | InstantiationException e) {
+        } catch (ClassNotFoundException | SQLException e) {
             System.out.println(e.getMessage());
         }
 
@@ -64,4 +67,15 @@ public class BeansFactory {
 
         return dataSource;
     }
+
+    @Bean(name = "buildMapParameter")
+    public MapSqlParameterSource buildMapSqlParameter(){
+        return new MapSqlParameterSource();
+    }
+
+    @Bean(name = "buildKeyHolder")
+    public KeyHolder buildGeneratedKeyHolder(){
+        return new GeneratedKeyHolder();
+    }
+
 }

@@ -7,10 +7,11 @@ import com.louay.model.dao.status.CreateStatusDAO;
 import com.louay.model.dao.status.DeleteStatusDAO;
 import com.louay.model.dao.status.UpdateStatusDAO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.ApplicationContext;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
-import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
@@ -20,16 +21,18 @@ import java.sql.Types;
 @Repository
 public class StatusCUD implements CreateStatusDAO, UpdateStatusDAO, DeleteStatusDAO {
     private final NamedParameterJdbcTemplate jdbcNamedTemplate;
+    private final ApplicationContext context;
 
     @Autowired
-    public StatusCUD(DataSource dataSource) {
+    public StatusCUD(DataSource dataSource, @Qualifier("buildAnnotationContextModel") ApplicationContext context) {
         this.jdbcNamedTemplate = new NamedParameterJdbcTemplate(dataSource);
+        this.context = context;
     }
 
     @Override
     public Long createUsersSignInDate(SignInStatus signInStatus) {
         SqlParameterSource param = buildUserSignInParameter(signInStatus);
-        KeyHolder keyHolder = new GeneratedKeyHolder();
+        KeyHolder keyHolder = (KeyHolder) this.context.getBean("buildKeyHolder");
 
         String query = "INSERT INTO `users_sign_in_date`(`user_id`, `sign_in_date`) VALUES (:user_id, :sign_in_date);";
 
@@ -62,7 +65,7 @@ public class StatusCUD implements CreateStatusDAO, UpdateStatusDAO, DeleteStatus
     }
 
     private SqlParameterSource buildUserSignInParameter(SignInStatus signInStatus){
-        MapSqlParameterSource param = new MapSqlParameterSource();
+        MapSqlParameterSource param = (MapSqlParameterSource) this.context.getBean("buildMapParameter");
         param.addValue("user_sign_in_id", signInStatus.getUserSignInID(), Types.BIGINT);
         param.addValue("user_id", signInStatus.getUser().getEmail(), Types.VARCHAR);
         param.addValue("sign_in_date", signInStatus.getSignInDate(), Types.TIMESTAMP);
@@ -71,7 +74,7 @@ public class StatusCUD implements CreateStatusDAO, UpdateStatusDAO, DeleteStatus
     }
 
     private SqlParameterSource buildUserStatusParameter(UserStatus userStatus){
-        MapSqlParameterSource param = new MapSqlParameterSource();
+        MapSqlParameterSource param = (MapSqlParameterSource) this.context.getBean("buildMapParameter");
         param.addValue("user_id", userStatus.getUser().getEmail(), Types.VARCHAR);
         param.addValue("is_online", userStatus.getOnline(), Types.TINYINT);
         param.addValue("is_valid", userStatus.getValid(), Types.TINYINT);
@@ -80,7 +83,7 @@ public class StatusCUD implements CreateStatusDAO, UpdateStatusDAO, DeleteStatus
     }
 
     private SqlParameterSource buildUserCourseJoinParameter(CourseJoinStatus courseJoinStatus){
-        MapSqlParameterSource param = new MapSqlParameterSource();
+        MapSqlParameterSource param = (MapSqlParameterSource) this.context.getBean("buildMapParameter");
         param.addValue("users_id", courseJoinStatus.getUser().getEmail(), Types.VARCHAR);
         param.addValue("is_busy", courseJoinStatus.getBusy(), Types.TINYINT);
         param.addValue("join_date", courseJoinStatus.getJoinDate(), Types.TIMESTAMP);

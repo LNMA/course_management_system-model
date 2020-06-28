@@ -7,10 +7,11 @@ import com.louay.model.dao.courses.CreateCoursesDAO;
 import com.louay.model.dao.courses.DeleteCoursesDAO;
 import com.louay.model.dao.courses.UpdateCoursesDAO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.ApplicationContext;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
-import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
@@ -20,16 +21,18 @@ import java.sql.Types;
 @Repository
 public class CoursesCUD implements CreateCoursesDAO, UpdateCoursesDAO, DeleteCoursesDAO {
     private final NamedParameterJdbcTemplate jdbcNamedTemplate;
+    private final ApplicationContext context;
 
     @Autowired
-    public CoursesCUD(DataSource dataSource) {
+    public CoursesCUD(DataSource dataSource, @Qualifier("buildAnnotationContextModel") ApplicationContext context) {
         this.jdbcNamedTemplate = new NamedParameterJdbcTemplate(dataSource);
+        this.context = context;
     }
 
     @Override
     public Long createCourses(Courses course) {
         SqlParameterSource param = buildCoursesParameter(course);
-        KeyHolder keyHolder = new GeneratedKeyHolder();
+        KeyHolder keyHolder = (KeyHolder) this.context.getBean("buildKeyHolder");
 
         String query = "INSERT INTO `courses`(`course_name`, `start_date`, `end_date`, `instructor_id`) VALUES " +
                 "(:course_name, :start_date, :end_date, :instructor_id);";
@@ -63,7 +66,7 @@ public class CoursesCUD implements CreateCoursesDAO, UpdateCoursesDAO, DeleteCou
     }
 
     private SqlParameterSource buildCoursesParameter(Courses courses){
-        MapSqlParameterSource param = new MapSqlParameterSource();
+        MapSqlParameterSource param = (MapSqlParameterSource) this.context.getBean("buildMapParameter");
         param.addValue("course_id", courses.getCourseID(), Types.BIGINT);
         param.addValue("course_name", courses.getCourseName(), Types.VARCHAR);
         param.addValue("start_date", courses.getStartDate(), Types.TIMESTAMP);
@@ -74,7 +77,7 @@ public class CoursesCUD implements CreateCoursesDAO, UpdateCoursesDAO, DeleteCou
     }
 
     private SqlParameterSource buildCourseMembersParameter(CourseMembers courseMembers){
-        MapSqlParameterSource param = new MapSqlParameterSource();
+        MapSqlParameterSource param = (MapSqlParameterSource) this.context.getBean("buildMapParameter");
         param.addValue("user_id", courseMembers.getUser().getEmail(), Types.VARCHAR);
         param.addValue("course_id", courseMembers.getCourse().getCourseID(), Types.BIGINT);
         param.addValue("register_date", courseMembers.getRegisterDate(), Types.TIMESTAMP);
@@ -83,7 +86,7 @@ public class CoursesCUD implements CreateCoursesDAO, UpdateCoursesDAO, DeleteCou
     }
 
     private SqlParameterSource buildStudentsAttendancesParameter(UsersAttendance usersAttendance){
-        MapSqlParameterSource param = new MapSqlParameterSource();
+        MapSqlParameterSource param = (MapSqlParameterSource) this.context.getBean("buildMapParameter");
         param.addValue("student_id", usersAttendance.getUser().getEmail(), Types.VARCHAR);
         param.addValue("course_id", usersAttendance.getCourse().getCourseID(), Types.BIGINT);
         param.addValue("attendance_date", usersAttendance.getAttendanceDate(), Types.TIMESTAMP);

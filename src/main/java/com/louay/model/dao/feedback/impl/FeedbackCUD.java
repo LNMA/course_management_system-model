@@ -8,6 +8,8 @@ import com.louay.model.dao.feedback.CreateFeedbackDAO;
 import com.louay.model.dao.feedback.DeleteFeedbackDAO;
 import com.louay.model.dao.feedback.UpdateFeedbackDAO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.ApplicationContext;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
@@ -22,16 +24,18 @@ import java.sql.Types;
 @Repository
 public class FeedbackCUD implements CreateFeedbackDAO, UpdateFeedbackDAO, DeleteFeedbackDAO {
     private final NamedParameterJdbcTemplate jdbcNamedTemplate;
+    private final ApplicationContext context;
 
     @Autowired
-    public FeedbackCUD(DataSource dataSource) {
+    public FeedbackCUD(DataSource dataSource, @Qualifier("buildAnnotationContextModel") ApplicationContext context) {
         this.jdbcNamedTemplate = new NamedParameterJdbcTemplate(dataSource);
+        this.context = context;
     }
 
     @Override
     public Long createCoursesFeedback(Feedback feedback) {
         SqlParameterSource param = buildCourseFeedbackParameter(feedback);
-        KeyHolder keyHolder = new GeneratedKeyHolder();
+        KeyHolder keyHolder = (KeyHolder) this.context.getBean("buildKeyHolder");
 
         String query = "INSERT INTO `course_feedback`(`course_id`) VALUE (:course_id);";
 
@@ -81,7 +85,7 @@ public class FeedbackCUD implements CreateFeedbackDAO, UpdateFeedbackDAO, Delete
     }
 
     private SqlParameterSource buildCourseFeedbackParameter(Feedback feedback){
-        MapSqlParameterSource param = new MapSqlParameterSource();
+        MapSqlParameterSource param = (MapSqlParameterSource) this.context.getBean("buildMapParameter");
         param.addValue("feedback_id", feedback.getFeedbackID(), Types.BIGINT);
         param.addValue("course_id", feedback.getCourse().getCourseID(), Types.BIGINT);
 
@@ -89,7 +93,7 @@ public class FeedbackCUD implements CreateFeedbackDAO, UpdateFeedbackDAO, Delete
     }
 
     private SqlParameterSource buildFeedbackFileParameter(FileFeedback fileFeedback){
-        MapSqlParameterSource param = new MapSqlParameterSource();
+        MapSqlParameterSource param = (MapSqlParameterSource) this.context.getBean("buildMapParameter");
         param.addValue("feedback_id", fileFeedback.getFeedbackID(), Types.BIGINT);
         param.addValue("user_id", fileFeedback.getUser().getEmail(), Types.VARCHAR);
         param.addValue("file", new SqlLobValue(fileFeedback.getFile()), Types.BLOB);
@@ -100,7 +104,7 @@ public class FeedbackCUD implements CreateFeedbackDAO, UpdateFeedbackDAO, Delete
     }
 
     private SqlParameterSource buildFeedbackMessageParameter(MessageFeedback messageFeedback){
-        MapSqlParameterSource param = new MapSqlParameterSource();
+        MapSqlParameterSource param = (MapSqlParameterSource) this.context.getBean("buildMapParameter");
         param.addValue("feedback_id", messageFeedback.getFeedbackID(), Types.BIGINT);
         param.addValue("user_id", messageFeedback.getUser().getEmail(), Types.VARCHAR);
         param.addValue("post_message", messageFeedback.getPostMessage().toString(), Types.VARCHAR);
@@ -110,7 +114,7 @@ public class FeedbackCUD implements CreateFeedbackDAO, UpdateFeedbackDAO, Delete
     }
 
     private SqlParameterSource buildFeedbackCommentsParameter(Comment comment){
-        MapSqlParameterSource param = new MapSqlParameterSource();
+        MapSqlParameterSource param = (MapSqlParameterSource) this.context.getBean("buildMapParameter");
         param.addValue("comment_id", comment.getCommentID(), Types.BIGINT);
         param.addValue("feedback_id", comment.getFeedback().getFeedbackID(), Types.BIGINT);
         param.addValue("user_id", comment.getUser().getEmail(), Types.VARCHAR);

@@ -7,11 +7,12 @@ import com.louay.model.dao.materials.CreateMaterialsDAO;
 import com.louay.model.dao.materials.DeleteMaterialsDAO;
 import com.louay.model.dao.materials.UpdateMaterialsDAO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.ApplicationContext;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.core.support.SqlLobValue;
-import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
@@ -21,16 +22,18 @@ import java.sql.Types;
 @Repository
 public class MaterialsCUD implements CreateMaterialsDAO, UpdateMaterialsDAO, DeleteMaterialsDAO {
     private final NamedParameterJdbcTemplate jdbcNamedTemplate;
+    private final ApplicationContext context;
 
     @Autowired
-    public MaterialsCUD(DataSource dataSource) {
+    public MaterialsCUD(DataSource dataSource,  @Qualifier("buildAnnotationContextModel") ApplicationContext context) {
         this.jdbcNamedTemplate = new NamedParameterJdbcTemplate(dataSource);
+        this.context = context;
     }
 
     @Override
     public Long createCoursesMaterials(Materials materials) {
         SqlParameterSource param = buildCoursesMaterialsParameter(materials);
-        KeyHolder keyHolder = new GeneratedKeyHolder();
+        KeyHolder keyHolder = (KeyHolder) this.context.getBean("buildKeyHolder");
 
         String query = "INSERT INTO `courses_materials`(`course_id`) VALUE (:course_id);";
 
@@ -63,7 +66,7 @@ public class MaterialsCUD implements CreateMaterialsDAO, UpdateMaterialsDAO, Del
     }
 
     private SqlParameterSource buildCoursesMaterialsParameter(Materials materials){
-        MapSqlParameterSource param = new MapSqlParameterSource();
+        MapSqlParameterSource param = (MapSqlParameterSource) this.context.getBean("buildMapParameter");
         param.addValue("material_id", materials.getMaterialID(), Types.BIGINT);
         param.addValue("course_id", materials.getCourse().getCourseID(), Types.BIGINT);
 
@@ -71,7 +74,7 @@ public class MaterialsCUD implements CreateMaterialsDAO, UpdateMaterialsDAO, Del
     }
 
     private SqlParameterSource buildMaterialsFilesParameter(FileMaterials fileMaterials){
-        MapSqlParameterSource param = new MapSqlParameterSource();
+        MapSqlParameterSource param = (MapSqlParameterSource) this.context.getBean("buildMapParameter");
         param.addValue("material_id", fileMaterials.getMaterialID(), Types.BIGINT);
         param.addValue("user_id", fileMaterials.getUser().getEmail(), Types.VARCHAR);
         param.addValue("material_name", fileMaterials.getMaterialName(), Types.VARCHAR);
@@ -82,7 +85,7 @@ public class MaterialsCUD implements CreateMaterialsDAO, UpdateMaterialsDAO, Del
     }
 
     private SqlParameterSource buildMaterialsLinksParameter(LinksMaterials linksMaterials){
-        MapSqlParameterSource param = new MapSqlParameterSource();
+        MapSqlParameterSource param = (MapSqlParameterSource) this.context.getBean("buildMapParameter");
         param.addValue("material_id", linksMaterials.getMaterialID(), Types.BIGINT);
         param.addValue("user_id", linksMaterials.getUser().getEmail(), Types.VARCHAR);
         param.addValue("material_name", linksMaterials.getMaterialName(), Types.VARCHAR);
