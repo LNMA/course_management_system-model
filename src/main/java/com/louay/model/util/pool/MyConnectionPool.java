@@ -15,7 +15,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-@Configuration
 @Component
 @Scope("singleton")
 @ComponentScan(basePackages = { "com.louay.model"})
