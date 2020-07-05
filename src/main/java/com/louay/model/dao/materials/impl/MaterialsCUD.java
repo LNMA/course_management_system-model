@@ -25,7 +25,7 @@ public class MaterialsCUD implements CreateMaterialsDAO, UpdateMaterialsDAO, Del
     private final ApplicationContext context;
 
     @Autowired
-    public MaterialsCUD(DataSource dataSource,  @Qualifier("buildAnnotationContextModel") ApplicationContext context) {
+    public MaterialsCUD(DataSource dataSource, @Qualifier("buildAnnotationContextModel") ApplicationContext context) {
         this.jdbcNamedTemplate = new NamedParameterJdbcTemplate(dataSource);
         this.context = context;
     }
@@ -35,13 +35,13 @@ public class MaterialsCUD implements CreateMaterialsDAO, UpdateMaterialsDAO, Del
         SqlParameterSource param = buildCoursesMaterialsParameter(materials);
         KeyHolder keyHolder = (KeyHolder) this.context.getBean("buildKeyHolder");
 
-        String query = "INSERT INTO `courses_materials`(`course_id`) VALUE (:course_id);";
+        final String query = "INSERT INTO `courses_materials`(`course_id`) VALUE (:course_id);";
 
         int result = this.jdbcNamedTemplate.update(query, param, keyHolder);
-        if (keyHolder.getKey() != null && result > 0){
+        if (keyHolder.getKey() != null && result > 0) {
             return keyHolder.getKey().longValue();
-        }else {
-            return (long)-1;
+        } else {
+            return (long) -1;
         }
     }
 
@@ -49,7 +49,7 @@ public class MaterialsCUD implements CreateMaterialsDAO, UpdateMaterialsDAO, Del
     public int createMaterialsFiles(FileMaterials fileMaterials) {
         SqlParameterSource param = buildMaterialsFilesParameter(fileMaterials);
 
-        String query = "INSERT INTO `materials_files`(`material_id`, `user_id`, `material_name`, `material_file`, " +
+        final String query = "INSERT INTO `materials_files`(`material_id`, `user_id`, `material_name`, `material_file`, " +
                 "`upload_date`) VALUES (:material_id, :user_id, :material_name, :material_file, :upload_date);";
 
         return this.jdbcNamedTemplate.update(query, param);
@@ -59,13 +59,13 @@ public class MaterialsCUD implements CreateMaterialsDAO, UpdateMaterialsDAO, Del
     public int createMaterialsLinks(LinksMaterials linksMaterials) {
         SqlParameterSource param = buildMaterialsLinksParameter(linksMaterials);
 
-        String query = "INSERT INTO `materials_links`(`material_id`, `user_id`, `material_name`, `material_link`, " +
+        final String query = "INSERT INTO `materials_links`(`material_id`, `user_id`, `material_name`, `material_link`, " +
                 "`upload_date`) VALUES (:material_id, :user_id, :material_name, :material_link, :upload_date);";
 
         return this.jdbcNamedTemplate.update(query, param);
     }
 
-    private SqlParameterSource buildCoursesMaterialsParameter(Materials materials){
+    private SqlParameterSource buildCoursesMaterialsParameter(Materials materials) {
         MapSqlParameterSource param = (MapSqlParameterSource) this.context.getBean("buildMapParameter");
         param.addValue("material_id", materials.getMaterialID(), Types.BIGINT);
         param.addValue("course_id", materials.getCourse().getCourseID(), Types.BIGINT);
@@ -73,7 +73,7 @@ public class MaterialsCUD implements CreateMaterialsDAO, UpdateMaterialsDAO, Del
         return param;
     }
 
-    private SqlParameterSource buildMaterialsFilesParameter(FileMaterials fileMaterials){
+    private SqlParameterSource buildMaterialsFilesParameter(FileMaterials fileMaterials) {
         MapSqlParameterSource param = (MapSqlParameterSource) this.context.getBean("buildMapParameter");
         param.addValue("material_id", fileMaterials.getMaterialID(), Types.BIGINT);
         param.addValue("user_id", fileMaterials.getUser().getEmail(), Types.VARCHAR);
@@ -84,7 +84,7 @@ public class MaterialsCUD implements CreateMaterialsDAO, UpdateMaterialsDAO, Del
         return param;
     }
 
-    private SqlParameterSource buildMaterialsLinksParameter(LinksMaterials linksMaterials){
+    private SqlParameterSource buildMaterialsLinksParameter(LinksMaterials linksMaterials) {
         MapSqlParameterSource param = (MapSqlParameterSource) this.context.getBean("buildMapParameter");
         param.addValue("material_id", linksMaterials.getMaterialID(), Types.BIGINT);
         param.addValue("user_id", linksMaterials.getUser().getEmail(), Types.VARCHAR);
@@ -99,7 +99,7 @@ public class MaterialsCUD implements CreateMaterialsDAO, UpdateMaterialsDAO, Del
     public int updateCoursesMaterialsByMaterialID(Materials materials) {
         SqlParameterSource param = buildCoursesMaterialsParameter(materials);
 
-        String query = "UPDATE `courses_materials` SET `course_id` = :course_id WHERE `material_id` = :material_id;";
+        final String query = "UPDATE `courses_materials` SET `course_id` = :course_id WHERE `material_id` = :material_id;";
 
         return this.jdbcNamedTemplate.update(query, param);
     }
@@ -108,7 +108,7 @@ public class MaterialsCUD implements CreateMaterialsDAO, UpdateMaterialsDAO, Del
     public int updateMaterialsFilesByMaterialID(FileMaterials fileMaterials) {
         SqlParameterSource param = buildMaterialsFilesParameter(fileMaterials);
 
-        String query = "UPDATE `materials_files` SET `user_id` = :user_id, `material_name` = :material_name, " +
+        final String query = "UPDATE `materials_files` SET `user_id` = :user_id, `material_name` = :material_name, " +
                 "`material_file` = :material_file, `upload_date` = :upload_date WHERE `material_id` = :material_id;";
 
         return this.jdbcNamedTemplate.update(query, param);
@@ -118,7 +118,7 @@ public class MaterialsCUD implements CreateMaterialsDAO, UpdateMaterialsDAO, Del
     public int updateMaterialsLinksByMaterialID(LinksMaterials linksMaterials) {
         SqlParameterSource param = buildMaterialsLinksParameter(linksMaterials);
 
-        String query = "UPDATE `materials_links` SET `user_id` = :user_id, `material_name` = :material_name, " +
+        final String query = "UPDATE `materials_links` SET `user_id` = :user_id, `material_name` = :material_name, " +
                 "`material_link` = :material_link, `upload_date` = :upload_date WHERE `material_id` = :material_id;";
 
         return this.jdbcNamedTemplate.update(query, param);
@@ -128,7 +128,7 @@ public class MaterialsCUD implements CreateMaterialsDAO, UpdateMaterialsDAO, Del
     public int deleteCoursesMaterialsByMaterialID(Materials materials) {
         SqlParameterSource param = buildCoursesMaterialsParameter(materials);
 
-        String query = "DELETE FROM `courses_materials` WHERE `material_id` = :material_id;";
+        final String query = "DELETE FROM `courses_materials` WHERE `material_id` = :material_id;";
 
         return this.jdbcNamedTemplate.update(query, param);
     }
@@ -137,7 +137,7 @@ public class MaterialsCUD implements CreateMaterialsDAO, UpdateMaterialsDAO, Del
     public int deleteMaterialsFilesByMaterialID(FileMaterials fileMaterials) {
         SqlParameterSource param = buildMaterialsFilesParameter(fileMaterials);
 
-        String query = "DELETE FROM `materials_files` WHERE `material_id` = :material_id;";
+        final String query = "DELETE FROM `materials_files` WHERE `material_id` = :material_id;";
 
         return this.jdbcNamedTemplate.update(query, param);
     }
@@ -146,7 +146,7 @@ public class MaterialsCUD implements CreateMaterialsDAO, UpdateMaterialsDAO, Del
     public int deleteMaterialsLinksByMaterialID(LinksMaterials linksMaterials) {
         SqlParameterSource param = buildMaterialsLinksParameter(linksMaterials);
 
-        String query = "DELETE FROM `materials_links` WHERE `material_id` = :material_id;";
+        final String query = "DELETE FROM `materials_links` WHERE `material_id` = :material_id;";
 
         return this.jdbcNamedTemplate.update(query, param);
     }

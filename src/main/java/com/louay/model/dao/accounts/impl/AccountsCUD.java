@@ -32,7 +32,7 @@ public class AccountsCUD implements CreateAccountsDAO, UpdateAccountsDAO, Delete
     public int createUsers(Accounts account) {
         SqlParameterSource param = buildUsersParameter(account);
 
-        String query = "INSERT INTO `users`(`email`, `forename`, `surname`, `password`, `join_date`) VALUES " +
+        final String query = "INSERT INTO `users`(`email`, `forename`, `surname`, `password`, `join_date`) VALUES " +
                 "(:email, :forename, :surname, :password, :join_date);";
 
         return this.jdbcNamedTemplate.update(query, param);
@@ -42,7 +42,7 @@ public class AccountsCUD implements CreateAccountsDAO, UpdateAccountsDAO, Delete
     public int createUsersDetails(Users user) {
         SqlParameterSource param = buildUsersDetailsParameter(user);
 
-        String query = "INSERT INTO `users_details`(`user_id`, `gender`, `phone`, `birthday`, `country`, `state`, `address`) " +
+        final String query = "INSERT INTO `users_details`(`user_id`, `gender`, `phone`, `birthday`, `country`, `state`, `address`) " +
                 "VALUES (:user_id, :gender, :phone, :birthday, :country, :state, :address);";
 
         return this.jdbcNamedTemplate.update(query, param);
@@ -52,7 +52,7 @@ public class AccountsCUD implements CreateAccountsDAO, UpdateAccountsDAO, Delete
     public int createStudentsDetails(Student student) {
         SqlParameterSource param = buildStudentsDetailsParameter(student);
 
-        String query = "INSERT INTO `students_details`(`student_id`, `headline`, `interests`) VALUES " +
+        final String query = "INSERT INTO `students_details`(`student_id`, `headline`, `interests`) VALUES " +
                 "(:student_id, :headline, :intrests);";
 
         return this.jdbcNamedTemplate.update(query, param);
@@ -62,7 +62,7 @@ public class AccountsCUD implements CreateAccountsDAO, UpdateAccountsDAO, Delete
     public int createInstructorsDetails(Instructor instructor) {
         SqlParameterSource param = buildInstructorsDetailsParameter(instructor);
 
-        String query = "INSERT INTO `instructors_details`(`instructors_id`, `headline`, `specialty`, `nickname`, " +
+        final String query = "INSERT INTO `instructors_details`(`instructors_id`, `headline`, `specialty`, `nickname`, " +
                 "`portfolio`, `profile_visibility`) VALUES (:instructors_id, :headline, :specialty, :nickname, " +
                 ":portfolio, :profile_visibility);";
 
@@ -73,7 +73,7 @@ public class AccountsCUD implements CreateAccountsDAO, UpdateAccountsDAO, Delete
     public int createUsersRoles(AccountsRoles accountsRoles) {
         SqlParameterSource param = buildUsersRolesParameter(accountsRoles);
 
-        String query ="INSERT INTO `users_roles`(`user_id`, `role_id`) VALUES (:user_id, :role_id);";
+        final String query = "INSERT INTO `users_roles`(`user_id`, `role_id`) VALUES (:user_id, :role_id);";
 
         return this.jdbcNamedTemplate.update(query, param);
     }
@@ -83,27 +83,27 @@ public class AccountsCUD implements CreateAccountsDAO, UpdateAccountsDAO, Delete
         SqlParameterSource param = buildRolesParameter(accountsRoles);
         KeyHolder keyHolder = (KeyHolder) this.context.getBean("buildKeyHolder");
 
-        String query = "INSERT INTO `roles`(`role_name`) VALUES (:role_name);";
+        final String query = "INSERT INTO `roles`(`role_name`) VALUES (:role_name);";
 
-         int result = this.jdbcNamedTemplate.update(query, param, keyHolder);
-         if (keyHolder.getKey() != null && result > 0){
-             return keyHolder.getKey().longValue();
-         }else{
-             return (long)-1;
-         }
+        int result = this.jdbcNamedTemplate.update(query, param, keyHolder);
+        if (keyHolder.getKey() != null && result > 0) {
+            return keyHolder.getKey().longValue();
+        } else {
+            return (long) -1;
+        }
     }
 
     @Override
     public int createUsersProfilePicture(Accounts account) {
         SqlParameterSource param = buildUserProfilePicture(account);
 
-        String query = "INSERT INTO `users_profile_picture`(`user_id`, `upload_date`, `picture`) VALUES " +
+        final String query = "INSERT INTO `users_profile_picture`(`user_id`, `upload_date`, `picture`) VALUES " +
                 "(:user_id, :upload_date, :picture);";
 
         return this.jdbcNamedTemplate.update(query, param);
     }
 
-    private SqlParameterSource buildUsersParameter(Accounts account){
+    private SqlParameterSource buildUsersParameter(Accounts account) {
         MapSqlParameterSource param = (MapSqlParameterSource) this.context.getBean("buildMapParameter");
         param.addValue("email", account.getEmail(), Types.VARCHAR);
         param.addValue("forename", account.getForename(), Types.VARCHAR);
@@ -114,7 +114,7 @@ public class AccountsCUD implements CreateAccountsDAO, UpdateAccountsDAO, Delete
         return param;
     }
 
-    private SqlParameterSource buildUsersDetailsParameter(Users user){
+    private SqlParameterSource buildUsersDetailsParameter(Users user) {
         MapSqlParameterSource param = (MapSqlParameterSource) this.context.getBean("buildMapParameter");
         param.addValue("user_id", user.getEmail(), Types.VARCHAR);
         param.addValue("gender", user.getGender(), Types.VARCHAR);
@@ -127,7 +127,7 @@ public class AccountsCUD implements CreateAccountsDAO, UpdateAccountsDAO, Delete
         return param;
     }
 
-    private SqlParameterSource buildStudentsDetailsParameter(Student student){
+    private SqlParameterSource buildStudentsDetailsParameter(Student student) {
         MapSqlParameterSource param = (MapSqlParameterSource) this.context.getBean("buildMapParameter");
         param.addValue("student_id", student.getEmail(), Types.VARCHAR);
         param.addValue("headline", student.getHeadline(), Types.VARCHAR);
@@ -136,7 +136,7 @@ public class AccountsCUD implements CreateAccountsDAO, UpdateAccountsDAO, Delete
         return param;
     }
 
-    private SqlParameterSource buildInstructorsDetailsParameter(Instructor instructor){
+    private SqlParameterSource buildInstructorsDetailsParameter(Instructor instructor) {
         MapSqlParameterSource param = (MapSqlParameterSource) this.context.getBean("buildMapParameter");
         param.addValue("instructors_id", instructor.getEmail(), Types.VARCHAR);
         param.addValue("headline", instructor.getHeadline(), Types.VARCHAR);
@@ -148,7 +148,7 @@ public class AccountsCUD implements CreateAccountsDAO, UpdateAccountsDAO, Delete
         return param;
     }
 
-    private SqlParameterSource buildUsersRolesParameter(AccountsRoles accountsRoles){
+    private SqlParameterSource buildUsersRolesParameter(AccountsRoles accountsRoles) {
         MapSqlParameterSource param = (MapSqlParameterSource) this.context.getBean("buildMapParameter");
         param.addValue("user_id", accountsRoles.getAccounts().getEmail(), Types.VARCHAR);
         param.addValue("role_id", accountsRoles.getRoleID(), Types.BIGINT);
@@ -156,7 +156,7 @@ public class AccountsCUD implements CreateAccountsDAO, UpdateAccountsDAO, Delete
         return param;
     }
 
-    private SqlParameterSource buildRolesParameter(AccountsRoles accountsRoles){
+    private SqlParameterSource buildRolesParameter(AccountsRoles accountsRoles) {
         MapSqlParameterSource param = (MapSqlParameterSource) this.context.getBean("buildMapParameter");
         param.addValue("role_id", accountsRoles.getRoleID(), Types.BIGINT);
         param.addValue("role_name", accountsRoles.getRoleName(), Types.VARCHAR);
@@ -164,7 +164,7 @@ public class AccountsCUD implements CreateAccountsDAO, UpdateAccountsDAO, Delete
         return param;
     }
 
-    private SqlParameterSource buildUserProfilePicture(Accounts account){
+    private SqlParameterSource buildUserProfilePicture(Accounts account) {
         MapSqlParameterSource param = (MapSqlParameterSource) this.context.getBean("buildMapParameter");
         param.addValue("user_id", account.getEmail());
         param.addValue("upload_date", account.getUploadPicDate(), Types.TIMESTAMP);
@@ -177,7 +177,7 @@ public class AccountsCUD implements CreateAccountsDAO, UpdateAccountsDAO, Delete
     public int updateUsersByEmail(Accounts account) {
         SqlParameterSource param = buildUsersParameter(account);
 
-        String query = "UPDATE `users` SET `forename` = :forename, `surname` = :surname, `password` = :password, " +
+        final String query = "UPDATE `users` SET `forename` = :forename, `surname` = :surname, `password` = :password, " +
                 "`join_date`= :joim_date WHERE `email` = :email;";
 
         return this.jdbcNamedTemplate.update(query, param);
@@ -187,7 +187,7 @@ public class AccountsCUD implements CreateAccountsDAO, UpdateAccountsDAO, Delete
     public int updateUsersDetailsByUserID(Users user) {
         SqlParameterSource param = buildUsersDetailsParameter(user);
 
-        String query = "UPDATE `users_details` SET `gender` = :gender, `phone` = :phone, `birthday` = :birthday, " +
+        final String query = "UPDATE `users_details` SET `gender` = :gender, `phone` = :phone, `birthday` = :birthday, " +
                 "`country`= :country, `state` = :state, `address` = :address WHERE `user_id` = :user_id;";
 
         return this.jdbcNamedTemplate.update(query, param);
@@ -197,7 +197,7 @@ public class AccountsCUD implements CreateAccountsDAO, UpdateAccountsDAO, Delete
     public int updateStudentsDetailsByStudentID(Student student) {
         SqlParameterSource param = buildStudentsDetailsParameter(student);
 
-        String query = "UPDATE `students_details` SET `headline` = :headline, `interests` = :interests WHERE " +
+        final String query = "UPDATE `students_details` SET `headline` = :headline, `interests` = :interests WHERE " +
                 "`student_id` = :student_id;";
 
         return this.jdbcNamedTemplate.update(query, param);
@@ -207,7 +207,7 @@ public class AccountsCUD implements CreateAccountsDAO, UpdateAccountsDAO, Delete
     public int updateInstructorsDetailsByInstructorID(Instructor instructor) {
         SqlParameterSource param = buildInstructorsDetailsParameter(instructor);
 
-        String query = "UPDATE `instructors_details` SET `headline` = :headline, `specialty` = :specialty, " +
+        final String query = "UPDATE `instructors_details` SET `headline` = :headline, `specialty` = :specialty, " +
                 "`nickname` = :nickname, `portfolio` = :portfolio, `profile_visibility`= :profile_visibility " +
                 "WHERE `instructors_id` = :instructors_id;";
 
@@ -218,7 +218,7 @@ public class AccountsCUD implements CreateAccountsDAO, UpdateAccountsDAO, Delete
     public int updateRoleByRoleID(AccountsRoles accountsRoles) {
         SqlParameterSource param = buildRolesParameter(accountsRoles);
 
-        String query = "UPDATE `roles` SET `role_name` = :role_name WHERE `role_id` = :role_id;";
+        final String query = "UPDATE `roles` SET `role_name` = :role_name WHERE `role_id` = :role_id;";
 
         return this.jdbcNamedTemplate.update(query, param);
     }
@@ -227,7 +227,7 @@ public class AccountsCUD implements CreateAccountsDAO, UpdateAccountsDAO, Delete
     public int updateUsersProfilePictureByUserID(Accounts account) {
         SqlParameterSource param = buildUserProfilePicture(account);
 
-        String query = "UPDATE `users_profile_picture` SET `upload_date` = :upload_date, `picture` = :picture " +
+        final String query = "UPDATE `users_profile_picture` SET `upload_date` = :upload_date, `picture` = :picture " +
                 "WHERE `user_id` = :user_id;";
 
         return this.jdbcNamedTemplate.update(query, param);
@@ -237,7 +237,7 @@ public class AccountsCUD implements CreateAccountsDAO, UpdateAccountsDAO, Delete
     public int deleteUsersByEmail(Accounts account) {
         SqlParameterSource param = buildUsersParameter(account);
 
-        String query = "DELETE FROM `users` WHERE `email` = :email;";
+        final String query = "DELETE FROM `users` WHERE `email` = :email;";
 
         return this.jdbcNamedTemplate.update(query, param);
     }
@@ -246,7 +246,7 @@ public class AccountsCUD implements CreateAccountsDAO, UpdateAccountsDAO, Delete
     public int deleteUsersDetailsByUserID(Users user) {
         SqlParameterSource param = buildUsersDetailsParameter(user);
 
-        String query = "DELETE FROM `users_details` WHERE `user_id` = :user_id;";
+        final String query = "DELETE FROM `users_details` WHERE `user_id` = :user_id;";
 
         return this.jdbcNamedTemplate.update(query, param);
     }
@@ -255,7 +255,7 @@ public class AccountsCUD implements CreateAccountsDAO, UpdateAccountsDAO, Delete
     public int deleteStudentsDetailsByStudentID(Student student) {
         SqlParameterSource param = buildStudentsDetailsParameter(student);
 
-        String query = "DELETE FROM `students_details` WHERE `student_id` = :student_id;";
+        final String query = "DELETE FROM `students_details` WHERE `student_id` = :student_id;";
 
         return this.jdbcNamedTemplate.update(query, param);
     }
@@ -264,7 +264,7 @@ public class AccountsCUD implements CreateAccountsDAO, UpdateAccountsDAO, Delete
     public int deleteInstructorsDetailsByInstructorID(Instructor instructor) {
         SqlParameterSource param = buildInstructorsDetailsParameter(instructor);
 
-        String query = "DELETE FROM `instructors_details` WHERE `instructors_id` = :instructor_id;";
+        final String query = "DELETE FROM `instructors_details` WHERE `instructors_id` = :instructor_id;";
 
         return this.jdbcNamedTemplate.update(query, param);
     }
@@ -273,7 +273,7 @@ public class AccountsCUD implements CreateAccountsDAO, UpdateAccountsDAO, Delete
     public int deleteUsersRolesByUserIDAndRoleID(AccountsRoles accountsRoles) {
         SqlParameterSource param = buildUsersRolesParameter(accountsRoles);
 
-        String query = "DELETE FROM `users_roles` WHERE `user_id` = :user_id AND `role_id` = :role_id;";
+        final String query = "DELETE FROM `users_roles` WHERE `user_id` = :user_id AND `role_id` = :role_id;";
 
         return this.jdbcNamedTemplate.update(query, param);
     }
@@ -282,7 +282,7 @@ public class AccountsCUD implements CreateAccountsDAO, UpdateAccountsDAO, Delete
     public int deleteRoleByRoleID(AccountsRoles accountsRoles) {
         SqlParameterSource param = buildRolesParameter(accountsRoles);
 
-        String query = "DELETE FROM `roles` WHERE `role_id` = :role_id;";
+        final String query = "DELETE FROM `roles` WHERE `role_id` = :role_id;";
 
         return this.jdbcNamedTemplate.update(query, param);
     }
@@ -291,7 +291,7 @@ public class AccountsCUD implements CreateAccountsDAO, UpdateAccountsDAO, Delete
     public int deleteUsersProfilePictureByUserID(Accounts account) {
         SqlParameterSource param = buildUserProfilePicture(account);
 
-        String query = "DELETE FROM `users_profile_picture` WHERE `user_id` = :user_id;";
+        final String query = "DELETE FROM `users_profile_picture` WHERE `user_id` = :user_id;";
 
         return this.jdbcNamedTemplate.update(query, param);
     }

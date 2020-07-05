@@ -37,13 +37,13 @@ public class FeedbackCUD implements CreateFeedbackDAO, UpdateFeedbackDAO, Delete
         SqlParameterSource param = buildCourseFeedbackParameter(feedback);
         KeyHolder keyHolder = (KeyHolder) this.context.getBean("buildKeyHolder");
 
-        String query = "INSERT INTO `course_feedback`(`course_id`) VALUE (:course_id);";
+        final String query = "INSERT INTO `course_feedback`(`course_id`) VALUE (:course_id);";
 
         int result = this.jdbcNamedTemplate.update(query, param, keyHolder);
-        if (keyHolder.getKey() != null && result > 0){
+        if (keyHolder.getKey() != null && result > 0) {
             return keyHolder.getKey().longValue();
-        }else {
-            return (long)-1;
+        } else {
+            return (long) -1;
         }
     }
 
@@ -51,7 +51,7 @@ public class FeedbackCUD implements CreateFeedbackDAO, UpdateFeedbackDAO, Delete
     public int createFeedbackFiles(FileFeedback fileFeedback) {
         SqlParameterSource param = buildFeedbackFileParameter(fileFeedback);
 
-        String query = "INSERT INTO `feedback_file`(`feedback_id`, `user_id`, `file`, `file_extension`, `upload_date`) " +
+        final String query = "INSERT INTO `feedback_file`(`feedback_id`, `user_id`, `file`, `file_extension`, `upload_date`) " +
                 "VALUES (:feedback_id, :user_id, :file, :file_extension, :upload_date);";
 
         return this.jdbcNamedTemplate.update(query, param);
@@ -61,7 +61,7 @@ public class FeedbackCUD implements CreateFeedbackDAO, UpdateFeedbackDAO, Delete
     public int createFeedbackMessages(MessageFeedback messageFeedback) {
         SqlParameterSource param = buildFeedbackMessageParameter(messageFeedback);
 
-        String query = "INSERT INTO `feedback_message`(`feedback_id`, `user_id`, `post_message`, `feedback_date`) " +
+        final String query = "INSERT INTO `feedback_message`(`feedback_id`, `user_id`, `post_message`, `feedback_date`) " +
                 "VALUES (:feedback_id, :user_id, :post_message, :feedback_date);";
 
         return this.jdbcNamedTemplate.update(query, param);
@@ -72,19 +72,19 @@ public class FeedbackCUD implements CreateFeedbackDAO, UpdateFeedbackDAO, Delete
         SqlParameterSource param = buildFeedbackCommentsParameter(comment);
         KeyHolder keyHolder = new GeneratedKeyHolder();
 
-        String query = "INSERT INTO `feedback_comments`(`feedback_id`, `user_id`, `comment_message`, `comment_date`) " +
+        final String query = "INSERT INTO `feedback_comments`(`feedback_id`, `user_id`, `comment_message`, `comment_date`) " +
                 "VALUES (:feedback_id, :user_id, :comment_message, :comment_date);";
 
         int result = this.jdbcNamedTemplate.update(query, param, keyHolder);
 
-        if (keyHolder.getKey() != null && result > 0){
+        if (keyHolder.getKey() != null && result > 0) {
             return keyHolder.getKey().longValue();
-        }else{
-            return (long)-1;
+        } else {
+            return (long) -1;
         }
     }
 
-    private SqlParameterSource buildCourseFeedbackParameter(Feedback feedback){
+    private SqlParameterSource buildCourseFeedbackParameter(Feedback feedback) {
         MapSqlParameterSource param = (MapSqlParameterSource) this.context.getBean("buildMapParameter");
         param.addValue("feedback_id", feedback.getFeedbackID(), Types.BIGINT);
         param.addValue("course_id", feedback.getCourse().getCourseID(), Types.BIGINT);
@@ -92,7 +92,7 @@ public class FeedbackCUD implements CreateFeedbackDAO, UpdateFeedbackDAO, Delete
         return param;
     }
 
-    private SqlParameterSource buildFeedbackFileParameter(FileFeedback fileFeedback){
+    private SqlParameterSource buildFeedbackFileParameter(FileFeedback fileFeedback) {
         MapSqlParameterSource param = (MapSqlParameterSource) this.context.getBean("buildMapParameter");
         param.addValue("feedback_id", fileFeedback.getFeedbackID(), Types.BIGINT);
         param.addValue("user_id", fileFeedback.getUser().getEmail(), Types.VARCHAR);
@@ -103,7 +103,7 @@ public class FeedbackCUD implements CreateFeedbackDAO, UpdateFeedbackDAO, Delete
         return param;
     }
 
-    private SqlParameterSource buildFeedbackMessageParameter(MessageFeedback messageFeedback){
+    private SqlParameterSource buildFeedbackMessageParameter(MessageFeedback messageFeedback) {
         MapSqlParameterSource param = (MapSqlParameterSource) this.context.getBean("buildMapParameter");
         param.addValue("feedback_id", messageFeedback.getFeedbackID(), Types.BIGINT);
         param.addValue("user_id", messageFeedback.getUser().getEmail(), Types.VARCHAR);
@@ -113,7 +113,7 @@ public class FeedbackCUD implements CreateFeedbackDAO, UpdateFeedbackDAO, Delete
         return param;
     }
 
-    private SqlParameterSource buildFeedbackCommentsParameter(Comment comment){
+    private SqlParameterSource buildFeedbackCommentsParameter(Comment comment) {
         MapSqlParameterSource param = (MapSqlParameterSource) this.context.getBean("buildMapParameter");
         param.addValue("comment_id", comment.getCommentID(), Types.BIGINT);
         param.addValue("feedback_id", comment.getFeedback().getFeedbackID(), Types.BIGINT);
@@ -128,7 +128,7 @@ public class FeedbackCUD implements CreateFeedbackDAO, UpdateFeedbackDAO, Delete
     public int updateCoursesFeedbackByFeedbackID(Feedback feedback) {
         SqlParameterSource param = buildCourseFeedbackParameter(feedback);
 
-        String query = "UPDATE `course_feedback` SET `course_id` = :course_id WHERE `feedback_id` = :feedback_id;";
+        final String query = "UPDATE `course_feedback` SET `course_id` = :course_id WHERE `feedback_id` = :feedback_id;";
 
         return this.jdbcNamedTemplate.update(query, param);
     }
@@ -137,7 +137,7 @@ public class FeedbackCUD implements CreateFeedbackDAO, UpdateFeedbackDAO, Delete
     public int updateFeedbackFilesByFeedbackID(FileFeedback fileFeedback) {
         SqlParameterSource param = buildFeedbackFileParameter(fileFeedback);
 
-        String query = "UPDATE `feedback_file` SET `user_id` = :user_id, `file` = :file, `file_extension` = :file_extension, " +
+        final String query = "UPDATE `feedback_file` SET `user_id` = :user_id, `file` = :file, `file_extension` = :file_extension, " +
                 "`upload_date` = :upload_date WHERE `feedback_id` = :feedback_id;";
 
         return this.jdbcNamedTemplate.update(query, param);
@@ -147,7 +147,7 @@ public class FeedbackCUD implements CreateFeedbackDAO, UpdateFeedbackDAO, Delete
     public int updateFeedbackMessagesByFeedbackID(MessageFeedback messageFeedback) {
         SqlParameterSource param = buildFeedbackMessageParameter(messageFeedback);
 
-        String query = "UPDATE `feedback_message` SET `user_id` = :user_id, `post_message` = :post_message, " +
+        final String query = "UPDATE `feedback_message` SET `user_id` = :user_id, `post_message` = :post_message, " +
                 "`feedback_date` = :feedback_date WHERE `feedback_id` = :feedback_id;";
 
         return this.jdbcNamedTemplate.update(query, param);
@@ -157,7 +157,7 @@ public class FeedbackCUD implements CreateFeedbackDAO, UpdateFeedbackDAO, Delete
     public int updateFeedbackCommentsByCommentID(Comment comment) {
         SqlParameterSource param = buildFeedbackCommentsParameter(comment);
 
-        String query = "UPDATE `feedback_comments` SET `feedback_id` = :feedback_id, `user_id` = :user_id, " +
+        final String query = "UPDATE `feedback_comments` SET `feedback_id` = :feedback_id, `user_id` = :user_id, " +
                 "`comment_message` = :comment_message, `comment_date` = :comment_date WHERE `comment_id` = :comment_id;";
 
         return this.jdbcNamedTemplate.update(query, param);
@@ -167,7 +167,7 @@ public class FeedbackCUD implements CreateFeedbackDAO, UpdateFeedbackDAO, Delete
     public int deleteCoursesFeedbackByFeedbackID(Feedback feedback) {
         SqlParameterSource param = buildCourseFeedbackParameter(feedback);
 
-        String query = "DELETE FROM `course_feedback` WHERE `feedback_id` = :feedback_id;";
+        final String query = "DELETE FROM `course_feedback` WHERE `feedback_id` = :feedback_id;";
 
         return this.jdbcNamedTemplate.update(query, param);
     }
@@ -176,7 +176,7 @@ public class FeedbackCUD implements CreateFeedbackDAO, UpdateFeedbackDAO, Delete
     public int deleteFeedbackFilesByFeedbackID(FileFeedback fileFeedback) {
         SqlParameterSource param = buildFeedbackFileParameter(fileFeedback);
 
-        String query = "DELETE FROM `feedback_file` WHERE `feedback_id` = :feedback_id;";
+        final String query = "DELETE FROM `feedback_file` WHERE `feedback_id` = :feedback_id;";
 
         return this.jdbcNamedTemplate.update(query, param);
     }
@@ -185,7 +185,7 @@ public class FeedbackCUD implements CreateFeedbackDAO, UpdateFeedbackDAO, Delete
     public int deleteFeedbackMessagesByFeedbackID(MessageFeedback messageFeedback) {
         SqlParameterSource param = buildFeedbackMessageParameter(messageFeedback);
 
-        String query = "DELETE FROM `feedback_message` WHERE `feedback_id` = :feedback_id;";
+        final String query = "DELETE FROM `feedback_message` WHERE `feedback_id` = :feedback_id;";
 
         return this.jdbcNamedTemplate.update(query, param);
     }
@@ -194,7 +194,7 @@ public class FeedbackCUD implements CreateFeedbackDAO, UpdateFeedbackDAO, Delete
     public int deleteFeedbackCommentsByCommentID(Comment comment) {
         SqlParameterSource param = buildFeedbackCommentsParameter(comment);
 
-        String query = "DELETE FROM `feedback_comments` WHERE `comment_id` = :comment_id;";
+        final String query = "DELETE FROM `feedback_comments` WHERE `comment_id` = :comment_id;";
 
         return this.jdbcNamedTemplate.update(query, param);
     }
