@@ -17,7 +17,7 @@ import java.util.Objects;
 
 @Component
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-@Entity(name = "students_attendances")
+@Entity
 @Table(schema = "course_management_system", name = "students_attendances")
 @EntityListeners(AuditingEntityListener.class)
 @JsonIgnoreProperties(value = {"attendanceDate"}, allowGetters = true)

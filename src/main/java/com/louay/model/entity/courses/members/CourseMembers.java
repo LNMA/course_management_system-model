@@ -3,7 +3,6 @@ package com.louay.model.entity.courses.members;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.louay.model.entity.courses.Courses;
 
-import com.louay.model.entity.users.Admin;
 import com.louay.model.entity.users.Student;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
@@ -29,16 +28,17 @@ public class CourseMembers implements Serializable, Comparable<CourseMembers> {
     @Column(name = "member_id")
     private Long memberId;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", referencedColumnName = "email")
-    private Admin user;
+    @ManyToOne(cascade = CascadeType.ALL, targetEntity = Student.class)
+    @JoinColumn(name = "user_id", referencedColumnName = "student_id")
+    private Student student;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(cascade = CascadeType.ALL, targetEntity = Courses.class)
     @JoinColumn(name = "course_id", referencedColumnName = "course_id")
     private Courses course;
 
     @Temporal(TemporalType.TIMESTAMP)
     @CreatedDate
+    @Column(name = "register_date")
     private Date registerDate;
 
     public Long getMemberId() {
@@ -49,12 +49,12 @@ public class CourseMembers implements Serializable, Comparable<CourseMembers> {
         this.memberId = memberId;
     }
 
-    public Admin getUser() {
-        return user;
+    public Student getStudent() {
+        return student;
     }
 
-    public void setUser(Admin user) {
-        this.user = user;
+    public void setStudent(Student student) {
+        this.student = student;
     }
 
     public Courses getCourse() {
@@ -95,7 +95,7 @@ public class CourseMembers implements Serializable, Comparable<CourseMembers> {
     public String toString() {
         return "CourseMembers{" +
                 "memberId=" + memberId +
-                ", user=" + user +
+                ", student=" + student +
                 ", course=" + course +
                 ", registerDate=" + registerDate +
                 '}';

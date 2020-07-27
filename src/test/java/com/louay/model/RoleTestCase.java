@@ -32,7 +32,7 @@ public class RoleTestCase extends TestCase {
     }
 
     @Before
-    public void initialize01_AccountService() {
+    public void initialize01_RoleService() {
         this.roleService = this.applicationContext.getBean(RoleService.class);
     }
 

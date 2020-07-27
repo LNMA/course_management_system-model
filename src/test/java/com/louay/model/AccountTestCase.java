@@ -43,7 +43,7 @@ public class AccountTestCase extends TestCase {
     @Test
     public void testCase01_create_account() {
         Admin admin = this.applicationContext.getBean(Admin.class);
-        admin.setEmail("louay@test.com");
+        admin.setEmail("louay@test.com1");
         admin.setPassword("1234");
 
         this.accountService.createAccount(admin);

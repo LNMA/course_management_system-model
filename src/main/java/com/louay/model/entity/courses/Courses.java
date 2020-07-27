@@ -1,6 +1,6 @@
 package com.louay.model.entity.courses;
 
-import com.louay.model.entity.users.Admin;
+import com.louay.model.entity.users.Instructor;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -25,16 +25,16 @@ public class Courses implements Comparable<Courses>, Serializable {
     private String courseName;
 
     @Column(name = "start_date", nullable = false)
-    @Temporal(TemporalType.DATE)
+    @Temporal(TemporalType.TIMESTAMP)
     private Date startDate;
 
     @Column(name = "end_date", nullable = false)
-    @Temporal(TemporalType.DATE)
+    @Temporal(TemporalType.TIMESTAMP)
     private Date endDate;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "instructor_id", referencedColumnName = "email")
-    private Admin instructor;
+    @ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL, targetEntity = Instructor.class)
+    @JoinColumn(name = "instructor_id", referencedColumnName = "instructors_id")
+    private Instructor instructor;
 
     public Long getCourseID() {
         return courseID;
@@ -68,11 +68,11 @@ public class Courses implements Comparable<Courses>, Serializable {
         this.endDate = endDate;
     }
 
-    public Admin getInstructor() {
+    public Instructor getInstructor() {
         return instructor;
     }
 
-    public void setInstructor(Admin instructor) {
+    public void setInstructor(Instructor instructor) {
         this.instructor = instructor;
     }
 

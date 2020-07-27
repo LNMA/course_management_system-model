@@ -31,7 +31,7 @@ public class ProfilePicTestCase {
     }
 
     @Before
-    public void initialize01_AccountService() {
+    public void initialize01_AccountPictureService() {
         this.pictureService = this.applicationContext.getBean(AccountPictureService.class);
     }
 
