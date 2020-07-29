@@ -3,6 +3,7 @@ package com.louay.model.entity.courses.members;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.louay.model.entity.courses.Courses;
 import com.louay.model.entity.users.Admin;
+import com.louay.model.entity.users.Student;
 import com.louay.model.entity.users.Users;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
@@ -22,22 +23,23 @@ import java.util.Objects;
 @EntityListeners(AuditingEntityListener.class)
 @JsonIgnoreProperties(value = {"attendanceDate"}, allowGetters = true)
 public class UsersAttendance implements Serializable, Comparable<UsersAttendance> {
-    private static final long serialVersionUID = 8779404087817736311L;
+    private static final long serialVersionUID = 4153260012886912057L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "attendance_id")
     private Long attendancesId;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "student_id", referencedColumnName = "email")
-    private Admin user;
+    @ManyToOne(fetch = FetchType.LAZY, targetEntity = Student.class)
+    @JoinColumn(name = "student_id", referencedColumnName = "student_id")
+    private Student student;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, targetEntity = Courses.class)
     @JoinColumn(name = "course_id", referencedColumnName = "course_id")
     private Courses course;
 
     @Temporal(TemporalType.TIMESTAMP)
     @CreatedDate
+    @Column(name = "attendance_date")
     private Date attendanceDate;
 
     public Long getAttendancesId() {
@@ -48,12 +50,12 @@ public class UsersAttendance implements Serializable, Comparable<UsersAttendance
         this.attendancesId = attendancesId;
     }
 
-    public Admin getUser() {
-        return user;
+    public Student getStudent() {
+        return student;
     }
 
-    public void setUser(Admin user) {
-        this.user = user;
+    public void setStudent(Student student) {
+        this.student = student;
     }
 
     public Courses getCourse() {
@@ -94,7 +96,7 @@ public class UsersAttendance implements Serializable, Comparable<UsersAttendance
     public String toString() {
         return "UsersAttendance{" +
                 "attendancesId=" + attendancesId +
-                ", user=" + user +
+                ", student=" + student +
                 ", course=" + course +
                 ", attendanceDate=" + attendanceDate +
                 '}';

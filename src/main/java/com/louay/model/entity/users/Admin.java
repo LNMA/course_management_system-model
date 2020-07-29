@@ -19,7 +19,7 @@ import java.util.Date;
 @JsonIgnoreProperties(value = {"joinDate"}, allowGetters = true)
 @AttributeOverride(name = "email", column = @Column(name = "email"))
 public class Admin extends GenericAccounts {
-    private static final long serialVersionUID = -3123669786464896772L;
+    private static final long serialVersionUID = 7273903547850056462L;
     @Column(name = "password", nullable = false, length = 100)
     private String password;
 
@@ -44,16 +44,19 @@ public class Admin extends GenericAccounts {
         this.joinDate = joinDate;
     }
 
+    @Transient
     @Override
     public Role getUserRole() {
         return Role.ADMIN;
     }
 
+    @Transient
     @Override
     public int compareTo(GenericAccounts o) {
         return this.getEmail().compareTo(o.getEmail());
     }
 
+    @Transient
     @Override
     public String toString() {
         return super.toString()+", Admin{" +

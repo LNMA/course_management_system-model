@@ -32,7 +32,7 @@ public class Courses implements Comparable<Courses>, Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     private Date endDate;
 
-    @ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL, targetEntity = Instructor.class)
+    @ManyToOne(targetEntity = Instructor.class)
     @JoinColumn(name = "instructor_id", referencedColumnName = "instructors_id")
     private Instructor instructor;
 
@@ -76,11 +76,13 @@ public class Courses implements Comparable<Courses>, Serializable {
         this.instructor = instructor;
     }
 
+    @Transient
     @Override
     public int compareTo(Courses o) {
         return this.courseID.compareTo(o.getCourseID());
     }
 
+    @Transient
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -89,11 +91,13 @@ public class Courses implements Comparable<Courses>, Serializable {
         return getCourseID().equals(courses.getCourseID());
     }
 
+    @Transient
     @Override
     public int hashCode() {
         return Objects.hash(getCourseID());
     }
 
+    @Transient
     @Override
     public String toString() {
         return "Courses{" +

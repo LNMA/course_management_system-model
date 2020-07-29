@@ -8,18 +8,16 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
-import java.util.Objects;
 
 @Component
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 @Qualifier("instructor")
 @Entity
-@Table(schema = "course_management_system", name = "instructors_details")
+@DiscriminatorValue("1")
+@PrimaryKeyJoinColumn(name = "instructors_id", referencedColumnName = "user_id")
+@Table(name = "instructors_details")
 public class Instructor extends Users {
-    private static final long serialVersionUID = 1227822599613464185L;
-    @Column(name = "instructors_id")
-    private String instructorsId;
-
+    private static final long serialVersionUID = 8191124843845259614L;
     @Column(name = "headline", length = 300)
     private String headline;
 
@@ -35,17 +33,6 @@ public class Instructor extends Users {
     @Column(name = "profile_visibility")
     @Enumerated(EnumType.STRING)
     private InstructorProfileVisibility profileVisibility;
-
-    @Override
-    public String getEmail() {
-        return this.instructorsId;
-    }
-
-    @Override
-    public void setEmail(String email) {
-        super.setEmail(email);
-        this.instructorsId = email;
-    }
 
     public String getHeadline() {
         return headline;
@@ -87,30 +74,23 @@ public class Instructor extends Users {
         this.profileVisibility = profileVisibility;
     }
 
+    @Transient
     @Override
     public Role getUserRole() {
         return Role.INSTRUCTOR;
     }
 
+    @Transient
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Instructor)) return false;
-        if (!super.equals(o)) return false;
-        Instructor that = (Instructor) o;
-        return instructorsId.equals(that.instructorsId);
+    public int compareTo(GenericAccounts o) {
+        return super.getEmail().compareTo(o.getEmail());
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(super.hashCode(), instructorsId);
-    }
-
+    @Transient
     @Override
     public String toString() {
         return super.toString()+", Instructor{" +
-                "instructorsId='" + instructorsId + '\'' +
-                ", headline='" + headline + '\'' +
+                "headline='" + headline + '\'' +
                 ", specialty='" + specialty + '\'' +
                 ", nickname='" + nickname + '\'' +
                 ", portfolio='" + portfolio + '\'' +

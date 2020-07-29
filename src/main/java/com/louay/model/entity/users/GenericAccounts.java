@@ -4,10 +4,9 @@ import com.louay.model.entity.users.constant.Role;
 import org.hibernate.annotations.Polymorphism;
 import org.hibernate.annotations.PolymorphismType;
 
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
+import javax.persistence.Transient;
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -26,8 +25,10 @@ public abstract class GenericAccounts implements Comparable<GenericAccounts>, Se
         this.email = email;
     }
 
+    @Transient
     abstract public Role getUserRole();
 
+    @Transient
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -36,11 +37,13 @@ public abstract class GenericAccounts implements Comparable<GenericAccounts>, Se
         return getEmail().equals(genericAccounts.getEmail());
     }
 
+    @Transient
     @Override
     public int hashCode() {
         return Objects.hash(getEmail());
     }
 
+    @Transient
     @Override
     public String toString() {
         return "GenericAccounts{" +

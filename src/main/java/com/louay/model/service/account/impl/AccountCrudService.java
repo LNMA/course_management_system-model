@@ -15,7 +15,7 @@ import java.io.Serializable;
 
 @Service
 public class AccountCrudService implements AccountService, Serializable {
-    private static final long serialVersionUID = 2984737579758457395L;
+    private static final long serialVersionUID = -6163818466720439509L;
     private AccountDao accountDao;
 
     public AccountDao getAccountDao() {

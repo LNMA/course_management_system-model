@@ -102,9 +102,10 @@ public class PersistenceJPAConfig {
         Properties properties = new Properties();
         properties.setProperty("hibernate.hbm2ddl.auto", "update"); //for developer none | validate | update | create | create-drop with every SessionFactory close
         properties.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQLDialect");
-        //properties.setProperty("org.hibernate.envers.audit_table_suffix", "_AUDIT_LOG");
+        properties.setProperty("org.hibernate.envers.audit_table_suffix", "_AUDIT_LOG");
         properties.setProperty("hibernate.globally_quoted_identifiers", "true");
         //properties.setProperty("hibernate.ejb.use_class_enhancer", "true");
+        properties.setProperty("hibernate.discriminator.ignore_explicit_for_joined", "true");
         properties.setProperty("spring.jpa.properties.hibernate.format_sql", "true"); //to show query
         //for batch
         properties.setProperty("spring.jpa.properties.hibernate.generate_statistics", "true"); // to show the time in nano second to prepare the batch

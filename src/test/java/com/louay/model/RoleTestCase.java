@@ -39,7 +39,7 @@ public class RoleTestCase extends TestCase {
     @Test
     public void testCase01_create_account() {
         Admin admin = this.applicationContext.getBean(Admin.class);
-        admin.setEmail("louay@test.com");
+        admin.setEmail("role@test.com");
         admin.setPassword("1234");
 
         AccountService service = this.applicationContext.getBean(AccountService.class);
@@ -51,86 +51,94 @@ public class RoleTestCase extends TestCase {
         AccountsRoles accountsRoles = this.applicationContext.getBean(AccountsRoles.class);
         accountsRoles.setRoleName(Role.INSTRUCTOR);
 
-
         System.out.println(this.roleService.createAccountRole(accountsRoles));
     }
 
     @Test
     public void testCase03_find_and_update_accountRole() {
         AccountsRoles accountsRoles = this.applicationContext.getBean(AccountsRoles.class);
-        accountsRoles.setRoleName(Role.INSTRUCTOR);
-        accountsRoles.setRoleID((long) 2);
-
+        accountsRoles.setRoleID((long) 1);
         accountsRoles = this.roleService.findAccountRoleByRoleId(accountsRoles);
+
         System.out.println(accountsRoles);
 
         accountsRoles.setRoleName(Role.STUDENT);
         this.roleService.updateAccountRole(accountsRoles);
+
+        System.out.println(accountsRoles);
     }
 
     @Test
-    public void testCase04_create_accountRole_and_userRole() {
-        AccountsRoles accountsRoles = this.applicationContext.getBean(AccountsRoles.class);
-        accountsRoles.setRoleName(Role.STUDENT);
-
+    public void testCase04_create_userRole() {
         Admin admin = this.applicationContext.getBean(Admin.class);
-        admin.setEmail("louay@test.com");
+        admin.setEmail("role@test.com");
+        AccountService accountService = this.applicationContext.getBean(AccountService.class);
+        admin = accountService.findAccountByEmail(admin);
 
-        this.roleService.createAccountRole(accountsRoles);
+        AccountsRoles accountsRoles = this.applicationContext.getBean(AccountsRoles.class);
+        accountsRoles.setRoleID((long) 1);
+        accountsRoles = this.roleService.findAccountRoleByRoleId(accountsRoles);
 
         UsersRoles usersRoles = this.applicationContext.getBean(UsersRoles.class);
         usersRoles.setUsers(admin);
         usersRoles.setAccountsRoles(accountsRoles);
 
         this.roleService.createUsersRoles(usersRoles);
+
+        System.out.println(usersRoles);
     }
 
     @Test
     public void testCase05_find_and_update_userRole() {
-        AccountsRoles accountsRoles = this.applicationContext.getBean(AccountsRoles.class);
-        accountsRoles.setRoleID((long) 2);
-
         Admin admin = this.applicationContext.getBean(Admin.class);
-        admin.setEmail("louay@test.com");
+        admin.setEmail("role@test.com");
+        AccountService accountService = this.applicationContext.getBean(AccountService.class);
+        admin = accountService.findAccountByEmail(admin);
 
         UsersRoles usersRoles = this.applicationContext.getBean(UsersRoles.class);
         usersRoles.setUsers(admin);
-        usersRoles.setAccountsRoles(accountsRoles);
-
         usersRoles = this.roleService.findUsersRolesByUserId(usersRoles);
-        System.out.println(usersRoles);
 
-        usersRoles.getAccountsRoles().setRoleID((long) 3);
+        System.out.println(usersRoles);
 
         this.roleService.updateUsersRoles(usersRoles);
     }
 
     @Test
     public void testCase06_find_and_delete_userRole() {
-        AccountsRoles accountsRoles = this.applicationContext.getBean(AccountsRoles.class);
-
         Admin admin = this.applicationContext.getBean(Admin.class);
-        admin.setEmail("louay@test.com");
+        admin.setEmail("role@test.com");
+        AccountService accountService = this.applicationContext.getBean(AccountService.class);
+        admin = accountService.findAccountByEmail(admin);
 
         UsersRoles usersRoles = this.applicationContext.getBean(UsersRoles.class);
         usersRoles.setUsers(admin);
-        usersRoles.setAccountsRoles(accountsRoles);
-
         usersRoles = this.roleService.findUsersRolesByUserId(usersRoles);
 
         System.out.println(usersRoles);
+
         this.roleService.deleteUsersRolesByUserId(usersRoles);
     }
 
     @Test
     public void testCase07_find_and_delete_accountRole() {
         AccountsRoles accountsRoles = this.applicationContext.getBean(AccountsRoles.class);
-        accountsRoles.setRoleID((long) 2);
-
+        accountsRoles.setRoleID((long) 1);
         accountsRoles = this.roleService.findAccountRoleByRoleId(accountsRoles);
 
         System.out.println(accountsRoles);
 
         this.roleService.deleteAccountRoleByRoleId(accountsRoles);
+    }
+
+    @Test
+    public void testCase08_find_and_delete_account() {
+        Admin admin = this.applicationContext.getBean(Admin.class);
+        admin.setEmail("role@test.com");
+
+        AccountService accountService = this.applicationContext.getBean(AccountService.class);
+        admin = accountService.findAccountByEmail(admin);
+        System.out.println(admin);
+        accountService.deleteAccountByEmail(admin);
     }
 }

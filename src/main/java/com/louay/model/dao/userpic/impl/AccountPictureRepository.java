@@ -14,8 +14,8 @@ public class AccountPictureRepository extends CommonDaoImpl<AccountPicture> impl
 
     @Override
     public <S extends AccountPicture> Boolean isExist(S entity) {
-        return !getEntityManager().createQuery("SELECT r From AccountPicture r WHERE r.admin.email = :roleID")
-                .setParameter("roleID", entity.getAdmin().getEmail())
+        return !getEntityManager().createQuery("SELECT r From AccountPicture r WHERE r.users.email = :email")
+                .setParameter("email", entity.getUsers().getEmail())
                 .setMaxResults(1)
                 .getResultList()
                 .isEmpty();
@@ -25,7 +25,7 @@ public class AccountPictureRepository extends CommonDaoImpl<AccountPicture> impl
     public <S extends AccountPicture> S delete(S entity) {
         Class<? extends AccountPicture> entityClass = entity.getClass();
         @SuppressWarnings("unchecked")
-        S entityFound = (S) getEntityManager().find(entityClass, entity.getAdmin().getEmail());
+        S entityFound = (S) getEntityManager().find(entityClass, entity.getUsers().getEmail());
         getEntityManager().remove(entityFound);
         return entity;
     }
@@ -36,7 +36,7 @@ public class AccountPictureRepository extends CommonDaoImpl<AccountPicture> impl
         for (S s : entities) {
             Class<? extends AccountPicture> entityClass = s.getClass();
             @SuppressWarnings("unchecked")
-            S entityFound = (S) getEntityManager().find(entityClass, s.getAdmin().getEmail());
+            S entityFound = (S) getEntityManager().find(entityClass, s.getUsers().getEmail());
             getEntityManager().remove(entityFound);
             getEntityManager().flush();
             result.add(s);
@@ -49,7 +49,7 @@ public class AccountPictureRepository extends CommonDaoImpl<AccountPicture> impl
     public <S extends AccountPicture> S findOneById(S entity) {
         Class<? extends AccountPicture> entityClass = entity.getClass();
         @SuppressWarnings("unchecked")
-        S result = (S) getEntityManager().find(entityClass, entity.getAdmin().getEmail(), LockModeType.PESSIMISTIC_READ);
+        S result = (S) getEntityManager().find(entityClass, entity.getUsers().getEmail(), LockModeType.PESSIMISTIC_READ);
         return result;
     }
 
@@ -59,7 +59,7 @@ public class AccountPictureRepository extends CommonDaoImpl<AccountPicture> impl
         for (S s : entities) {
             Class<? extends AccountPicture> entityClass = s.getClass();
             @SuppressWarnings("unchecked")
-            S entityFound = (S) getEntityManager().find(entityClass, s.getAdmin().getEmail(), LockModeType.PESSIMISTIC_READ);
+            S entityFound = (S) getEntityManager().find(entityClass, s.getUsers().getEmail(), LockModeType.PESSIMISTIC_READ);
             result.add(entityFound);
             getEntityManager().flush();
             getEntityManager().clear();

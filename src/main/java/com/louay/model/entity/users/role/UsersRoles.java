@@ -17,11 +17,11 @@ import java.util.Objects;
 public class UsersRoles implements Comparable<UsersRoles>, Serializable {
     private static final long serialVersionUID = -1414850559717508755L;
     @Id
-    @OneToOne(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+    @OneToOne(cascade = CascadeType.ALL,fetch = FetchType.EAGER, targetEntity = Admin.class)
     @JoinColumn(name = "user_id", referencedColumnName = "email", nullable = false, unique = true)
     private Admin users;
 
-    @OneToOne(cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+    @OneToOne(cascade = CascadeType.ALL,fetch = FetchType.EAGER, targetEntity = AccountsRoles.class)
     @JoinColumn(name = "role_id", referencedColumnName = "role_id", nullable = false, unique = true)
     private AccountsRoles accountsRoles;
 

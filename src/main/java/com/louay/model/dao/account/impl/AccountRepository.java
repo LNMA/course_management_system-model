@@ -11,7 +11,7 @@ import java.util.*;
 @Repository
 public class AccountRepository extends CommonDaoImpl<GenericAccounts> implements AccountDao {
 
-    private static final long serialVersionUID = 1787982627545543282L;
+    private static final long serialVersionUID = -2741733144725290103L;
 
     @Override
     public <S extends GenericAccounts> Boolean isExist(S entity) {

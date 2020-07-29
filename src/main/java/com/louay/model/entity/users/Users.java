@@ -11,22 +11,23 @@ import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
 import java.util.Date;
-import java.util.Objects;
 
 @Component
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 @Qualifier("users")
 @Entity
-@Table(schema = "course_management_system", name = "users_details")
-@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+@Inheritance(strategy = InheritanceType.JOINED)
+@DiscriminatorColumn(name = "user_type_id", discriminatorType = DiscriminatorType.INTEGER, columnDefinition = "TINYINT(1)")
 @Polymorphism(type = PolymorphismType.EXPLICIT)
 @AttributeOverride(name = "email", column = @Column(name = "user_id"))
+@Table( name = "users_details")
 public class Users extends GenericAccounts {
-    private static final long serialVersionUID = 5559907892093012373L;
-    @Column(name = "forename", nullable = false, length = 50)
+    private static final long serialVersionUID = 2001632833960201590L;
+
+    @Column(name = "forename", length = 50)
     private String forename;
 
-    @Column(name = "surname", nullable = false, length = 50)
+    @Column(name = "surname", length = 50)
     private String surname;
 
     @Column(name = "gender")
@@ -113,37 +114,25 @@ public class Users extends GenericAccounts {
         this.address = address;
     }
 
+    @Transient
     @Override
     public Role getUserRole() {
         return Role.USER;
     }
 
+    @Transient
     @Override
     public int compareTo(GenericAccounts o) {
-        return this.getEmail().compareTo(o.getEmail());
+        return super.getEmail().compareTo(o.getEmail());
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Users)) return false;
-        if (!super.equals(o)) return false;
-        Users users = (Users) o;
-        return getForename().equals(users.getForename()) &&
-                getSurname().equals(users.getSurname());
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(super.hashCode(), getForename(), getSurname(), getGender(), getBirthday(), getCountry());
-    }
-
+    @Transient
     @Override
     public String toString() {
-        return super.toString() + ", Users{" +
+        return super.toString()+", Users{" +
                 "forename='" + forename + '\'' +
                 ", surname='" + surname + '\'' +
-                ", gender='" + gender + '\'' +
+                ", gender=" + gender +
                 ", phone=" + phone +
                 ", birthday=" + birthday +
                 ", country='" + country + '\'' +

@@ -22,17 +22,17 @@ import java.util.Objects;
 @EntityListeners(AuditingEntityListener.class)
 @JsonIgnoreProperties(value = {"registerDate"}, allowGetters = true)
 public class CourseMembers implements Serializable, Comparable<CourseMembers> {
-    private static final long serialVersionUID = 7079422481851662405L;
+    private static final long serialVersionUID = 4042682674551510313L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "member_id")
     private Long memberId;
 
-    @ManyToOne(cascade = CascadeType.ALL, targetEntity = Student.class)
-    @JoinColumn(name = "user_id", referencedColumnName = "student_id")
+    @ManyToOne(targetEntity = Student.class)
+    @JoinColumn(name = "student_id", referencedColumnName = "student_id")
     private Student student;
 
-    @ManyToOne(cascade = CascadeType.ALL, targetEntity = Courses.class)
+    @ManyToOne(targetEntity = Courses.class)
     @JoinColumn(name = "course_id", referencedColumnName = "course_id")
     private Courses course;
 

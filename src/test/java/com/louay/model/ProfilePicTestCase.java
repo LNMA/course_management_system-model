@@ -2,7 +2,10 @@ package com.louay.model;
 
 import com.louay.model.config.MySpringBootJDBCApplication;
 import com.louay.model.entity.users.Admin;
+import com.louay.model.entity.users.Users;
+import com.louay.model.entity.users.constant.Gender;
 import com.louay.model.entity.users.picute.AccountPicture;
+import com.louay.model.service.account.AccountService;
 import com.louay.model.service.userpic.AccountPictureService;
 import com.louay.model.util.file.FileProcess;
 import org.junit.Before;
@@ -15,6 +18,7 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.io.IOException;
+import java.sql.Date;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = {MySpringBootJDBCApplication.class})
@@ -36,9 +40,36 @@ public class ProfilePicTestCase {
     }
 
     @Test
-    public void testCase01_create_accountPicture() {
+    public void testCase01_create_account() {
         Admin admin = this.applicationContext.getBean(Admin.class);
-        admin.setEmail("louay@test.com");
+        admin.setEmail("profilePic@test.com");
+        admin.setPassword("1234");
+
+        AccountService accountService = this.applicationContext.getBean(AccountService.class);
+        accountService.createAccount(admin);
+    }
+
+    @Test
+    public void testCase02_create_users() {
+        Users users = this.applicationContext.getBean("users", Users.class);
+        users.setEmail("profilePic@test.com");
+        users.setForename("Profile Picture");
+        users.setSurname("Test");
+        users.setGender(Gender.MALE);
+        users.setBirthday(Date.valueOf("2020-07-26"));
+        users.setCountry("Test");
+        users.setState("modal");
+        users.setPhone(123456);
+        users.setAddress("ProfilePicTestCaseClass");
+
+        AccountService accountService = this.applicationContext.getBean(AccountService.class);
+        accountService.createUsers(users);
+    }
+
+    @Test
+    public void testCase03_create_accountPicture() {
+        Users users = this.applicationContext.getBean("users", Users.class);
+        users.setEmail("profilePic@test.com");
 
         AccountPicture accountPicture = this.applicationContext.getBean(AccountPicture.class);
 
@@ -46,24 +77,24 @@ public class ProfilePicTestCase {
         byte [] bytes = null;
         try {
             //TODO : change picture path
-            bytes = fileProcess.readFile("C:\\Users\\Oday Amr\\Documents\\IdeaProjects\\" +
+            bytes = fileProcess.readFile("C:\\Users\\Ryzen 5\\Documents\\IdeaProjects\\" +
                     "course_management_system-model\\Louay Amr.png");
         } catch (IOException e) {
             e.printStackTrace();
         }
         accountPicture.setPicture(bytes);
-        accountPicture.setAdmin(admin);
+        accountPicture.setUsers(users);
 
         this.pictureService.createAccountPicture(accountPicture);
     }
 
     @Test
-    public void testCase02_find_and_update_accountPicture() {
-        Admin admin = this.applicationContext.getBean(Admin.class);
-        admin.setEmail("louay@test.com");
+    public void testCase04_find_and_update_accountPicture() {
+        Users users = this.applicationContext.getBean("users", Users.class);
+        users.setEmail("profilePic@test.com");
 
         AccountPicture accountPicture = this.applicationContext.getBean(AccountPicture.class);
-        accountPicture.setAdmin(admin);
+        accountPicture.setUsers(users);
 
         accountPicture = this.pictureService.findAccountPictureByUserId(accountPicture);
         System.out.println(accountPicture);
@@ -72,7 +103,7 @@ public class ProfilePicTestCase {
         byte [] bytes = null;
         try {
             //TODO : change picture path
-            bytes = fileProcess.readFile("C:\\Users\\Oday Amr\\Documents\\IdeaProjects\\" +
+            bytes = fileProcess.readFile("C:\\Users\\Ryzen 5\\Documents\\IdeaProjects\\" +
                     "course_management_system-model\\Louay Amr_black.png");
         } catch (IOException e) {
             e.printStackTrace();
@@ -83,16 +114,41 @@ public class ProfilePicTestCase {
     }
 
     @Test
-    public void testCase03_find_and_delete_accountPicture() {
-        Admin admin = this.applicationContext.getBean(Admin.class);
-        admin.setEmail("louay@test.com");
+    public void testCase05_find_and_delete_accountPicture() {
+        Users users = this.applicationContext.getBean("users", Users.class);
+        users.setEmail("profilePic@test.com");
 
         AccountPicture accountPicture = this.applicationContext.getBean(AccountPicture.class);
-        accountPicture.setAdmin(admin);
+        accountPicture.setUsers(users);
 
         accountPicture = this.pictureService.findAccountPictureByUserId(accountPicture);
         System.out.println(accountPicture);
 
         this.pictureService.deleteAccountPictureByUserId(accountPicture);
     }
+
+    @Test
+    public void testCase06_find_and_delete_users() {
+        Users users = this.applicationContext.getBean("users", Users.class);
+        users.setEmail("profilePic@test.com");
+
+        AccountService accountService = this.applicationContext.getBean(AccountService.class);
+        users = accountService.findUsersByUserID(users);
+        System.out.println(users);
+        accountService.deleteUsersByUserID(users);
+    }
+
+    @Test
+    public void testCase07_find_and_delete_account() {
+        Admin admin = this.applicationContext.getBean(Admin.class);
+        admin.setEmail("profilePic@test.com");
+        admin.setPassword("1234");
+
+        AccountService accountService = this.applicationContext.getBean(AccountService.class);
+        admin = accountService.findAccountByEmail(admin);
+        System.out.println(admin);
+        accountService.deleteAccountByEmail(admin);
+    }
 }
+
+

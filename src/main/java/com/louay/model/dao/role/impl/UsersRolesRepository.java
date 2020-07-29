@@ -10,7 +10,6 @@ import java.util.*;
 
 @Repository
 public class UsersRolesRepository extends CommonDaoImpl<UsersRoles> implements UsersRolesDao {
-
     private static final long serialVersionUID = 1544906027088925593L;
 
     @Override

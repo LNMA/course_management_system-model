@@ -5,6 +5,7 @@ import com.louay.model.entity.courses.Courses;
 import com.louay.model.service.course.CourseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.Serializable;
@@ -41,7 +42,7 @@ public class CourseCrudService implements CourseService, Serializable {
         return getCourseDao().update(courses);
     }
 
-    @Transactional
+    @Transactional(isolation = Isolation.READ_COMMITTED)
     @Override
     public Courses findCourseByCourseId(Courses courses) {
         return getCourseDao().findOneById(courses);

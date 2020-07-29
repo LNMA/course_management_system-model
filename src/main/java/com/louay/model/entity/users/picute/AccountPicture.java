@@ -2,6 +2,7 @@ package com.louay.model.entity.users.picute;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.louay.model.entity.users.Admin;
+import com.louay.model.entity.users.Users;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -22,11 +23,11 @@ import java.util.Objects;
 @EntityListeners(AuditingEntityListener.class)
 @JsonIgnoreProperties(value = {"uploadPicDate"}, allowGetters = true)
 public class AccountPicture implements Comparable<AccountPicture>, Serializable {
-    private static final long serialVersionUID = -6081540563892991421L;
+    private static final long serialVersionUID = -1629166353873013035L;
     @Id
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "user_id", referencedColumnName = "email")
-    private Admin admin;
+    @JoinColumn(name = "user_id", referencedColumnName = "user_id")
+    private Users users;
 
     @Lob
     @Column(name = "picture")
@@ -37,12 +38,12 @@ public class AccountPicture implements Comparable<AccountPicture>, Serializable 
     @LastModifiedDate
     private Date uploadPicDate;
 
-    public Admin getAdmin() {
-        return admin;
+    public Users getUsers() {
+        return users;
     }
 
-    public void setAdmin(Admin admin) {
-        this.admin = admin;
+    public void setUsers(Users users) {
+        this.users = users;
     }
 
     public byte[] getPicture() {
@@ -70,7 +71,7 @@ public class AccountPicture implements Comparable<AccountPicture>, Serializable 
 
     @Override
     public int compareTo(AccountPicture o) {
-        return this.admin.compareTo(o.getAdmin());
+        return this.users.compareTo(o.getUsers());
     }
 
     @Override
@@ -78,18 +79,18 @@ public class AccountPicture implements Comparable<AccountPicture>, Serializable 
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         AccountPicture that = (AccountPicture) o;
-        return getAdmin().equals(that.getAdmin());
+        return getUsers().equals(that.getUsers());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getAdmin());
+        return Objects.hash(getUsers());
     }
 
     @Override
     public String toString() {
         return "AccountPicture{" +
-                "accounts=" + admin +
+                "users=" + users +
                 ", picture=" + Arrays.toString(picture) +
                 ", uploadPicDate=" + uploadPicDate +
                 '}';
