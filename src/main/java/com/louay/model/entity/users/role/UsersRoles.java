@@ -17,7 +17,7 @@ import java.util.Objects;
 public class UsersRoles implements Comparable<UsersRoles>, Serializable {
     private static final long serialVersionUID = -1414850559717508755L;
     @Id
-    @OneToOne(cascade = CascadeType.ALL,fetch = FetchType.EAGER, targetEntity = Admin.class)
+    @OneToOne(fetch = FetchType.EAGER, targetEntity = Admin.class)
     @JoinColumn(name = "user_id", referencedColumnName = "email", nullable = false, unique = true)
     private Admin users;
 
@@ -41,11 +41,14 @@ public class UsersRoles implements Comparable<UsersRoles>, Serializable {
         this.accountsRoles = accountsRoles;
     }
 
+
+    @Transient
     @Override
     public int compareTo(UsersRoles o) {
         return this.users.compareTo(o.getUsers());
     }
 
+    @Transient
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -55,11 +58,13 @@ public class UsersRoles implements Comparable<UsersRoles>, Serializable {
                 getAccountsRoles().equals(that.getAccountsRoles());
     }
 
+    @Transient
     @Override
     public int hashCode() {
         return Objects.hash(getUsers(), getAccountsRoles());
     }
 
+    @Transient
     @Override
     public String toString() {
         return "UsersRoles{" +

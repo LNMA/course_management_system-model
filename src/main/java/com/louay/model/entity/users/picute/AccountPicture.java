@@ -1,7 +1,6 @@
 package com.louay.model.entity.users.picute;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.louay.model.entity.users.Admin;
 import com.louay.model.entity.users.Users;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
@@ -25,12 +24,13 @@ import java.util.Objects;
 public class AccountPicture implements Comparable<AccountPicture>, Serializable {
     private static final long serialVersionUID = -1629166353873013035L;
     @Id
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(targetEntity = Users.class)
     @JoinColumn(name = "user_id", referencedColumnName = "user_id")
     private Users users;
 
     @Lob
     @Column(name = "picture")
+    @Basic(fetch = FetchType.LAZY)
     private byte[] picture;
 
     @Column(name = "upload_date")
@@ -62,6 +62,7 @@ public class AccountPicture implements Comparable<AccountPicture>, Serializable 
         this.uploadPicDate = uploadPicDate;
     }
 
+    @Transient
     public StringBuilder getBase64() {
         StringBuilder stringBase46 = new StringBuilder();
         stringBase46.append(Base64.getEncoder().encodeToString(this.picture));
@@ -69,11 +70,13 @@ public class AccountPicture implements Comparable<AccountPicture>, Serializable 
         return stringBase46;
     }
 
+    @Transient
     @Override
     public int compareTo(AccountPicture o) {
         return this.users.compareTo(o.getUsers());
     }
 
+    @Transient
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -82,11 +85,13 @@ public class AccountPicture implements Comparable<AccountPicture>, Serializable 
         return getUsers().equals(that.getUsers());
     }
 
+    @Transient
     @Override
     public int hashCode() {
         return Objects.hash(getUsers());
     }
 
+    @Transient
     @Override
     public String toString() {
         return "AccountPicture{" +

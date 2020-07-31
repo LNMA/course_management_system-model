@@ -10,7 +10,6 @@ import java.util.*;
 
 @Repository
 public class UsersAttendanceRepository extends CommonDaoImpl<UsersAttendance> implements UsersAttendanceDao {
-
     private static final long serialVersionUID = 3366538993387667661L;
 
     @Override

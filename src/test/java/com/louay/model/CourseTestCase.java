@@ -8,6 +8,7 @@ import com.louay.model.entity.users.constant.Gender;
 import com.louay.model.entity.users.constant.InstructorProfileVisibility;
 import com.louay.model.service.account.AccountService;
 import com.louay.model.service.course.CourseService;
+import org.hibernate.Hibernate;
 import org.junit.Before;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
@@ -93,10 +94,11 @@ public class CourseTestCase {
 
         courses = this.courseService.findCourseByCourseId(courses);
 
-        System.out.println(courses);
+        System.out.println(courses.toString());
         courses.setCourseName("science");
 
         this.courseService.updateCourse(courses);
+
     }
 
     @Test
@@ -105,8 +107,7 @@ public class CourseTestCase {
         courses.setCourseID((long)1);
 
         courses = this.courseService.findCourseByCourseId(courses);
-
-        System.out.println(courses);
+        System.out.println(courses.toString());
 
         this.courseService.deleteCourseByCourseId(courses);
     }

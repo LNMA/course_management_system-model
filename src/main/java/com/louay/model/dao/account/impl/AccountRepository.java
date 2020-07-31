@@ -10,7 +10,6 @@ import java.util.*;
 
 @Repository
 public class AccountRepository extends CommonDaoImpl<GenericAccounts> implements AccountDao {
-
     private static final long serialVersionUID = -2741733144725290103L;
 
     @Override

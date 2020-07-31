@@ -47,37 +47,14 @@ public class RoleTestCase extends TestCase {
     }
 
     @Test
-    public void testCase02_create_accountRole() {
+    public void testCase02_create_accountRole_and_userRole() {
         AccountsRoles accountsRoles = this.applicationContext.getBean(AccountsRoles.class);
         accountsRoles.setRoleName(Role.INSTRUCTOR);
 
-        System.out.println(this.roleService.createAccountRole(accountsRoles));
-    }
-
-    @Test
-    public void testCase03_find_and_update_accountRole() {
-        AccountsRoles accountsRoles = this.applicationContext.getBean(AccountsRoles.class);
-        accountsRoles.setRoleID((long) 1);
-        accountsRoles = this.roleService.findAccountRoleByRoleId(accountsRoles);
-
-        System.out.println(accountsRoles);
-
-        accountsRoles.setRoleName(Role.STUDENT);
-        this.roleService.updateAccountRole(accountsRoles);
-
-        System.out.println(accountsRoles);
-    }
-
-    @Test
-    public void testCase04_create_userRole() {
         Admin admin = this.applicationContext.getBean(Admin.class);
         admin.setEmail("role@test.com");
         AccountService accountService = this.applicationContext.getBean(AccountService.class);
         admin = accountService.findAccountByEmail(admin);
-
-        AccountsRoles accountsRoles = this.applicationContext.getBean(AccountsRoles.class);
-        accountsRoles.setRoleID((long) 1);
-        accountsRoles = this.roleService.findAccountRoleByRoleId(accountsRoles);
 
         UsersRoles usersRoles = this.applicationContext.getBean(UsersRoles.class);
         usersRoles.setUsers(admin);
@@ -89,11 +66,20 @@ public class RoleTestCase extends TestCase {
     }
 
     @Test
-    public void testCase05_find_and_update_userRole() {
+    public void testCase03_find_and_update_accountRole() {
+        AccountsRoles accountsRoles = this.applicationContext.getBean(AccountsRoles.class);
+        accountsRoles.setRoleID((long) 1);
+        accountsRoles = this.roleService.findAccountRoleByRoleId(accountsRoles);
+
+        System.out.println(accountsRoles);
+
+        this.roleService.updateAccountRole(accountsRoles);
+    }
+
+    @Test
+    public void testCase04_find_and_update_userRole() {
         Admin admin = this.applicationContext.getBean(Admin.class);
         admin.setEmail("role@test.com");
-        AccountService accountService = this.applicationContext.getBean(AccountService.class);
-        admin = accountService.findAccountByEmail(admin);
 
         UsersRoles usersRoles = this.applicationContext.getBean(UsersRoles.class);
         usersRoles.setUsers(admin);
@@ -105,23 +91,7 @@ public class RoleTestCase extends TestCase {
     }
 
     @Test
-    public void testCase06_find_and_delete_userRole() {
-        Admin admin = this.applicationContext.getBean(Admin.class);
-        admin.setEmail("role@test.com");
-        AccountService accountService = this.applicationContext.getBean(AccountService.class);
-        admin = accountService.findAccountByEmail(admin);
-
-        UsersRoles usersRoles = this.applicationContext.getBean(UsersRoles.class);
-        usersRoles.setUsers(admin);
-        usersRoles = this.roleService.findUsersRolesByUserId(usersRoles);
-
-        System.out.println(usersRoles);
-
-        this.roleService.deleteUsersRolesByUserId(usersRoles);
-    }
-
-    @Test
-    public void testCase07_find_and_delete_accountRole() {
+    public void testCase05_find_and_delete_accountRole_and_userRole() {
         AccountsRoles accountsRoles = this.applicationContext.getBean(AccountsRoles.class);
         accountsRoles.setRoleID((long) 1);
         accountsRoles = this.roleService.findAccountRoleByRoleId(accountsRoles);
@@ -132,7 +102,7 @@ public class RoleTestCase extends TestCase {
     }
 
     @Test
-    public void testCase08_find_and_delete_account() {
+    public void testCase07_find_and_delete_account() {
         Admin admin = this.applicationContext.getBean(Admin.class);
         admin.setEmail("role@test.com");
 

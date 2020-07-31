@@ -28,11 +28,11 @@ public class CourseMembers implements Serializable, Comparable<CourseMembers> {
     @Column(name = "member_id")
     private Long memberId;
 
-    @ManyToOne(targetEntity = Student.class)
+    @ManyToOne(targetEntity = Student.class, fetch = FetchType.LAZY)
     @JoinColumn(name = "student_id", referencedColumnName = "student_id")
     private Student student;
 
-    @ManyToOne(targetEntity = Courses.class)
+    @ManyToOne(targetEntity = Courses.class, fetch = FetchType.LAZY)
     @JoinColumn(name = "course_id", referencedColumnName = "course_id")
     private Courses course;
 
@@ -73,11 +73,13 @@ public class CourseMembers implements Serializable, Comparable<CourseMembers> {
         this.registerDate = registerDate;
     }
 
+    @Transient
     @Override
     public int compareTo(CourseMembers o) {
         return this.memberId.compareTo(o.getMemberId());
     }
 
+    @Transient
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -86,17 +88,19 @@ public class CourseMembers implements Serializable, Comparable<CourseMembers> {
         return getMemberId().equals(that.getMemberId());
     }
 
+    @Transient
     @Override
     public int hashCode() {
         return Objects.hash(getMemberId());
     }
 
+    @Transient
     @Override
     public String toString() {
         return "CourseMembers{" +
                 "memberId=" + memberId +
-                ", student=" + student +
-                ", course=" + course +
+                ", student=" + student.getEmail() +
+                ", course=" + course.getCourseID() +
                 ", registerDate=" + registerDate +
                 '}';
     }

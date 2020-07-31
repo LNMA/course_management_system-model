@@ -2,9 +2,7 @@ package com.louay.model.entity.courses.members;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.louay.model.entity.courses.Courses;
-import com.louay.model.entity.users.Admin;
 import com.louay.model.entity.users.Student;
-import com.louay.model.entity.users.Users;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.data.annotation.CreatedDate;
@@ -74,11 +72,13 @@ public class UsersAttendance implements Serializable, Comparable<UsersAttendance
         this.attendanceDate = attendanceDate;
     }
 
+    @Transient
     @Override
     public int compareTo(UsersAttendance o) {
         return this.attendancesId.compareTo(o.getAttendancesId());
     }
 
+    @Transient
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -87,17 +87,19 @@ public class UsersAttendance implements Serializable, Comparable<UsersAttendance
         return getAttendancesId().equals(that.getAttendancesId());
     }
 
+    @Transient
     @Override
     public int hashCode() {
         return Objects.hash(getAttendancesId());
     }
 
+    @Transient
     @Override
     public String toString() {
         return "UsersAttendance{" +
                 "attendancesId=" + attendancesId +
-                ", student=" + student +
-                ", course=" + course +
+                ", student=" + student.getEmail() +
+                ", course=" + course.getCourseID() +
                 ", attendanceDate=" + attendanceDate +
                 '}';
     }

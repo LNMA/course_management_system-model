@@ -17,7 +17,6 @@ import java.util.Date;
 @Qualifier("users")
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
-@DiscriminatorColumn(name = "user_type_id", discriminatorType = DiscriminatorType.INTEGER, columnDefinition = "TINYINT(1)")
 @Polymorphism(type = PolymorphismType.EXPLICIT)
 @AttributeOverride(name = "email", column = @Column(name = "user_id"))
 @Table( name = "users_details")

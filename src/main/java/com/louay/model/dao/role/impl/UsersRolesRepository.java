@@ -14,8 +14,8 @@ public class UsersRolesRepository extends CommonDaoImpl<UsersRoles> implements U
 
     @Override
     public <S extends UsersRoles> Boolean isExist(S entity) {
-        return !getEntityManager().createQuery("SELECT r From UsersRoles r WHERE r.users.email = :roleID")
-                .setParameter("roleID", entity.getUsers().getEmail())
+        return !getEntityManager().createQuery("SELECT r From UsersRoles r WHERE r.users.email = :email")
+                .setParameter("email", entity.getUsers().getEmail())
                 .setMaxResults(1)
                 .getResultList()
                 .isEmpty();

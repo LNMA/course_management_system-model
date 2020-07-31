@@ -99,25 +99,25 @@ public class AccountCrudService implements AccountService, Serializable {
         return getAccountDao().update(instructor);
     }
 
-    @Transactional(isolation = Isolation.READ_COMMITTED)
+    @Transactional(isolation = Isolation.READ_COMMITTED, readOnly = true)
     @Override
     public Admin findAccountByEmail(Admin admin) {
         return getAccountDao().findOneById(admin);
     }
 
-    @Transactional(isolation = Isolation.READ_COMMITTED)
+    @Transactional(isolation = Isolation.READ_COMMITTED, readOnly = true)
     @Override
     public Users findUsersByUserID(Users user) {
         return getAccountDao().findOneById(user);
     }
 
-    @Transactional(isolation = Isolation.READ_COMMITTED)
+    @Transactional(isolation = Isolation.READ_COMMITTED, readOnly = true)
     @Override
     public Student findStudentsDetailsByStudentID(Student student) {
         return getAccountDao().findOneById(student);
     }
 
-    @Transactional(isolation = Isolation.READ_COMMITTED)
+    @Transactional(isolation = Isolation.READ_COMMITTED, readOnly = true)
     @Override
     public Instructor findInstructorsDetailsByInstructorID(Instructor instructor) {
         return getAccountDao().findOneById(instructor);

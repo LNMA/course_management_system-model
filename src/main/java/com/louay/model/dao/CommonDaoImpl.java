@@ -1,15 +1,19 @@
 package com.louay.model.dao;
 
+import org.springframework.stereotype.Repository;
 import org.springframework.util.Assert;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.PersistenceContextType;
+import javax.persistence.SynchronizationType;
 import java.io.Serializable;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+@Repository
 public abstract class CommonDaoImpl<T> implements CommonDao<T>, Serializable {
     private static final long serialVersionUID = -3503295155238414658L;
     private EntityManager entityManager;

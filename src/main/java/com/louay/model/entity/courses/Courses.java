@@ -32,12 +32,12 @@ public class Courses implements Comparable<Courses>, Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     private Date endDate;
 
-    @ManyToOne(targetEntity = Instructor.class)
+    @ManyToOne(targetEntity = Instructor.class, fetch = FetchType.LAZY)
     @JoinColumn(name = "instructor_id", referencedColumnName = "instructors_id")
     private Instructor instructor;
 
     public Long getCourseID() {
-        return courseID;
+        return this.courseID;
     }
 
     public void setCourseID(Long courseID) {
@@ -45,7 +45,7 @@ public class Courses implements Comparable<Courses>, Serializable {
     }
 
     public String getCourseName() {
-        return courseName;
+        return this.courseName;
     }
 
     public void setCourseName(String courseName) {
@@ -53,7 +53,7 @@ public class Courses implements Comparable<Courses>, Serializable {
     }
 
     public Date getStartDate() {
-        return startDate;
+        return this.startDate;
     }
 
     public void setStartDate(Date startDate) {
@@ -61,7 +61,7 @@ public class Courses implements Comparable<Courses>, Serializable {
     }
 
     public Date getEndDate() {
-        return endDate;
+        return this.endDate;
     }
 
     public void setEndDate(Date endDate) {
@@ -69,7 +69,7 @@ public class Courses implements Comparable<Courses>, Serializable {
     }
 
     public Instructor getInstructor() {
-        return instructor;
+        return this.instructor;
     }
 
     public void setInstructor(Instructor instructor) {
@@ -101,11 +101,11 @@ public class Courses implements Comparable<Courses>, Serializable {
     @Override
     public String toString() {
         return "Courses{" +
-                "courseID=" + courseID +
-                ", courseName='" + courseName + '\'' +
-                ", startDate=" + startDate +
-                ", endDate=" + endDate +
-                ", instructor=" + instructor +
+                "courseID=" + this.courseID +
+                ", courseName='" + this.courseName + '\'' +
+                ", startDate=" + this.startDate +
+                ", endDate=" + this.endDate +
+                ", instructor=" + this.instructor.getEmail() +
                 '}';
     }
 }

@@ -72,13 +72,13 @@ public class RoleCrudService implements RoleService, Serializable {
         return getUsersRolesDao().update(usersRoles);
     }
 
-    @Transactional(isolation = Isolation.READ_COMMITTED)
+    @Transactional(isolation = Isolation.READ_COMMITTED, readOnly = true)
     @Override
     public AccountsRoles findAccountRoleByRoleId(AccountsRoles accountsRoles) {
         return getAccountRolesDao().findOneById(accountsRoles);
     }
 
-    @Transactional(isolation = Isolation.READ_COMMITTED)
+    @Transactional(isolation = Isolation.READ_COMMITTED, readOnly = true)
     @Override
     public UsersRoles findUsersRolesByUserId(UsersRoles usersRoles) {
         return getUsersRolesDao().findOneById(usersRoles);

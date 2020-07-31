@@ -77,7 +77,7 @@ public class ProfilePicTestCase {
         byte [] bytes = null;
         try {
             //TODO : change picture path
-            bytes = fileProcess.readFile("C:\\Users\\Ryzen 5\\Documents\\IdeaProjects\\" +
+            bytes = fileProcess.readFile("C:\\Users\\Oday Amr\\Documents\\IdeaProjects\\" +
                     "course_management_system-model\\Louay Amr.png");
         } catch (IOException e) {
             e.printStackTrace();
@@ -103,7 +103,7 @@ public class ProfilePicTestCase {
         byte [] bytes = null;
         try {
             //TODO : change picture path
-            bytes = fileProcess.readFile("C:\\Users\\Ryzen 5\\Documents\\IdeaProjects\\" +
+            bytes = fileProcess.readFile("C:\\Users\\Oday Amr\\Documents\\IdeaProjects\\" +
                     "course_management_system-model\\Louay Amr_black.png");
         } catch (IOException e) {
             e.printStackTrace();

@@ -5,6 +5,7 @@ import com.louay.model.entity.courses.members.CourseMembers;
 import com.louay.model.service.member.CourseMemberService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.Serializable;
@@ -41,7 +42,7 @@ public class CourseMemberCrudService implements CourseMemberService, Serializabl
         return getCourseMemberDao().update(courseMembers);
     }
 
-    @Transactional
+    @Transactional(isolation = Isolation.READ_COMMITTED, readOnly = true)
     @Override
     public CourseMembers findMemberByMemberId(CourseMembers courseMembers) {
         return getCourseMemberDao().findOneById(courseMembers);

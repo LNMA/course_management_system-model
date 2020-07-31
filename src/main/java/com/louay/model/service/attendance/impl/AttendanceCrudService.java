@@ -5,6 +5,7 @@ import com.louay.model.entity.courses.members.UsersAttendance;
 import com.louay.model.service.attendance.UsersAttendanceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.Serializable;
@@ -41,7 +42,7 @@ public class AttendanceCrudService implements UsersAttendanceService, Serializab
         return getUsersAttendanceDao().update(usersAttendance);
     }
 
-    @Transactional
+    @Transactional(isolation = Isolation.READ_COMMITTED, readOnly = true)
     @Override
     public UsersAttendance findUsersAttendanceByAttendanceId(UsersAttendance usersAttendance) {
         return getUsersAttendanceDao().findOneById(usersAttendance);

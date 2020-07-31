@@ -40,11 +40,13 @@ public class AccountsRoles implements Comparable<AccountsRoles>, Serializable {
         this.roleName = roleName;
     }
 
+    @Transient
     @Override
     public int compareTo(AccountsRoles o) {
         return this.roleID.compareTo(o.getRoleID());
     }
 
+    @Transient
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -53,11 +55,13 @@ public class AccountsRoles implements Comparable<AccountsRoles>, Serializable {
         return getRoleID().equals(that.getRoleID());
     }
 
+    @Transient
     @Override
     public int hashCode() {
         return Objects.hash(getRoleID());
     }
 
+    @Transient
     @Override
     public String toString() {
         return "AccountsRoles{" +

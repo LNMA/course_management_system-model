@@ -13,7 +13,6 @@ import javax.persistence.*;
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 @Qualifier("instructor")
 @Entity
-@DiscriminatorValue("1")
 @PrimaryKeyJoinColumn(name = "instructors_id", referencedColumnName = "user_id")
 @Table(name = "instructors_details")
 public class Instructor extends Users {

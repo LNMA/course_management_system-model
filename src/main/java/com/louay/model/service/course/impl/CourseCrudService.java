@@ -42,7 +42,7 @@ public class CourseCrudService implements CourseService, Serializable {
         return getCourseDao().update(courses);
     }
 
-    @Transactional(isolation = Isolation.READ_COMMITTED)
+    @Transactional(isolation = Isolation.READ_COMMITTED, readOnly = true)
     @Override
     public Courses findCourseByCourseId(Courses courses) {
         return getCourseDao().findOneById(courses);

@@ -42,7 +42,7 @@ public class AccountPictureCrudService implements AccountPictureService, Seriali
         return getAccountPictureDao().update(accountPicture);
     }
 
-    @Transactional(isolation = Isolation.READ_COMMITTED)
+    @Transactional(isolation = Isolation.READ_COMMITTED, readOnly = true)
     @Override
     public AccountPicture findAccountPictureByUserId(AccountPicture accountPicture) {
         return getAccountPictureDao().findOneById(accountPicture);
