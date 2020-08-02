@@ -11,9 +11,12 @@ import java.util.Arrays;
 @Component
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 @Entity
-@DiscriminatorValue("2")
-public class FileFeedback extends FeedbackContent {
-    private static final long serialVersionUID = -3101064198691521124L;
+@DiscriminatorValue("3")
+public class FileMessageFeedback extends FeedbackContent {
+    private static final long serialVersionUID = 200244160784858021L;
+    @Column(name = "post_message", length = 1000)
+    private String postMessage;
+
     @Lob
     @Column(name = "file")
     @Basic(fetch = FetchType.LAZY)
@@ -21,6 +24,14 @@ public class FileFeedback extends FeedbackContent {
 
     @Column(name = "file_extension", length = 200)
     private String fileExtension;
+
+    public String getPostMessage() {
+        return postMessage;
+    }
+
+    public void setPostMessage(String postMessage) {
+        this.postMessage = postMessage;
+    }
 
     public byte[] getFile() {
         return file;
@@ -41,17 +52,16 @@ public class FileFeedback extends FeedbackContent {
     @Transient
     @Override
     public FeedbackType getFeedbackType() {
-        return FeedbackType.FILE;
+        return FeedbackType.ALL;
     }
 
     @Transient
     @Override
     public String toString() {
-        return super.toString() + ", FileFeedback{" +
-                "file=" + Arrays.toString(file) +
+        return super.toString() + ", FileMessageFeedback{" +
+                "postMessage='" + postMessage + '\'' +
+                ", file=" + Arrays.toString(file) +
                 ", fileExtension='" + fileExtension + '\'' +
                 '}';
     }
 }
-
-

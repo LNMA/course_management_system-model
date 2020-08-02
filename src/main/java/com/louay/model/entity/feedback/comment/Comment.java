@@ -12,32 +12,33 @@ import org.springframework.stereotype.Component;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Objects;
 
 @Component
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 @Entity
-@Table(name = "feedback_comments", schema = "course_management_system")
+@Table(name = "feedback_comments")
 @EntityListeners(AuditingEntityListener.class)
 @JsonIgnoreProperties(value = {"commentDate"}, allowGetters = true)
 public class Comment implements Comparable<Comment>, Serializable {
-    private static final long serialVersionUID = -2277738152445132714L;
+    private static final long serialVersionUID = -1203353711305645172L;
     @Id
-    @Column(name = "comment_id")
+    @Column(name = "comment_id", nullable = false, unique = true)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long commentID;
 
     @ManyToOne(fetch = FetchType.LAZY, targetEntity = CourseFeedback.class)
-    @JoinColumn(name = "feedback_id", referencedColumnName = "feedback_id")
+    @JoinColumn(name = "feedback_id", referencedColumnName = "feedback_id", nullable = false)
     private CourseFeedback courseFeedback;
 
     @ManyToOne(fetch = FetchType.LAZY, targetEntity = Users.class)
-    @JoinColumn(name = "user_id", referencedColumnName = "user_id")
+    @JoinColumn(name = "user_id", referencedColumnName = "user_id", nullable = false)
     private Users user;
 
-    @Column(name = "comment_message", length = 200)
-    private StringBuilder commentMessage;
+    @Column(name = "comment_message", length = 200, nullable = false)
+    private String commentMessage;
 
-    @Column(name = "comment_date")
+    @Column(name = "comment_date", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     @LastModifiedDate
     private Date commentDate;
@@ -66,11 +67,11 @@ public class Comment implements Comparable<Comment>, Serializable {
         this.user = user;
     }
 
-    public StringBuilder getCommentMessage() {
+    public String getCommentMessage() {
         return commentMessage;
     }
 
-    public void setCommentMessage(StringBuilder commentMessage) {
+    public void setCommentMessage(String commentMessage) {
         this.commentMessage = commentMessage;
     }
 
@@ -90,12 +91,27 @@ public class Comment implements Comparable<Comment>, Serializable {
 
     @Transient
     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Comment comment = (Comment) o;
+        return getCommentID().equals(comment.getCommentID());
+    }
+
+    @Transient
+    @Override
+    public int hashCode() {
+        return Objects.hash(getCommentID());
+    }
+
+    @Transient
+    @Override
     public String toString() {
         return "Comment{" +
                 "commentID=" + commentID +
                 ", courseFeedback=" + courseFeedback.getFeedbackID() +
                 ", user=" + user.getEmail() +
-                ", commentMessage=" + commentMessage +
+                ", commentMessage='" + commentMessage + '\'' +
                 ", commentDate=" + commentDate +
                 '}';
     }

@@ -2,29 +2,29 @@ package com.louay.model.entity.feedback;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.louay.model.entity.courses.Courses;
-import com.louay.model.entity.feedback.constant.FeedbackType;
 import com.louay.model.entity.users.Users;
-import org.hibernate.annotations.Polymorphism;
-import org.hibernate.annotations.PolymorphismType;
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
+import org.springframework.context.annotation.Scope;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
 
+@Component
+@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 @Entity
 @Table(name = "course_feedback")
 @EntityListeners(AuditingEntityListener.class)
 @JsonIgnoreProperties(value = {"feedbackDate"}, allowGetters = true)
-@Inheritance(strategy = InheritanceType.JOINED)
-@Polymorphism(type = PolymorphismType.EXPLICIT)
-public abstract class CourseFeedback implements Comparable<CourseFeedback>, Serializable {
-    private static final long serialVersionUID = 5558526425892489363L;
+public class CourseFeedback implements Comparable<CourseFeedback>, Serializable {
+    private static final long serialVersionUID = -4801713891803691384L;
     @Id
-    @Column(name = "feedback_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "feedback_id", nullable = false, unique = true)
     private Long feedbackID;
 
     @ManyToOne(fetch = FetchType.LAZY, targetEntity = Courses.class)
@@ -39,6 +39,9 @@ public abstract class CourseFeedback implements Comparable<CourseFeedback>, Seri
     @Temporal(TemporalType.TIMESTAMP)
     @CreatedDate
     private Date feedbackDate;
+
+    @OneToOne(fetch = FetchType.LAZY, mappedBy = "courseFeedback", cascade = CascadeType.ALL, orphanRemoval = true)
+    private FeedbackContent feedbackContent;
 
     public Long getFeedbackID() {
         return feedbackID;
@@ -72,31 +75,32 @@ public abstract class CourseFeedback implements Comparable<CourseFeedback>, Seri
         this.feedbackDate = feedbackDate;
     }
 
-    @Transient
-    abstract public FeedbackType getFeedbackType();
+    public FeedbackContent getFeedbackContent() {
+        return feedbackContent;
+    }
 
-    @Transient
+    public void setFeedbackContent(FeedbackContent feedbackContent) {
+        this.feedbackContent = feedbackContent;
+    }
+
     @Override
     public int compareTo(CourseFeedback o) {
         return this.feedbackID.compareTo(o.getFeedbackID());
     }
 
-    @Transient
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        CourseFeedback courseFeedback = (CourseFeedback) o;
-        return getFeedbackID().equals(courseFeedback.getFeedbackID());
+        CourseFeedback that = (CourseFeedback) o;
+        return getFeedbackID().equals(that.getFeedbackID());
     }
 
-    @Transient
     @Override
     public int hashCode() {
         return Objects.hash(getFeedbackID());
     }
 
-    @Transient
     @Override
     public String toString() {
         return "CourseFeedback{" +
@@ -107,3 +111,5 @@ public abstract class CourseFeedback implements Comparable<CourseFeedback>, Seri
                 '}';
     }
 }
+
+

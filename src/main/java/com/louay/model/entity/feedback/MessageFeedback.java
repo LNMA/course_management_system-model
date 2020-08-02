@@ -10,18 +10,17 @@ import javax.persistence.*;
 @Component
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 @Entity
-@Table(name = "feedback_content")
-@DiscriminatorValue("2")
+@DiscriminatorValue("1")
 public class MessageFeedback extends FeedbackContent {
-    private static final long serialVersionUID = 6615876469099013237L;
+    private static final long serialVersionUID = 8005447294025026606L;
     @Column(name = "post_message", length = 1000)
-    private StringBuilder postMessage;
+    private String postMessage;
 
-    public StringBuilder getPostMessage() {
+    public String getPostMessage() {
         return postMessage;
     }
 
-    public void setPostMessage(StringBuilder postMessage) {
+    public void setPostMessage(String postMessage) {
         this.postMessage = postMessage;
     }
 
@@ -34,8 +33,10 @@ public class MessageFeedback extends FeedbackContent {
     @Transient
     @Override
     public String toString() {
-        return "MessageFeedback{" +
-                "postMessage=" + postMessage +
+        return super.toString() + ", MessageFeedback{" +
+                "postMessage='" + postMessage + '\'' +
                 '}';
     }
 }
+
+
