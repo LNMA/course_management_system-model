@@ -1,7 +1,7 @@
 package com.louay.model.service.role;
 
-import com.louay.model.entity.users.role.AccountsRoles;
-import com.louay.model.entity.users.role.UsersRoles;
+import com.louay.model.entity.role.AccountsRoles;
+import com.louay.model.entity.role.UsersRoles;
 
 public interface RoleService {
     AccountsRoles createAccountRole(AccountsRoles accountsRoles);

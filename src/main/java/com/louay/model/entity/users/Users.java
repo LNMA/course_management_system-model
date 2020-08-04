@@ -18,36 +18,50 @@ import java.util.Date;
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 @Polymorphism(type = PolymorphismType.EXPLICIT)
-@AttributeOverride(name = "email", column = @Column(name = "user_id"))
+@AttributeOverride(name = "email", column = @Column(name = "user_id", columnDefinition = "VARCHAR(200)"))
 @Table( name = "users_details")
 public class Users extends GenericAccounts {
-    private static final long serialVersionUID = 2001632833960201590L;
+    private static final long serialVersionUID = 1343915267299212519L;
+    @MapsId("email")
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, targetEntity = Admin.class)
+    @JoinColumn(name = "user_id", referencedColumnName = "email", columnDefinition = "VARCHAR(200)", foreignKey =
+    @ForeignKey(name = "fk_users_email_users_details_user_id", foreignKeyDefinition = "FOREIGN KEY (user_id) " +
+            "REFERENCES users (email) ON DELETE CASCADE ON UPDATE CASCADE"), nullable = false)
+    private Admin admin;
 
-    @Column(name = "forename", length = 50)
+    @Column(name = "forename", length = 50, nullable = false, columnDefinition = "VARCHAR(50)")
     private String forename;
 
-    @Column(name = "surname", length = 50)
+    @Column(name = "surname", length = 50, nullable = false,columnDefinition = "VARCHAR(50)")
     private String surname;
 
-    @Column(name = "gender")
+    @Column(name = "gender", columnDefinition = "ENUM('MALE', 'FEMALE')")
     @Enumerated(EnumType.STRING)
     private Gender gender;
 
-    @Column(name = "phone")
+    @Column(name = "phone", columnDefinition = "INT(10)")
     private Integer phone;
 
-    @Column(name = "birthday")
+    @Column(name = "birthday",columnDefinition = "DATE")
     @Temporal(TemporalType.DATE)
     private Date birthday;
 
-    @Column(name = "country", length = 100)
+    @Column(name = "country", length = 100, columnDefinition = "VARCHAR(20)")
     private String country;
 
-    @Column(name = "state", length = 100)
+    @Column(name = "state", length = 100, columnDefinition = "VARCHAR(20)")
     private String state;
 
-    @Column(name = "address", length = 200)
+    @Column(name = "address", length = 200, columnDefinition = "VARCHAR(200)")
     private String address;
+
+    public Admin getAdmin() {
+        return admin;
+    }
+
+    public void setAdmin(Admin admin) {
+        this.admin = admin;
+    }
 
     public String getForename() {
         return forename;
@@ -128,8 +142,9 @@ public class Users extends GenericAccounts {
     @Transient
     @Override
     public String toString() {
-        return super.toString()+", Users{" +
-                "forename='" + forename + '\'' +
+        return "Users{" +
+                "admin=" + admin.getEmail() +
+                ", forename='" + forename + '\'' +
                 ", surname='" + surname + '\'' +
                 ", gender=" + gender +
                 ", phone=" + phone +

@@ -1,4 +1,4 @@
-package com.louay.model.entity.users.role;
+package com.louay.model.entity.role;
 
 import com.louay.model.entity.users.constant.Role;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
@@ -12,15 +12,15 @@ import java.util.Objects;
 @Component
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 @Entity
-@Table(schema = "course_management_system", name = "roles")
+@Table(name = "roles")
 public class AccountsRoles implements Comparable<AccountsRoles>, Serializable {
-    private static final long serialVersionUID = -5184878562590630643L;
+    private static final long serialVersionUID = -2323257288892496910L;
     @Id
-    @Column(name = "role_id", nullable = false, unique = true)
+    @Column(name = "role_id", nullable = false, columnDefinition = "BIGINT(20)")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long roleID;
 
-    @Column(name = "role_name", nullable = false)
+    @Column(name = "role_name", nullable = false, columnDefinition = "ENUM('ADMIN', 'INSTRUCTOR', 'STUDENT')")
     @Enumerated(EnumType.STRING)
     private Role roleName;
 

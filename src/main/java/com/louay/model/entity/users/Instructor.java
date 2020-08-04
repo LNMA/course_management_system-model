@@ -13,23 +13,25 @@ import javax.persistence.*;
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 @Qualifier("instructor")
 @Entity
-@PrimaryKeyJoinColumn(name = "instructors_id", referencedColumnName = "user_id")
+@PrimaryKeyJoinColumn(name = "instructors_id", referencedColumnName = "user_id", columnDefinition = "VARCHAR(200)",
+        foreignKey = @ForeignKey(name = "fk_users_details_id_instructors_details_id", foreignKeyDefinition =
+        "FOREIGN KEY (instructors_id) REFERENCES users_details (user_id) ON DELETE CASCADE ON UPDATE CASCADE"))
 @Table(name = "instructors_details")
 public class Instructor extends Users {
     private static final long serialVersionUID = 8191124843845259614L;
-    @Column(name = "headline", length = 300)
+    @Column(name = "headline", length = 300, columnDefinition = "VARCHAR(300)")
     private String headline;
 
-    @Column(name = "specialty", length = 300)
+    @Column(name = "specialty", length = 300, columnDefinition = "VARCHAR(300)")
     private String specialty;
 
-    @Column(name = "nickname", length = 50)
+    @Column(name = "nickname", length = 50, columnDefinition = "VARCHAR(50)")
     private String nickname;
 
-    @Column(name = "portfolio", length = 300)
+    @Column(name = "portfolio", length = 300, columnDefinition = "VARCHAR(300)")
     private String portfolio;
 
-    @Column(name = "profile_visibility")
+    @Column(name = "profile_visibility",nullable = false, columnDefinition = "ENUM('PUBLIC', 'PRIVATE') default 'PUBLIC'")
     @Enumerated(EnumType.STRING)
     private InstructorProfileVisibility profileVisibility;
 

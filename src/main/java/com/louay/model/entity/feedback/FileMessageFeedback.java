@@ -1,6 +1,7 @@
 package com.louay.model.entity.feedback;
 
 import com.louay.model.entity.feedback.constant.FeedbackType;
+import org.hibernate.annotations.LazyGroup;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -14,15 +15,16 @@ import java.util.Arrays;
 @DiscriminatorValue("3")
 public class FileMessageFeedback extends FeedbackContent {
     private static final long serialVersionUID = 200244160784858021L;
-    @Column(name = "post_message", length = 1000)
+    @Column(name = "post_message", length = 1000, columnDefinition = "VARCHAR(1000)")
     private String postMessage;
 
     @Lob
-    @Column(name = "file")
+    @Column(name = "file", columnDefinition = "LONGBLOB")
     @Basic(fetch = FetchType.LAZY)
+    @LazyGroup("lobs")
     private byte[] file;
 
-    @Column(name = "file_extension", length = 200)
+    @Column(name = "file_extension", length = 200, columnDefinition = "VARCHAR(200)")
     private String fileExtension;
 
     public String getPostMessage() {

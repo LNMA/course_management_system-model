@@ -1,10 +1,10 @@
-package com.louay.model;
+package com.louay.model.test_case;
 
 import com.louay.model.config.MySpringBootJDBCApplication;
 import com.louay.model.entity.users.Admin;
 import com.louay.model.entity.users.constant.Role;
-import com.louay.model.entity.users.role.AccountsRoles;
-import com.louay.model.entity.users.role.UsersRoles;
+import com.louay.model.entity.role.AccountsRoles;
+import com.louay.model.entity.role.UsersRoles;
 import com.louay.model.service.account.AccountService;
 import com.louay.model.service.role.RoleService;
 import junit.framework.TestCase;

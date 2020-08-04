@@ -2,8 +2,8 @@ package com.louay.model.service.role.impl;
 
 import com.louay.model.dao.role.AccountRolesDao;
 import com.louay.model.dao.role.UsersRolesDao;
-import com.louay.model.entity.users.role.AccountsRoles;
-import com.louay.model.entity.users.role.UsersRoles;
+import com.louay.model.entity.role.AccountsRoles;
+import com.louay.model.entity.role.UsersRoles;
 import com.louay.model.service.role.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

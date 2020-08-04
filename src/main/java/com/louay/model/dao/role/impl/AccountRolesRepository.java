@@ -2,7 +2,7 @@ package com.louay.model.dao.role.impl;
 
 import com.louay.model.dao.CommonDaoImpl;
 import com.louay.model.dao.role.AccountRolesDao;
-import com.louay.model.entity.users.role.AccountsRoles;
+import com.louay.model.entity.role.AccountsRoles;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.LockModeType;

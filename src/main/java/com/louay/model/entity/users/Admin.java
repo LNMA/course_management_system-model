@@ -14,16 +14,16 @@ import java.util.Date;
 @Component
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 @Entity
-@Table(schema = "course_management_system", name = "users")
+@Table(name = "users")
 @EntityListeners(AuditingEntityListener.class)
 @JsonIgnoreProperties(value = {"joinDate"}, allowGetters = true)
-@AttributeOverride(name = "email", column = @Column(name = "email"))
+@AttributeOverride(name = "email", column = @Column(name = "email", columnDefinition = "VARCHAR(200)", nullable = false))
 public class Admin extends GenericAccounts {
     private static final long serialVersionUID = 7273903547850056462L;
-    @Column(name = "password", nullable = false, length = 100)
+    @Column(name = "password", nullable = false, length = 100, columnDefinition = "VARCHAR(100)")
     private String password;
 
-    @Column(name = "join_date", nullable = false)
+    @Column(name = "join_date", nullable = false, columnDefinition = "TIMESTAMP(0)")
     @CreatedDate
     @Temporal(TemporalType.TIMESTAMP)
     private Date joinDate;

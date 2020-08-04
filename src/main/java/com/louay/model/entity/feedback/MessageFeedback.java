@@ -13,7 +13,7 @@ import javax.persistence.*;
 @DiscriminatorValue("1")
 public class MessageFeedback extends FeedbackContent {
     private static final long serialVersionUID = 8005447294025026606L;
-    @Column(name = "post_message", length = 1000)
+    @Column(name = "post_message", length = 1000, columnDefinition = "VARCHAR(1000)")
     private String postMessage;
 
     public String getPostMessage() {

@@ -18,27 +18,33 @@ import java.util.Objects;
 @Component
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 @Entity
-@Table(schema = "course_management_system", name = "course_members")
+@Table(name = "course_members", indexes = {
+        @Index(name = "course_members_course_id_IX", columnList = "course_id"),
+        @Index(name = "course_members_student_id_IX", columnList = "student_id")})
 @EntityListeners(AuditingEntityListener.class)
 @JsonIgnoreProperties(value = {"registerDate"}, allowGetters = true)
 public class CourseMembers implements Serializable, Comparable<CourseMembers> {
     private static final long serialVersionUID = 4042682674551510313L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "member_id")
+    @Column(name = "member_id", columnDefinition = "BIGINT(20)", nullable = false)
     private Long memberId;
 
     @ManyToOne(targetEntity = Student.class, fetch = FetchType.LAZY)
-    @JoinColumn(name = "student_id", referencedColumnName = "student_id")
+    @JoinColumn(name = "student_id", referencedColumnName = "student_id", columnDefinition = "VARCHAR(200)", foreignKey =
+    @ForeignKey(name = "fk_students_details_id_course_members_student_id", foreignKeyDefinition = "FOREIGN KEY (student_" +
+            "id) REFERENCES students_details (student_id) ON DELETE CASCADE ON UPDATE CASCADE"), nullable = false)
     private Student student;
 
     @ManyToOne(targetEntity = Courses.class, fetch = FetchType.LAZY)
-    @JoinColumn(name = "course_id", referencedColumnName = "course_id")
+    @JoinColumn(name = "course_id", referencedColumnName = "course_id", columnDefinition = "BIGINT(20)", foreignKey =
+    @ForeignKey(name = "fk_courses_course_id_course_members_course_id", foreignKeyDefinition = "FOREIGN KEY (course_id)" +
+            "REFERENCES courses (course_id) ON DELETE CASCADE ON UPDATE CASCADE"), nullable = false)
     private Courses course;
 
     @Temporal(TemporalType.TIMESTAMP)
     @CreatedDate
-    @Column(name = "register_date")
+    @Column(name = "register_date", columnDefinition = "TIMESTAMP(0)", nullable = false)
     private Date registerDate;
 
     public Long getMemberId() {

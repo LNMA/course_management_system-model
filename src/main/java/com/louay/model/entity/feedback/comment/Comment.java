@@ -17,28 +17,34 @@ import java.util.Objects;
 @Component
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 @Entity
-@Table(name = "feedback_comments")
+@Table(name = "feedback_comments", indexes = {
+        @Index(name = "feedback_comments_feedback_id_IX", columnList = "feedback_id"),
+        @Index(name = "feedback_comments_user_id_IX", columnList = "user_id")})
 @EntityListeners(AuditingEntityListener.class)
 @JsonIgnoreProperties(value = {"commentDate"}, allowGetters = true)
 public class Comment implements Comparable<Comment>, Serializable {
     private static final long serialVersionUID = -1203353711305645172L;
     @Id
-    @Column(name = "comment_id", nullable = false, unique = true)
+    @Column(name = "comment_id", nullable = false, columnDefinition = "BIGINT(20)")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long commentID;
 
     @ManyToOne(fetch = FetchType.LAZY, targetEntity = CourseFeedback.class)
-    @JoinColumn(name = "feedback_id", referencedColumnName = "feedback_id", nullable = false)
+    @JoinColumn(name = "feedback_id", referencedColumnName = "feedback_id", columnDefinition = "BIGINT(20)", foreignKey =
+    @ForeignKey(name = "fk_course_feedback_id_feedback_comments_id", foreignKeyDefinition = "FOREIGN KEY (feedback_id) " +
+            "REFERENCES course_feedback (feedback_id) ON DELETE CASCADE ON UPDATE CASCADE"), nullable = false)
     private CourseFeedback courseFeedback;
 
     @ManyToOne(fetch = FetchType.LAZY, targetEntity = Users.class)
-    @JoinColumn(name = "user_id", referencedColumnName = "user_id", nullable = false)
+    @JoinColumn(name = "user_id", referencedColumnName = "user_id", columnDefinition = "VARCHAR(200)", foreignKey =
+    @ForeignKey(name = "fk_users_details_id_feedback_comments_user_id", foreignKeyDefinition = "FOREIGN KEY (user_id) " +
+            "REFERENCES users_details (user_id) ON DELETE CASCADE ON UPDATE CASCADE"), nullable = false)
     private Users user;
 
-    @Column(name = "comment_message", length = 200, nullable = false)
+    @Column(name = "comment_message", length = 200, nullable = false, columnDefinition = "VARCHAR(600)")
     private String commentMessage;
 
-    @Column(name = "comment_date", nullable = false)
+    @Column(name = "comment_date", nullable = false, columnDefinition = "TIMESTAMP(0)")
     @Temporal(TemporalType.TIMESTAMP)
     @LastModifiedDate
     private Date commentDate;

@@ -38,8 +38,8 @@ public class PersistenceJPAConfig {
         p.setPassword("1729384#General");
         p.setMaxActive(100);
         p.setMaxIdle(100);
-        p.setMinIdle(10);
-        p.setInitialSize(10);
+        p.setMinIdle(30);
+        p.setInitialSize(30);
         p.setMaxWait(10000);
         p.setTestOnBorrow(true);
         p.setTestOnConnect(false);
@@ -101,15 +101,15 @@ public class PersistenceJPAConfig {
     private Properties additionalProperties() {
         Properties properties = new Properties();
         properties.setProperty("hibernate.hbm2ddl.auto", "update"); //for developer none | validate | update | create-only |create | create-drop with every SessionFactory close
-        properties.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQLDialect");
+        properties.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQL8Dialect");
         //properties.setProperty("hibernate.envers.audit_table_suffix", "_AUDIT_LOG");
-        properties.setProperty("hibernate.globally_quoted_identifiers", "true");
+        //properties.setProperty("hibernate.globally_quoted_identifiers", "true");
         //properties.setProperty("hibernate.enhancer.enableLazyInitialization", "true");
         //properties.setProperty("hibernate.ejb.use_class_enhancer", "true");
         //properties.setProperty("hibernate.discriminator.ignore_explicit_for_joined", "true");
         //properties.setProperty("hibernate.current_session_context_class", "thread");
         //properties.setProperty("spring.jpa.open-in-view", "true");
-        //properties.setProperty("spring.jpa.properties.hibernate.format_sql", "true"); //to show query
+        properties.setProperty("spring.jpa.properties.hibernate.format_sql", "true"); //to show query
         //for batch
         properties.setProperty("spring.jpa.properties.hibernate.generate_statistics", "true"); // to show the time in nano second to prepare the batch
         properties.setProperty("spring.jpa.properties.hibernate.jdbc.batch_size", "4");

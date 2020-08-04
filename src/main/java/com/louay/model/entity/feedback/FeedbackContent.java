@@ -20,22 +20,30 @@ import java.util.Objects;
 @DiscriminatorColumn(name = "feedback_type", discriminatorType = DiscriminatorType.INTEGER, columnDefinition = "TINYINT(1)")
 @Polymorphism(type = PolymorphismType.EXPLICIT)
 public abstract class FeedbackContent implements Comparable<FeedbackContent>, Serializable {
-    private static final long serialVersionUID = 9167299451535423240L;
+    private static final long serialVersionUID = -826336148729962682L;
     @Id
-    @Column(name = "feedback_id")
+    @Column(name = "feedback_id", columnDefinition = "BIGINT(20)", nullable = false)
     private Long feedbackId;
 
-    @MapsId
-    @OneToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY, orphanRemoval = true)
-    @JoinColumn(name = "feedback_id", referencedColumnName = "feedback_id")
+    @MapsId(value = "feedbackId")
+    @OneToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY, targetEntity = CourseFeedback.class)
+    @JoinColumn(name = "feedback_id", referencedColumnName = "feedback_id", columnDefinition = "BIGINT(20)", foreignKey =
+    @ForeignKey(name = "fk_course_feedback_id_feedback_file_id", foreignKeyDefinition = "FOREIGN KEY (feedback_id) " +
+            "REFERENCES course_feedback (feedback_id) ON DELETE CASCADE ON UPDATE CASCADE"), nullable = false)
     private CourseFeedback courseFeedback;
 
-    @Column(name = "content_date")
+    @Column(name = "content_date", columnDefinition = "TIMESTAMP(0)")
     @Temporal(TemporalType.TIMESTAMP)
     @LastModifiedDate
     private Date contentDate;
 
+    public Long getFeedbackId() {
+        return feedbackId;
+    }
 
+    public void setFeedbackId(Long feedbackId) {
+        this.feedbackId = feedbackId;
+    }
 
     public CourseFeedback getCourseFeedback() {
         return courseFeedback;
@@ -59,7 +67,7 @@ public abstract class FeedbackContent implements Comparable<FeedbackContent>, Se
     @Transient
     @Override
     public int compareTo(FeedbackContent o) {
-        return this.courseFeedback.compareTo(o.getCourseFeedback());
+        return this.feedbackId.compareTo(o.getFeedbackId());
     }
 
     @Transient
@@ -68,20 +76,21 @@ public abstract class FeedbackContent implements Comparable<FeedbackContent>, Se
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         FeedbackContent that = (FeedbackContent) o;
-        return getCourseFeedback().equals(that.getCourseFeedback());
+        return getFeedbackId().equals(that.getFeedbackId());
     }
 
     @Transient
     @Override
     public int hashCode() {
-        return Objects.hash(getCourseFeedback());
+        return Objects.hash(getFeedbackId());
     }
 
     @Transient
     @Override
     public String toString() {
         return "FeedbackContent{" +
-                "courseFeedback=" + courseFeedback.getFeedbackID() +
+                "feedbackId=" + feedbackId +
+                ", courseFeedback=" + courseFeedback +
                 ", contentDate=" + contentDate +
                 '}';
     }

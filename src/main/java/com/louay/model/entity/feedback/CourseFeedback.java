@@ -17,25 +17,31 @@ import java.util.Objects;
 @Component
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 @Entity
-@Table(name = "course_feedback")
+@Table(name = "course_feedback", indexes = {
+        @Index(name = "course_file_feedback_course_id_IX", columnList = "course_id"),
+        @Index(name = "course_feedback_user_id_IX", columnList = "user_id")})
 @EntityListeners(AuditingEntityListener.class)
 @JsonIgnoreProperties(value = {"feedbackDate"}, allowGetters = true)
 public class CourseFeedback implements Comparable<CourseFeedback>, Serializable {
-    private static final long serialVersionUID = -4801713891803691384L;
+    private static final long serialVersionUID = -7182542334355434557L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "feedback_id", nullable = false, unique = true)
+    @Column(name = "feedback_id", nullable = false, columnDefinition = "BIGINT(20)")
     private Long feedbackID;
 
     @ManyToOne(fetch = FetchType.LAZY, targetEntity = Courses.class)
-    @JoinColumn(name = "course_id", referencedColumnName = "course_id")
+    @JoinColumn(name = "course_id", referencedColumnName = "course_id", columnDefinition = "BIGINT(20)", foreignKey =
+    @ForeignKey(name = "fk_courses_course_id_course_file_feedback_course_id", foreignKeyDefinition = "FOREIGN KEY " +
+            "(course_id) REFERENCES courses (course_id) ON DELETE CASCADE ON UPDATE CASCADE"), nullable = false)
     private Courses course;
 
     @ManyToOne(fetch = FetchType.LAZY, targetEntity = Users.class)
-    @JoinColumn(name = "user_id", referencedColumnName = "user_id")
+    @JoinColumn(name = "user_id", referencedColumnName = "user_id", columnDefinition = "VARCHAR(200)", foreignKey =
+    @ForeignKey(name = "fk_users_details_id_course_feedback_user_id", foreignKeyDefinition = "FOREIGN KEY (user_id) " +
+            "REFERENCES users_details (user_id) ON DELETE CASCADE ON UPDATE CASCADE"),nullable = false)
     private Users user;
 
-    @Column(name = "feedback_date")
+    @Column(name = "feedback_date", columnDefinition = "TIMESTAMP(0)", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     @CreatedDate
     private Date feedbackDate;

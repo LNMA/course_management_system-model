@@ -17,27 +17,33 @@ import java.util.Objects;
 @Component
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 @Entity
-@Table(schema = "course_management_system", name = "students_attendances")
+@Table(name = "students_attendances", indexes = {
+        @Index(name = "students_attendances_student_id_IX", columnList = "student_id"),
+        @Index(name = "students_attendances_course_id_IX", columnList = "course_id")})
 @EntityListeners(AuditingEntityListener.class)
 @JsonIgnoreProperties(value = {"attendanceDate"}, allowGetters = true)
 public class UsersAttendance implements Serializable, Comparable<UsersAttendance> {
     private static final long serialVersionUID = 4153260012886912057L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "attendance_id")
+    @Column(name = "attendance_id", columnDefinition = "BIGINT(20)", nullable = false)
     private Long attendancesId;
 
     @ManyToOne(fetch = FetchType.LAZY, targetEntity = Student.class)
-    @JoinColumn(name = "student_id", referencedColumnName = "student_id")
+    @JoinColumn(name = "student_id", referencedColumnName = "student_id", columnDefinition = "VARCHAR(200)", foreignKey =
+    @ForeignKey(name = "fk_students_details_id_attendances_student_id", foreignKeyDefinition = "FOREIGN KEY (student_id)" +
+            " REFERENCES students_details (student_id) ON DELETE CASCADE ON UPDATE CASCADE"), nullable = false)
     private Student student;
 
     @ManyToOne(fetch = FetchType.LAZY, targetEntity = Courses.class)
-    @JoinColumn(name = "course_id", referencedColumnName = "course_id")
+    @JoinColumn(name = "course_id", referencedColumnName = "course_id", columnDefinition = "BIGINT(20)", foreignKey =
+    @ForeignKey(name = "fk_courses_course_id_students_attendances_course_id", foreignKeyDefinition = "FOREIGN KEY " +
+            "(course_id) REFERENCES courses (course_id) ON DELETE CASCADE ON UPDATE CASCADE"), nullable = false)
     private Courses course;
 
     @Temporal(TemporalType.TIMESTAMP)
     @CreatedDate
-    @Column(name = "attendance_date")
+    @Column(name = "attendance_date", columnDefinition = "TIMESTAMP(0)")
     private Date attendanceDate;
 
     public Long getAttendancesId() {

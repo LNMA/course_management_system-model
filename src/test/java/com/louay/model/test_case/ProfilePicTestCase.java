@@ -1,4 +1,4 @@
-package com.louay.model;
+package com.louay.model.test_case;
 
 import com.louay.model.config.MySpringBootJDBCApplication;
 import com.louay.model.entity.users.Admin;

@@ -2,6 +2,7 @@ package com.louay.model.entity.users.picute;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.louay.model.entity.users.Users;
+import org.hibernate.annotations.LazyGroup;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -18,25 +19,40 @@ import java.util.Objects;
 @Component
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 @Entity
-@Table(schema = "course_management_system", name = "users_profile_picture")
+@Table(name = "users_profile_picture")
 @EntityListeners(AuditingEntityListener.class)
 @JsonIgnoreProperties(value = {"uploadPicDate"}, allowGetters = true)
 public class AccountPicture implements Comparable<AccountPicture>, Serializable {
-    private static final long serialVersionUID = -1629166353873013035L;
+    private static final long serialVersionUID = 1962162395933500808L;
     @Id
-    @OneToOne(targetEntity = Users.class)
-    @JoinColumn(name = "user_id", referencedColumnName = "user_id")
+    @Column(name = "user_id", columnDefinition = "VARCHAR(200)", nullable = false)
+    private String userId;
+
+    @MapsId
+    @OneToOne(fetch = FetchType.LAZY, targetEntity = Users.class)
+    @JoinColumn(name = "user_id", referencedColumnName = "user_id", columnDefinition = "VARCHAR(200)", foreignKey =
+    @ForeignKey(name = "fk_users_details_id_profile_picture_user_id", foreignKeyDefinition = "FOREIGN KEY (user_id) " +
+            "REFERENCES users_details (user_id) ON DELETE CASCADE ON UPDATE CASCADE"), nullable = false)
     private Users users;
 
     @Lob
-    @Column(name = "picture")
+    @Column(name = "picture", columnDefinition = "LONGBLOB", nullable = false)
     @Basic(fetch = FetchType.LAZY)
+    @LazyGroup("lobs")
     private byte[] picture;
 
-    @Column(name = "upload_date")
+    @Column(name = "upload_date", columnDefinition = "TIMESTAMP(0)", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     @LastModifiedDate
     private Date uploadPicDate;
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
 
     public Users getUsers() {
         return users;
@@ -95,7 +111,8 @@ public class AccountPicture implements Comparable<AccountPicture>, Serializable 
     @Override
     public String toString() {
         return "AccountPicture{" +
-                "users=" + users +
+                "userId='" + userId + '\'' +
+                ", users=" + users.getEmail() +
                 ", picture=" + Arrays.toString(picture) +
                 ", uploadPicDate=" + uploadPicDate +
                 '}';
