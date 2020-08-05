@@ -47,23 +47,50 @@ public class AccountTestCase extends TestCase {
         admin.setPassword("1234");
 
         this.accountService.createAccount(admin);
+
+        System.out.println(admin);
     }
 
     @Test
     public void testCase02_find_and_update_account() {
         Admin admin = this.applicationContext.getBean(Admin.class);
         admin.setEmail("account@test.com");
-
         admin = this.accountService.findAccountByEmail(admin);
 
         admin.setPassword("123");
         this.accountService.updateAccountByEmail(admin);
+
+        System.out.println(admin);
     }
 
     @Test
-    public void testCase03_create_users() {
+    public void testCase03_find_account() {
+        Admin admin = this.applicationContext.getBean(Admin.class);
+        admin.setEmail("account@test.com");
+
+        admin = this.accountService.findAccountByEmail(admin);
+
+        System.out.println(admin);
+    }
+
+    @Test
+    public void testCase04_find_and_delete_account() {
+        Admin admin = this.applicationContext.getBean(Admin.class);
+        admin.setEmail("account@test.com");
+
+        System.out.println(admin);
+
+        this.accountService.deleteAccountByEmail(admin);
+    }
+
+    @Test
+    public void testCase05_create_users() {
+        Admin admin = this.applicationContext.getBean(Admin.class);
+        admin.setEmail("accountUsers@test.com");
+        admin.setPassword("1234");
+
         Users users = this.applicationContext.getBean("users",Users.class);
-        users.setEmail("account@test.com");
+        users.setAdmin(admin);
         users.setForename("Account");
         users.setSurname("Test");
         users.setGender(Gender.MALE);
@@ -74,12 +101,14 @@ public class AccountTestCase extends TestCase {
         users.setAddress("AccountTestCaseClass");
 
         this.accountService.createUsers(users);
+
+        System.out.println(users);
     }
 
     @Test
-    public void testCase04_find_user() {
+    public void testCase06_find_user() {
         Users users = this.applicationContext.getBean("users",Users.class);
-        users.setEmail("account@test.com");
+        users.setEmail("accountUsers@test.com");
 
         users = this.accountService.findUsersByUserID(users);
 
@@ -87,31 +116,35 @@ public class AccountTestCase extends TestCase {
     }
 
     @Test
-    public void testCase05_find_and_update_users() {
+    public void testCase07_find_and_update_users() {
         Users users = this.applicationContext.getBean("users",Users.class);
-        users.setEmail("account@test.com");
+        users.setEmail("accountUsers@test.com");
 
         users = this.accountService.findUsersByUserID(users);
         users.setForename("Account");
         users.setSurname("Test");
 
         this.accountService.updateUsersByUserID(users);
+
+        System.out.println(users);
     }
 
     @Test
-    public void testCase06_find_and_delete_users() {
+    public void testCase08_find_and_delete_users() {
         Users users = this.applicationContext.getBean("users",Users.class);
-        users.setEmail("account@test.com");
+        users.setEmail("accountUsers@test.com");
 
-        users = this.accountService.findUsersByUserID(users);
-        System.out.println(users);
         this.accountService.deleteUsersByUserID(users);
     }
 
     @Test
-    public void testCase07_create_instructor() {
+    public void testCase09_create_instructor() {
+        Admin admin = this.applicationContext.getBean(Admin.class);
+        admin.setEmail("accountUsersInstructor@test.com");
+        admin.setPassword("12345");
+
         Instructor instructor = this.applicationContext.getBean("instructor",Instructor.class);
-        instructor.setEmail("account@test.com");
+        instructor.setAdmin(admin);
         instructor.setForename("Account");
         instructor.setSurname("Test");
         instructor.setGender(Gender.MALE);
@@ -127,24 +160,28 @@ public class AccountTestCase extends TestCase {
         instructor.setProfileVisibility(InstructorProfileVisibility.PUBLIC);
 
         this.accountService.createInstructorsDetails(instructor);
+
+        System.out.println(instructor);
     }
 
     @Test
-    public void testCase08_find_and_update_instructor() {
+    public void testCase10_find_and_update_instructor() {
         Instructor instructor = this.applicationContext.getBean("instructor",Instructor.class);
-        instructor.setEmail("account@test.com");
-
+        instructor.setEmail("accountUsersInstructor@test.com");
         instructor = this.accountService.findInstructorsDetailsByInstructorID(instructor);
+
         instructor.setSpecialty("science");
         instructor.setNickname("prof.");
 
         this.accountService.updateInstructorsDetailsByInstructorID(instructor);
+
+        System.out.println(instructor);
     }
 
     @Test
-    public void testCase09_find_instructor() {
+    public void testCase11_find_instructor() {
         Instructor instructor = this.applicationContext.getBean("instructor",Instructor.class);
-        instructor.setEmail("account@test.com");
+        instructor.setEmail("accountUsersInstructor@test.com");
 
         instructor = this.accountService.findInstructorsDetailsByInstructorID(instructor);
 
@@ -152,19 +189,21 @@ public class AccountTestCase extends TestCase {
     }
 
     @Test
-    public void testCase10_find_and_delete_instructor() {
+    public void testCase12_find_and_delete_instructor() {
         Instructor instructor = this.applicationContext.getBean("instructor",Instructor.class);
-        instructor.setEmail("account@test.com");
+        instructor.setEmail("accountUsersInstructor@test.com");
 
-        instructor = this.accountService.findInstructorsDetailsByInstructorID(instructor);
-        System.out.println(instructor);
         this.accountService.deleteInstructorsDetailsByInstructorID(instructor);
     }
 
     @Test
-    public void testCase11_create_student() {
+    public void testCase13_create_student() {
+        Admin admin = this.applicationContext.getBean(Admin.class);
+        admin.setEmail("accountUserStudent@test.com");
+        admin.setPassword("123456");
+
         Student student = this.applicationContext.getBean("student",Student.class);
-        student.setEmail("account@test.com");
+        student.setAdmin(admin);
         student.setForename("Account");
         student.setSurname("Test");
         student.setGender(Gender.MALE);
@@ -183,24 +222,28 @@ public class AccountTestCase extends TestCase {
         student.setInterests("football");
 
         this.accountService.createStudentsDetails(student);
+
+        System.out.println(student);
     }
 
     @Test
-    public void testCase12_find_and_update_student() {
+    public void testCase14_find_and_update_student() {
         Student student = this.applicationContext.getBean("student",Student.class);
-        student.setEmail("account@test.com");
-
+        student.setEmail("accountUserStudent@test.com");
         student = this.accountService.findStudentsDetailsByStudentID(student);
+
         student.setHeadline("i am update student");
         student.setInterests("nothing");
 
         this.accountService.updateStudentsDetailsByStudentID(student);
+
+        System.out.println(student);
     }
 
     @Test
-    public void testCase13_find_student() {
+    public void testCase15_find_student() {
         Student student = this.applicationContext.getBean("student",Student.class);
-        student.setEmail("account@test.com");
+        student.setEmail("accountUserStudent@test.com");
 
         student = this.accountService.findStudentsDetailsByStudentID(student);
 
@@ -208,35 +251,10 @@ public class AccountTestCase extends TestCase {
     }
 
     @Test
-    public void testCase14_find_and_delete_student() {
+    public void testCase16_find_and_delete_student() {
         Student student = this.applicationContext.getBean("student",Student.class);
-        student.setEmail("account@test.com");
-
-        student = this.accountService.findStudentsDetailsByStudentID(student);
-        System.out.println(student);
+        student.setEmail("accountUserStudent@test.com");
 
         this.accountService.deleteStudentsDetailsByStudentID(student);
-    }
-
-    @Test
-    public void testCase15_find_account() {
-        Admin admin = this.applicationContext.getBean(Admin.class);
-        admin.setEmail("account@test.com");
-        admin.setPassword("1234");
-
-        admin = this.accountService.findAccountByEmail(admin);
-
-        System.out.println(admin);
-    }
-
-    @Test
-    public void testCase16_find_and_delete_account() {
-        Admin admin = this.applicationContext.getBean(Admin.class);
-        admin.setEmail("account@test.com");
-        admin.setPassword("1234");
-
-        admin = this.accountService.findAccountByEmail(admin);
-        System.out.println(admin);
-        this.accountService.deleteAccountByEmail(admin);
     }
 }

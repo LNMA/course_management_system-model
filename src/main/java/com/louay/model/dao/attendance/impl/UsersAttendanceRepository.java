@@ -25,7 +25,7 @@ public class UsersAttendanceRepository extends CommonDaoImpl<UsersAttendance> im
     public <S extends UsersAttendance> S delete(S entity) {
         Class<? extends UsersAttendance> entityClass = entity.getClass();
         @SuppressWarnings("unchecked")
-        S entityFound = (S) getEntityManager().find(entityClass, entity.getAttendancesId());
+        S entityFound = (S) getEntityManager().getReference(entityClass, entity.getAttendancesId());
         getEntityManager().remove(entityFound);
         return entity;
     }
@@ -36,7 +36,7 @@ public class UsersAttendanceRepository extends CommonDaoImpl<UsersAttendance> im
         for (S s : entities) {
             Class<? extends UsersAttendance> entityClass = s.getClass();
             @SuppressWarnings("unchecked")
-            S entityFound = (S) getEntityManager().find(entityClass, s.getAttendancesId());
+            S entityFound = (S) getEntityManager().getReference(entityClass, s.getAttendancesId());
             getEntityManager().remove(entityFound);
             getEntityManager().flush();
             result.add(s);

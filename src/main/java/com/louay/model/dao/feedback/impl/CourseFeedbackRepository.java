@@ -25,7 +25,7 @@ public class CourseFeedbackRepository extends CommonDaoImpl<CourseFeedback> impl
     public <S extends CourseFeedback> S delete(S entity) {
         Class<? extends CourseFeedback> entityClass = entity.getClass();
         @SuppressWarnings("unchecked")
-        S entityFound = (S) getEntityManager().find(entityClass, entity.getFeedbackID());
+        S entityFound = (S) getEntityManager().getReference(entityClass, entity.getFeedbackID());
         getEntityManager().remove(entityFound);
         return entity;
     }
@@ -36,7 +36,7 @@ public class CourseFeedbackRepository extends CommonDaoImpl<CourseFeedback> impl
         for (S s : entities) {
             Class<? extends CourseFeedback> entityClass = s.getClass();
             @SuppressWarnings("unchecked")
-            S entityFound = (S) getEntityManager().find(entityClass, s.getFeedbackID());
+            S entityFound = (S) getEntityManager().getReference(entityClass, s.getFeedbackID());
             getEntityManager().remove(entityFound);
             getEntityManager().flush();
             result.add(s);

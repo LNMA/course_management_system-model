@@ -25,7 +25,7 @@ public abstract class FeedbackContent implements Comparable<FeedbackContent>, Se
     @Column(name = "feedback_id", columnDefinition = "BIGINT(20)", nullable = false)
     private Long feedbackId;
 
-    @MapsId(value = "feedbackId")
+    @MapsId
     @OneToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY, targetEntity = CourseFeedback.class)
     @JoinColumn(name = "feedback_id", referencedColumnName = "feedback_id", columnDefinition = "BIGINT(20)", foreignKey =
     @ForeignKey(name = "fk_course_feedback_id_feedback_file_id", foreignKeyDefinition = "FOREIGN KEY (feedback_id) " +
@@ -90,7 +90,7 @@ public abstract class FeedbackContent implements Comparable<FeedbackContent>, Se
     public String toString() {
         return "FeedbackContent{" +
                 "feedbackId=" + feedbackId +
-                ", courseFeedback=" + courseFeedback +
+                ", courseFeedback=" + courseFeedback.getFeedbackID() +
                 ", contentDate=" + contentDate +
                 '}';
     }

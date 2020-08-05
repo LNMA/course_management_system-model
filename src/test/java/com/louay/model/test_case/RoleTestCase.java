@@ -107,8 +107,7 @@ public class RoleTestCase extends TestCase {
         admin.setEmail("role@test.com");
 
         AccountService accountService = this.applicationContext.getBean(AccountService.class);
-        admin = accountService.findAccountByEmail(admin);
-        System.out.println(admin);
+
         accountService.deleteAccountByEmail(admin);
     }
 }

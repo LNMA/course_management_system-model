@@ -4,6 +4,7 @@ import com.louay.model.entity.users.constant.Role;
 import org.hibernate.annotations.Polymorphism;
 import org.hibernate.annotations.PolymorphismType;
 
+import javax.persistence.Column;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Transient;
@@ -12,9 +13,10 @@ import java.util.Objects;
 
 @MappedSuperclass
 @Polymorphism(type = PolymorphismType.EXPLICIT)
-public abstract class GenericAccounts implements Comparable<GenericAccounts>, Serializable {
-    private static final long serialVersionUID = -4138899792068390729L;
+public abstract class Accounts implements Comparable<Accounts>, Serializable {
+    private static final long serialVersionUID = 5064878654696864127L;
     @Id
+    @Column(columnDefinition = "VARCHAR(200)", nullable = false)
     private String email;
 
     public String getEmail() {
@@ -28,13 +30,18 @@ public abstract class GenericAccounts implements Comparable<GenericAccounts>, Se
     @Transient
     abstract public Role getUserRole();
 
+    @Override
+    public int compareTo(Accounts o) {
+        return this.email.compareTo(o.getEmail());
+    }
+
     @Transient
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        GenericAccounts genericAccounts = (GenericAccounts) o;
-        return getEmail().equals(genericAccounts.getEmail());
+        Accounts accounts = (Accounts) o;
+        return getEmail().equals(accounts.getEmail());
     }
 
     @Transient
@@ -46,7 +53,7 @@ public abstract class GenericAccounts implements Comparable<GenericAccounts>, Se
     @Transient
     @Override
     public String toString() {
-        return "GenericAccounts{" +
+        return "Accounts{" +
                 "email='" + email + '\'' +
                 '}';
     }

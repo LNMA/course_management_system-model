@@ -20,12 +20,8 @@ import java.util.Objects;
 @EntityListeners(AuditingEntityListener.class)
 @JsonIgnoreProperties(value = {"joinDate"}, allowGetters = true)
 public class UserAtCourse implements Comparable<UserAtCourse>, Serializable {
-    private static final long serialVersionUID = 2844728069617447889L;
+    private static final long serialVersionUID = -7200970705753883476L;
     @Id
-    @Column(name = "users_id", columnDefinition = "VARCHAR(200)", nullable = false)
-    private String userId;
-
-    @MapsId("userId")
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "users_id", referencedColumnName = "user_id", columnDefinition = "VARCHAR(200)", foreignKey =
     @ForeignKey(name = "fk_users_details_id_users_course_join_user_id", foreignKeyDefinition = "FOREIGN KEY (users_id) " +
@@ -39,14 +35,6 @@ public class UserAtCourse implements Comparable<UserAtCourse>, Serializable {
 
     @Column(name = "is_busy", columnDefinition = "TINYINT(1) default 0")
     private Boolean busy;
-
-    public String getUserId() {
-        return userId;
-    }
-
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
 
     public Users getUsers() {
         return users;
@@ -75,7 +63,7 @@ public class UserAtCourse implements Comparable<UserAtCourse>, Serializable {
     @Transient
     @Override
     public int compareTo(UserAtCourse o) {
-        return this.userId.compareTo(o.getUserId());
+        return this.users.compareTo(o.getUsers());
     }
 
     @Transient
@@ -84,21 +72,20 @@ public class UserAtCourse implements Comparable<UserAtCourse>, Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         UserAtCourse that = (UserAtCourse) o;
-        return getUserId().equals(that.getUserId());
+        return getUsers().equals(that.getUsers());
     }
 
     @Transient
     @Override
     public int hashCode() {
-        return Objects.hash(getUserId());
+        return Objects.hash(getUsers());
     }
 
     @Transient
     @Override
     public String toString() {
         return "UserAtCourse{" +
-                "userId='" + userId + '\'' +
-                ", users=" + users.getEmail() +
+                "users=" + users.getEmail() +
                 ", joinDate=" + joinDate +
                 ", busy=" + busy +
                 '}';

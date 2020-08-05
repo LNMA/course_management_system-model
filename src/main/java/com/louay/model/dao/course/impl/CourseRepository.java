@@ -25,7 +25,7 @@ public class CourseRepository extends CommonDaoImpl<Courses> implements CourseDa
     public <S extends Courses> S delete(S entity) {
         Class<? extends Courses> entityClass = entity.getClass();
         @SuppressWarnings("unchecked")
-        S entityFound = (S) getEntityManager().find(entityClass, entity.getCourseID());
+        S entityFound = (S) getEntityManager().getReference(entityClass, entity.getCourseID());
         getEntityManager().remove(entityFound);
         return entity;
     }
@@ -36,7 +36,7 @@ public class CourseRepository extends CommonDaoImpl<Courses> implements CourseDa
         for (S s : entities) {
             Class<? extends Courses> entityClass = s.getClass();
             @SuppressWarnings("unchecked")
-            S entityFound = (S) getEntityManager().find(entityClass, s.getCourseID());
+            S entityFound = (S) getEntityManager().getReference(entityClass, s.getCourseID());
             getEntityManager().remove(entityFound);
             getEntityManager().flush();
             result.add(s);

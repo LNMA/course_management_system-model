@@ -17,13 +17,6 @@ import java.util.Arrays;
 @Table(name = "materials_files")
 @EntityListeners(AuditingEntityListener.class)
 @JsonIgnoreProperties(value = {"materialDate"}, allowGetters = true)
-@AttributeOverrides({
-        @AttributeOverride(name = "materialID", column =
-        @Column(name = "material_id", columnDefinition = "BIGINT(20)")),
-        @AttributeOverride(name = "materialName", column =
-        @Column(name = "material_name", columnDefinition = "VARCHAR(200)")),
-        @AttributeOverride(name = "uploadDate", column =
-        @Column(name = "upload_date", columnDefinition = "TIMESTAMP(0)"))})
 @PrimaryKeyJoinColumn(name = "material_id",columnDefinition = "BIGINT(20)", foreignKey =
 @ForeignKey(name = "fk_courses_materials_id_materials_file_id", foreignKeyDefinition = "FOREIGN KEY (material_id) " +
         "REFERENCES courses_materials (material_id) ON DELETE CASCADE ON UPDATE CASCADE"))

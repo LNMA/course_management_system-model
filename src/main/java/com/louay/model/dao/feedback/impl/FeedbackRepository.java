@@ -10,7 +10,6 @@ import java.util.*;
 
 @Repository
 public class FeedbackRepository extends CommonDaoImpl<FeedbackContent> implements FeedbackDao {
-
     private static final long serialVersionUID = -6073860615605037324L;
 
     @Override
@@ -27,7 +26,7 @@ public class FeedbackRepository extends CommonDaoImpl<FeedbackContent> implement
     public <S extends FeedbackContent> S delete(S entity) {
         Class<? extends FeedbackContent> entityClass = entity.getClass();
         @SuppressWarnings("unchecked")
-        S entityFound = (S) getEntityManager().find(entityClass, entity.getCourseFeedback().getFeedbackID());
+        S entityFound = (S) getEntityManager().getReference(entityClass, entity.getCourseFeedback().getFeedbackID());
         getEntityManager().remove(entityFound);
         return entity;
     }
@@ -38,7 +37,7 @@ public class FeedbackRepository extends CommonDaoImpl<FeedbackContent> implement
         for (S s : entities) {
             Class<? extends FeedbackContent> entityClass = s.getClass();
             @SuppressWarnings("unchecked")
-            S entityFound = (S) getEntityManager().find(entityClass, s.getCourseFeedback().getFeedbackID());
+            S entityFound = (S) getEntityManager().getReference(entityClass, s.getCourseFeedback().getFeedbackID());
             getEntityManager().remove(entityFound);
             getEntityManager().flush();
             result.add(s);

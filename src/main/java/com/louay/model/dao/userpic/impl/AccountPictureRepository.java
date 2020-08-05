@@ -14,7 +14,7 @@ public class AccountPictureRepository extends CommonDaoImpl<AccountPicture> impl
 
     @Override
     public <S extends AccountPicture> Boolean isExist(S entity) {
-        return !getEntityManager().createQuery("SELECT r From AccountPicture r WHERE r.users.email = :email")
+        return !getEntityManager().createQuery("SELECT p From AccountPicture p WHERE p.users.email = :email")
                 .setParameter("email", entity.getUsers().getEmail())
                 .setMaxResults(1)
                 .getResultList()
@@ -25,7 +25,7 @@ public class AccountPictureRepository extends CommonDaoImpl<AccountPicture> impl
     public <S extends AccountPicture> S delete(S entity) {
         Class<? extends AccountPicture> entityClass = entity.getClass();
         @SuppressWarnings("unchecked")
-        S entityFound = (S) getEntityManager().find(entityClass, entity.getUsers().getEmail());
+        S entityFound = (S) getEntityManager().getReference(entityClass, entity.getUsers().getEmail());
         getEntityManager().remove(entityFound);
         return entity;
     }
@@ -36,7 +36,7 @@ public class AccountPictureRepository extends CommonDaoImpl<AccountPicture> impl
         for (S s : entities) {
             Class<? extends AccountPicture> entityClass = s.getClass();
             @SuppressWarnings("unchecked")
-            S entityFound = (S) getEntityManager().find(entityClass, s.getUsers().getEmail());
+            S entityFound = (S) getEntityManager().getReference(entityClass, s.getUsers().getEmail());
             getEntityManager().remove(entityFound);
             getEntityManager().flush();
             result.add(s);

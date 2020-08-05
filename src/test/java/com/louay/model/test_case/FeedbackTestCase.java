@@ -47,19 +47,13 @@ public class FeedbackTestCase {
     }
 
     @Test
-    public void testCase01_create_account() {
+    public void testCase01_create_instructor() {
         Admin admin = this.applicationContext.getBean(Admin.class);
         admin.setEmail("feedback@test.com");
         admin.setPassword("1234");
 
-        AccountService accountService = this.applicationContext.getBean(AccountService.class);
-        accountService.createAccount(admin);
-    }
-
-    @Test
-    public void testCase02_create_instructor() {
         Instructor instructor = this.applicationContext.getBean("instructor", Instructor.class);
-        instructor.setEmail("feedback@test.com");
+        instructor.setAdmin(admin);
         instructor.setForename("Feedback");
         instructor.setSurname("Test");
         instructor.setGender(Gender.MALE);
@@ -79,7 +73,7 @@ public class FeedbackTestCase {
     }
 
     @Test
-    public void testCase03_create_course() {
+    public void testCase02_create_course() {
         Instructor instructor = this.applicationContext.getBean("instructor", Instructor.class);
         instructor.setEmail("feedback@test.com");
         AccountService accountService = this.applicationContext.getBean(AccountService.class);
@@ -96,7 +90,7 @@ public class FeedbackTestCase {
     }
 
     @Test
-    public void testCase04_create_feedbackMessage() {
+    public void testCase03_create_feedbackMessage() {
         Users users = this.applicationContext.getBean("users", Users.class);
         users.setEmail("feedback@test.com");
         AccountService accountService = this.applicationContext.getBean(AccountService.class);
@@ -126,7 +120,7 @@ public class FeedbackTestCase {
     }
 
     @Test
-    public void testCase05_update_feedbackMessage(){
+    public void testCase04_update_feedbackMessage(){
         CourseFeedback courseFeedback = this.applicationContext.getBean(CourseFeedback.class);
         courseFeedback.setFeedbackID((long) 1);
         courseFeedback = this.feedbackService.findCourseFeedbackByFeedbackId(courseFeedback);
@@ -147,7 +141,7 @@ public class FeedbackTestCase {
     }
 
     @Test
-    public void testCase06_create_feedbackFile(){
+    public void testCase05_create_feedbackFile(){
         Users users = this.applicationContext.getBean("users", Users.class);
         users.setEmail("feedback@test.com");
         AccountService accountService = this.applicationContext.getBean(AccountService.class);
@@ -190,7 +184,7 @@ public class FeedbackTestCase {
     }
 
     @Test
-    public void testCase07_update_feedbackFile(){
+    public void testCase06_update_feedbackFile(){
         CourseFeedback courseFeedback = this.applicationContext.getBean(CourseFeedback.class);
         courseFeedback.setFeedbackID((long) 2);
         courseFeedback = this.feedbackService.findCourseFeedbackByFeedbackId(courseFeedback);
@@ -220,7 +214,7 @@ public class FeedbackTestCase {
     }
 
     @Test
-    public void testCase08_create_feedbackFileMessage(){
+    public void testCase07_create_feedbackFileMessage(){
         Users users = this.applicationContext.getBean("users", Users.class);
         users.setEmail("feedback@test.com");
         AccountService accountService = this.applicationContext.getBean(AccountService.class);
@@ -260,7 +254,7 @@ public class FeedbackTestCase {
     }
 
     @Test
-    public void testCase09_update_feedbackFileMessage(){
+    public void testCase08_update_feedbackFileMessage(){
         CourseFeedback courseFeedback = this.applicationContext.getBean(CourseFeedback.class);
         courseFeedback.setFeedbackID((long) 3);
         courseFeedback = this.feedbackService.findCourseFeedbackByFeedbackId(courseFeedback);
@@ -291,7 +285,7 @@ public class FeedbackTestCase {
     }
 
     @Test
-    public void testCase10_delete_feedbackContent_and_courseFeedback(){
+    public void testCase09_delete_feedbackContent_and_courseFeedback(){
         CourseFeedback courseFeedback1 = this.applicationContext.getBean(CourseFeedback.class);
         courseFeedback1.setFeedbackID((long) 1);
         courseFeedback1 = this.feedbackService.findCourseFeedbackByFeedbackId(courseFeedback1);
@@ -316,7 +310,7 @@ public class FeedbackTestCase {
     }
 
     @Test
-    public void testCase11_find_and_delete_course() {
+    public void testCase10_find_and_delete_course() {
         Courses courses = this.applicationContext.getBean(Courses.class);
         courses.setCourseID((long)1);
 
@@ -329,15 +323,15 @@ public class FeedbackTestCase {
     }
 
     @Test
-    public void testCase12_find_and_delete_account() {
-        Admin admin = this.applicationContext.getBean(Admin.class);
-        admin.setEmail("feedback@test.com");
+    public void testCase11_find_and_delete_account() {
+        Instructor instructor = this.applicationContext.getBean("instructor", Instructor.class);
+        instructor.setEmail("feedback@test.com");
 
         AccountService accountService = this.applicationContext.getBean(AccountService.class);
-        admin = accountService.findAccountByEmail(admin);
+        instructor = accountService.findInstructorsDetailsByInstructorID(instructor);
 
-        System.out.println(admin);
+        System.out.println(instructor);
 
-        accountService.deleteAccountByEmail(admin);
+        accountService.deleteInstructorsDetailsByInstructorID(instructor);
     }
 }

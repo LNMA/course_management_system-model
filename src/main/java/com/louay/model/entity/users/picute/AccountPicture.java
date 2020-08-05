@@ -23,12 +23,8 @@ import java.util.Objects;
 @EntityListeners(AuditingEntityListener.class)
 @JsonIgnoreProperties(value = {"uploadPicDate"}, allowGetters = true)
 public class AccountPicture implements Comparable<AccountPicture>, Serializable {
-    private static final long serialVersionUID = 1962162395933500808L;
+    private static final long serialVersionUID = -1629166353873013035L;
     @Id
-    @Column(name = "user_id", columnDefinition = "VARCHAR(200)", nullable = false)
-    private String userId;
-
-    @MapsId
     @OneToOne(fetch = FetchType.LAZY, targetEntity = Users.class)
     @JoinColumn(name = "user_id", referencedColumnName = "user_id", columnDefinition = "VARCHAR(200)", foreignKey =
     @ForeignKey(name = "fk_users_details_id_profile_picture_user_id", foreignKeyDefinition = "FOREIGN KEY (user_id) " +
@@ -45,14 +41,6 @@ public class AccountPicture implements Comparable<AccountPicture>, Serializable 
     @Temporal(TemporalType.TIMESTAMP)
     @LastModifiedDate
     private Date uploadPicDate;
-
-    public String getUserId() {
-        return userId;
-    }
-
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
 
     public Users getUsers() {
         return users;
@@ -111,8 +99,7 @@ public class AccountPicture implements Comparable<AccountPicture>, Serializable 
     @Override
     public String toString() {
         return "AccountPicture{" +
-                "userId='" + userId + '\'' +
-                ", users=" + users.getEmail() +
+                "users=" + users.getEmail() +
                 ", picture=" + Arrays.toString(picture) +
                 ", uploadPicDate=" + uploadPicDate +
                 '}';

@@ -10,7 +10,7 @@ import java.util.*;
 
 @Repository
 public class AccountRolesRepository extends CommonDaoImpl<AccountsRoles> implements AccountRolesDao  {
-    private static final long serialVersionUID = -7105235091859844713L;
+    private static final long serialVersionUID = 3647710673075206869L;
 
     @Override
     public <S extends AccountsRoles> Boolean isExist(S entity) {
@@ -25,7 +25,7 @@ public class AccountRolesRepository extends CommonDaoImpl<AccountsRoles> impleme
     public <S extends AccountsRoles> S delete(S entity) {
         Class<? extends AccountsRoles> entityClass = entity.getClass();
         @SuppressWarnings("unchecked")
-        S entityFound = (S) getEntityManager().find(entityClass, entity.getRoleID());
+        S entityFound = (S) getEntityManager().getReference(entityClass, entity.getRoleID());
         getEntityManager().remove(entityFound);
         return entity;
     }
@@ -36,7 +36,7 @@ public class AccountRolesRepository extends CommonDaoImpl<AccountsRoles> impleme
         for (S s : entities) {
             Class<? extends AccountsRoles> entityClass = s.getClass();
             @SuppressWarnings("unchecked")
-            S entityFound = (S) getEntityManager().find(entityClass, s.getRoleID());
+            S entityFound = (S) getEntityManager().getReference(entityClass, s.getRoleID());
             getEntityManager().remove(entityFound);
             getEntityManager().flush();
             result.add(s);

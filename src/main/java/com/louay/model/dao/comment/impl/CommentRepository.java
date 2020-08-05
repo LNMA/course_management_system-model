@@ -25,7 +25,7 @@ public class CommentRepository extends CommonDaoImpl<Comment> implements Comment
     public <S extends Comment> S delete(S entity) {
         Class<? extends Comment> entityClass = entity.getClass();
         @SuppressWarnings("unchecked")
-        S entityFound = (S) getEntityManager().find(entityClass, entity.getCommentID());
+        S entityFound = (S) getEntityManager().getReference(entityClass, entity.getCommentID());
         getEntityManager().remove(entityFound);
         return entity;
     }
@@ -36,7 +36,7 @@ public class CommentRepository extends CommonDaoImpl<Comment> implements Comment
         for (S s : entities) {
             Class<? extends Comment> entityClass = s.getClass();
             @SuppressWarnings("unchecked")
-            S entityFound = (S) getEntityManager().find(entityClass, s.getCommentID());
+            S entityFound = (S) getEntityManager().getReference(entityClass, s.getCommentID());
             getEntityManager().remove(entityFound);
             getEntityManager().flush();
             result.add(s);

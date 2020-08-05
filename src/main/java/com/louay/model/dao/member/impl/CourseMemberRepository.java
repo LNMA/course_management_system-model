@@ -25,7 +25,7 @@ public class CourseMemberRepository extends CommonDaoImpl<CourseMembers> impleme
     public <S extends CourseMembers> S delete(S entity) {
         Class<? extends CourseMembers> entityClass = entity.getClass();
         @SuppressWarnings("unchecked")
-        S entityFound = (S) getEntityManager().find(entityClass, entity.getMemberId());
+        S entityFound = (S) getEntityManager().getReference(entityClass, entity.getMemberId());
         getEntityManager().remove(entityFound);
         return entity;
     }
@@ -36,7 +36,7 @@ public class CourseMemberRepository extends CommonDaoImpl<CourseMembers> impleme
         for (S s : entities) {
             Class<? extends CourseMembers> entityClass = s.getClass();
             @SuppressWarnings("unchecked")
-            S entityFound = (S) getEntityManager().find(entityClass, s.getMemberId());
+            S entityFound = (S) getEntityManager().getReference(entityClass, s.getMemberId());
             getEntityManager().remove(entityFound);
             getEntityManager().flush();
             result.add(s);

@@ -10,7 +10,6 @@ import java.util.*;
 
 @Repository
 public class MaterialRepository extends CommonDaoImpl<CourseMaterials> implements MaterialDao {
-
     private static final long serialVersionUID = 1334338374819711733L;
 
     @Override
@@ -26,7 +25,7 @@ public class MaterialRepository extends CommonDaoImpl<CourseMaterials> implement
     public <S extends CourseMaterials> S delete(S entity) {
         Class<? extends CourseMaterials> entityClass = entity.getClass();
         @SuppressWarnings("unchecked")
-        S entityFound = (S) getEntityManager().find(entityClass, entity.getMaterialID());
+        S entityFound = (S) getEntityManager().getReference(entityClass, entity.getMaterialID());
         getEntityManager().remove(entityFound);
         return entity;
     }
@@ -37,7 +36,7 @@ public class MaterialRepository extends CommonDaoImpl<CourseMaterials> implement
         for (S s : entities) {
             Class<? extends CourseMaterials> entityClass = s.getClass();
             @SuppressWarnings("unchecked")
-            S entityFound = (S) getEntityManager().find(entityClass, s.getMaterialID());
+            S entityFound = (S) getEntityManager().getReference(entityClass, s.getMaterialID());
             getEntityManager().remove(entityFound);
             getEntityManager().flush();
             result.add(s);

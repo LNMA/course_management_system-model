@@ -17,7 +17,7 @@ import javax.persistence.*;
         "FOREIGN KEY (student_id) REFERENCES users_details (user_id) ON UPDATE DELETE ON UPDATE CASCADE"))
 @Table(name = "students_details")
 public class Student extends Users {
-    private static final long serialVersionUID = 6321379944607000788L;
+    private static final long serialVersionUID = -1215112575265896280L;
     @Column(name = "headline", length = 300, columnDefinition = "VARCHAR(300)")
     private String headline;
 
@@ -44,12 +44,6 @@ public class Student extends Users {
     @Override
     public Role getUserRole() {
         return Role.STUDENT;
-    }
-
-    @Transient
-    @Override
-    public int compareTo(GenericAccounts o) {
-        return super.getEmail().compareTo(o.getEmail());
     }
 
     @Transient

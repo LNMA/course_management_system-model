@@ -40,19 +40,13 @@ public class ProfilePicTestCase {
     }
 
     @Test
-    public void testCase01_create_account() {
+    public void testCase01_create_users() {
         Admin admin = this.applicationContext.getBean(Admin.class);
         admin.setEmail("profilePic@test.com");
         admin.setPassword("1234");
 
-        AccountService accountService = this.applicationContext.getBean(AccountService.class);
-        accountService.createAccount(admin);
-    }
-
-    @Test
-    public void testCase02_create_users() {
         Users users = this.applicationContext.getBean("users", Users.class);
-        users.setEmail("profilePic@test.com");
+        users.setAdmin(admin);
         users.setForename("Profile Picture");
         users.setSurname("Test");
         users.setGender(Gender.MALE);
@@ -67,10 +61,13 @@ public class ProfilePicTestCase {
     }
 
     @Test
-    public void testCase03_create_accountPicture() {
+    public void testCase02_create_accountPicture() {
         Users users = this.applicationContext.getBean("users", Users.class);
         users.setEmail("profilePic@test.com");
+        AccountService accountService = this.applicationContext.getBean(AccountService.class);
+        users = accountService.findUsersByUserID(users);
 
+        System.out.println(users);
         AccountPicture accountPicture = this.applicationContext.getBean(AccountPicture.class);
 
         FileProcess fileProcess = this.applicationContext.getBean(FileProcess.class);
@@ -89,7 +86,7 @@ public class ProfilePicTestCase {
     }
 
     @Test
-    public void testCase04_find_and_update_accountPicture() {
+    public void testCase03_find_and_update_accountPicture() {
         Users users = this.applicationContext.getBean("users", Users.class);
         users.setEmail("profilePic@test.com");
 
@@ -114,7 +111,7 @@ public class ProfilePicTestCase {
     }
 
     @Test
-    public void testCase05_find_and_delete_accountPicture() {
+    public void testCase04_find_and_delete_accountPicture() {
         Users users = this.applicationContext.getBean("users", Users.class);
         users.setEmail("profilePic@test.com");
 
@@ -128,26 +125,13 @@ public class ProfilePicTestCase {
     }
 
     @Test
-    public void testCase06_find_and_delete_users() {
+    public void testCase05_find_and_delete_users() {
         Users users = this.applicationContext.getBean("users", Users.class);
         users.setEmail("profilePic@test.com");
 
         AccountService accountService = this.applicationContext.getBean(AccountService.class);
-        users = accountService.findUsersByUserID(users);
-        System.out.println(users);
+
         accountService.deleteUsersByUserID(users);
-    }
-
-    @Test
-    public void testCase07_find_and_delete_account() {
-        Admin admin = this.applicationContext.getBean(Admin.class);
-        admin.setEmail("profilePic@test.com");
-        admin.setPassword("1234");
-
-        AccountService accountService = this.applicationContext.getBean(AccountService.class);
-        admin = accountService.findAccountByEmail(admin);
-        System.out.println(admin);
-        accountService.deleteAccountByEmail(admin);
     }
 }
 

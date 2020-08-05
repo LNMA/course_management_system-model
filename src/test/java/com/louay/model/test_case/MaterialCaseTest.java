@@ -45,18 +45,13 @@ public class MaterialCaseTest {
     }
 
     @Test
-    public void testCase01_create_account() {
+    public void testCase01_create_instructor() {
         Admin admin = this.applicationContext.getBean(Admin.class);
         admin.setEmail("material@test.com");
-        admin.setPassword("1234");
+        admin.setPassword("12345");
 
-        AccountService accountService = this.applicationContext.getBean(AccountService.class);
-        accountService.createAccount(admin);
-    }
-
-    @Test
-    public void testCase02_create_instructor() {
         Instructor instructor = this.applicationContext.getBean("instructor", Instructor.class);
+        instructor.setAdmin(admin);
         instructor.setEmail("material@test.com");
         instructor.setForename("Material");
         instructor.setSurname("Test");
@@ -77,7 +72,7 @@ public class MaterialCaseTest {
     }
 
     @Test
-    public void testCase03_create_course() {
+    public void testCase02_create_course() {
         Instructor instructor = this.applicationContext.getBean("instructor", Instructor.class);
         instructor.setEmail("material@test.com");
         AccountService accountService = this.applicationContext.getBean(AccountService.class);
@@ -94,7 +89,7 @@ public class MaterialCaseTest {
     }
 
     @Test
-    public void testCase04_create_textMaterial() {
+    public void testCase03_create_textMaterial() {
         Users users = this.applicationContext.getBean("users", Users.class);
         users.setEmail("material@test.com");
         AccountService accountService = this.applicationContext.getBean(AccountService.class);
@@ -117,7 +112,7 @@ public class MaterialCaseTest {
     }
 
     @Test
-    public void testCase05_update_textMaterial() {
+    public void testCase04_update_textMaterial() {
         TextMaterials textMaterials = this.applicationContext.getBean(TextMaterials.class);
         textMaterials.setMaterialID((long) 1);
         textMaterials = this.materialService.findTextMaterialsByMaterialId(textMaterials);
@@ -130,7 +125,7 @@ public class MaterialCaseTest {
     }
 
     @Test
-    public void testCase06_create_fileMaterial() {
+    public void testCase05_create_fileMaterial() {
         Users users = this.applicationContext.getBean("users", Users.class);
         users.setEmail("material@test.com");
         AccountService accountService = this.applicationContext.getBean(AccountService.class);
@@ -164,7 +159,7 @@ public class MaterialCaseTest {
     }
 
     @Test
-    public void testCase07_update_fileMaterial() {
+    public void testCase06_update_fileMaterial() {
         FileMaterials fileMaterials = this.applicationContext.getBean(FileMaterials.class);
         fileMaterials.setMaterialID((long) 2);
         fileMaterials = this.materialService.findFileMaterialsByMaterialId(fileMaterials);
@@ -177,7 +172,7 @@ public class MaterialCaseTest {
     }
 
     @Test
-    public void testCase08_delete_material() {
+    public void testCase07_delete_material() {
         FileMaterials fileMaterials = this.applicationContext.getBean(FileMaterials.class);
         fileMaterials.setMaterialID((long) 2);
         fileMaterials = this.materialService.findFileMaterialsByMaterialId(fileMaterials);
@@ -196,7 +191,7 @@ public class MaterialCaseTest {
 
 
     @Test
-    public void testCase09_find_and_delete_course() {
+    public void testCase08_find_and_delete_course() {
         Courses courses = this.applicationContext.getBean(Courses.class);
         courses.setCourseID((long)1);
 
@@ -209,16 +204,16 @@ public class MaterialCaseTest {
     }
 
     @Test
-    public void testCase10_find_and_delete_account() {
-        Admin admin = this.applicationContext.getBean(Admin.class);
-        admin.setEmail("material@test.com");
+    public void testCase09_find_and_delete_account() {
+        Instructor instructor = this.applicationContext.getBean("instructor", Instructor.class);
+        instructor.setEmail("material@test.com");
 
         AccountService accountService = this.applicationContext.getBean(AccountService.class);
-        admin = accountService.findAccountByEmail(admin);
+        instructor = accountService.findInstructorsDetailsByInstructorID(instructor);
 
-        System.out.println(admin);
+        System.out.println(instructor);
 
-        accountService.deleteAccountByEmail(admin);
+        accountService.deleteInstructorsDetailsByInstructorID(instructor);
     }
 
 

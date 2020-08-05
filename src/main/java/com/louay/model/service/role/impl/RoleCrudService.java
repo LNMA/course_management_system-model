@@ -14,7 +14,7 @@ import java.io.Serializable;
 
 @Service
 public class RoleCrudService implements RoleService, Serializable {
-    private static final long serialVersionUID = 2072938752898327441L;
+    private static final long serialVersionUID = -3070531115812342304L;
     private AccountRolesDao accountRolesDao;
     private UsersRolesDao usersRolesDao;
 

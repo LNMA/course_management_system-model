@@ -46,19 +46,15 @@ public class CommentTestCase {
     }
 
     @Test
-    public void testCase01_create_account() {
+    public void testCase01_create_instructor() {
+        AccountService accountService = this.applicationContext.getBean(AccountService.class);
+
         Admin admin = this.applicationContext.getBean(Admin.class);
         admin.setEmail("comment@test.com");
         admin.setPassword("1234");
 
-        AccountService accountService = this.applicationContext.getBean(AccountService.class);
-        accountService.createAccount(admin);
-    }
-
-    @Test
-    public void testCase02_create_instructor() {
         Instructor instructor = this.applicationContext.getBean("instructor", Instructor.class);
-        instructor.setEmail("comment@test.com");
+        instructor.setAdmin(admin);
         instructor.setForename("Comment");
         instructor.setSurname("Test");
         instructor.setGender(Gender.MALE);
@@ -73,12 +69,11 @@ public class CommentTestCase {
         instructor.setPortfolio("github");
         instructor.setProfileVisibility(InstructorProfileVisibility.PUBLIC);
 
-        AccountService accountService = this.applicationContext.getBean(AccountService.class);
         accountService.createInstructorsDetails(instructor);
     }
 
     @Test
-    public void testCase03_create_course() {
+    public void testCase02_create_course() {
         Instructor instructor = this.applicationContext.getBean("instructor", Instructor.class);
         instructor.setEmail("comment@test.com");
         AccountService accountService = this.applicationContext.getBean(AccountService.class);
@@ -95,7 +90,7 @@ public class CommentTestCase {
     }
 
     @Test
-    public void testCase04_create_feedbackMessage() {
+    public void testCase03_create_feedbackMessage() {
         Users users = this.applicationContext.getBean("users", Users.class);
         users.setEmail("comment@test.com");
         AccountService accountService = this.applicationContext.getBean(AccountService.class);
@@ -126,7 +121,7 @@ public class CommentTestCase {
     }
 
     @Test
-    public void testCase05_create_comment() {
+    public void testCase04_create_comment() {
         Users users = this.applicationContext.getBean("users", Users.class);
         users.setEmail("comment@test.com");
         AccountService accountService = this.applicationContext.getBean(AccountService.class);
@@ -148,7 +143,7 @@ public class CommentTestCase {
     }
 
     @Test
-    public void testCase06_update_comment() {
+    public void testCase05_update_comment() {
         Comment comment = this.applicationContext.getBean(Comment.class);
         comment.setCommentID((long) 1);
         comment = this.commentService.findCommentByCommentId(comment);
@@ -161,7 +156,7 @@ public class CommentTestCase {
     }
 
     @Test
-    public void testCase07_delete_comment() {
+    public void testCase06_delete_comment() {
         Comment comment = this.applicationContext.getBean(Comment.class);
         comment.setCommentID((long) 1);
         comment = this.commentService.findCommentByCommentId(comment);
@@ -172,7 +167,7 @@ public class CommentTestCase {
     }
 
     @Test
-    public void testCase08_find_and_delete_course() {
+    public void testCase07_find_and_delete_course() {
         Courses courses = this.applicationContext.getBean(Courses.class);
         courses.setCourseID((long)1);
 
@@ -185,16 +180,16 @@ public class CommentTestCase {
     }
 
     @Test
-    public void testCase09_find_and_delete_account() {
-        Admin admin = this.applicationContext.getBean(Admin.class);
-        admin.setEmail("comment@test.com");
+    public void testCase08_find_and_delete_account() {
+        Instructor instructor = this.applicationContext.getBean("instructor", Instructor.class);
+        instructor.setEmail("comment@test.com");
 
         AccountService accountService = this.applicationContext.getBean(AccountService.class);
-        admin = accountService.findAccountByEmail(admin);
+        instructor = accountService.findInstructorsDetailsByInstructorID(instructor);
 
-        System.out.println(admin);
+        System.out.println(instructor);
 
-        accountService.deleteAccountByEmail(admin);
+        accountService.deleteInstructorsDetailsByInstructorID(instructor);
     }
 
 }

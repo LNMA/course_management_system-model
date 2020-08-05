@@ -39,19 +39,13 @@ public class CourseTestCase {
     }
 
     @Test
-    public void testCase01_create_account() {
+    public void testCase01_create_instructor() {
         Admin admin = this.applicationContext.getBean(Admin.class);
         admin.setEmail("course@test.com");
         admin.setPassword("1234");
 
-        AccountService accountService = this.applicationContext.getBean(AccountService.class);
-        accountService.createAccount(admin);
-    }
-
-    @Test
-    public void testCase02_create_instructor() {
         Instructor instructor = this.applicationContext.getBean("instructor",Instructor.class);
-        instructor.setEmail("course@test.com");
+        instructor.setAdmin(admin);
         instructor.setForename("Account");
         instructor.setSurname("Test");
         instructor.setGender(Gender.MALE);
@@ -71,7 +65,7 @@ public class CourseTestCase {
     }
 
     @Test
-    public void testCase03_create_course() {
+    public void testCase02_create_course() {
         Instructor instructor = this.applicationContext.getBean("instructor",Instructor.class);
         instructor.setEmail("course@test.com");
         AccountService accountService = this.applicationContext.getBean(AccountService.class);
@@ -87,7 +81,7 @@ public class CourseTestCase {
     }
 
     @Test
-    public void testCase04_find_and_update_course() {
+    public void testCase03_find_and_update_course() {
         Courses courses = this.applicationContext.getBean(Courses.class);
         courses.setCourseID((long)1);
 
@@ -101,7 +95,7 @@ public class CourseTestCase {
     }
 
     @Test
-    public void testCase05_find_and_delete_course() {
+    public void testCase04_find_and_delete_course() {
         Courses courses = this.applicationContext.getBean(Courses.class);
         courses.setCourseID((long)1);
 
@@ -112,14 +106,16 @@ public class CourseTestCase {
     }
 
     @Test
-    public void testCase06_find_and_delete_account() {
-        Admin admin = this.applicationContext.getBean(Admin.class);
-        admin.setEmail("course@test.com");
+    public void testCase05_find_and_delete_account() {
+        Instructor instructor = this.applicationContext.getBean("instructor", Instructor.class);
+        instructor.setEmail("course@test.com");
 
         AccountService accountService = this.applicationContext.getBean(AccountService.class);
-        admin = accountService.findAccountByEmail(admin);
-        System.out.println(admin);
-        accountService.deleteAccountByEmail(admin);
+        instructor = accountService.findInstructorsDetailsByInstructorID(instructor);
+
+        System.out.println(instructor);
+
+        accountService.deleteInstructorsDetailsByInstructorID(instructor);
     }
 }
 

@@ -18,11 +18,11 @@ import java.util.Date;
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 @Polymorphism(type = PolymorphismType.EXPLICIT)
-@AttributeOverride(name = "email", column = @Column(name = "user_id", columnDefinition = "VARCHAR(200)"))
+@AttributeOverride(name = "email", column = @Column(name = "user_id", columnDefinition = "VARCHAR(200)", nullable = false))
 @Table( name = "users_details")
-public class Users extends GenericAccounts {
-    private static final long serialVersionUID = 1343915267299212519L;
-    @MapsId("email")
+public class Users extends Accounts {
+    private static final long serialVersionUID = -7994388727316039638L;
+    @MapsId
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, targetEntity = Admin.class)
     @JoinColumn(name = "user_id", referencedColumnName = "email", columnDefinition = "VARCHAR(200)", foreignKey =
     @ForeignKey(name = "fk_users_email_users_details_user_id", foreignKeyDefinition = "FOREIGN KEY (user_id) " +
@@ -135,14 +135,8 @@ public class Users extends GenericAccounts {
 
     @Transient
     @Override
-    public int compareTo(GenericAccounts o) {
-        return super.getEmail().compareTo(o.getEmail());
-    }
-
-    @Transient
-    @Override
     public String toString() {
-        return "Users{" +
+        return super.toString() + ", Users{" +
                 "admin=" + admin.getEmail() +
                 ", forename='" + forename + '\'' +
                 ", surname='" + surname + '\'' +

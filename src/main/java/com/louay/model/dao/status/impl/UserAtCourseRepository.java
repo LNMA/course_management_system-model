@@ -1,20 +1,20 @@
-package com.louay.model.dao.role.impl;
+package com.louay.model.dao.status.impl;
 
 import com.louay.model.dao.CommonDaoImpl;
-import com.louay.model.dao.role.UsersRolesDao;
-import com.louay.model.entity.role.UsersRoles;
+import com.louay.model.dao.status.UserAtCourseDao;
+import com.louay.model.entity.status.UserAtCourse;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.LockModeType;
 import java.util.*;
 
 @Repository
-public class UsersRolesRepository extends CommonDaoImpl<UsersRoles> implements UsersRolesDao {
-    private static final long serialVersionUID = 970518634702550032L;
+public class UserAtCourseRepository extends CommonDaoImpl<UserAtCourse> implements UserAtCourseDao {
+    private static final long serialVersionUID = -8327756498058565209L;
 
     @Override
-    public <S extends UsersRoles> Boolean isExist(S entity) {
-        return !getEntityManager().createQuery("SELECT r From UsersRoles r WHERE r.users.email = :email")
+    public <S extends UserAtCourse> Boolean isExist(S entity) {
+        return !getEntityManager().createQuery("SELECT u From UserAtCourse u WHERE u.users.email = :email")
                 .setParameter("email", entity.getUsers().getEmail())
                 .setMaxResults(1)
                 .getResultList()
@@ -22,8 +22,8 @@ public class UsersRolesRepository extends CommonDaoImpl<UsersRoles> implements U
     }
 
     @Override
-    public <S extends UsersRoles> S delete(S entity) {
-        Class<? extends UsersRoles> entityClass = entity.getClass();
+    public <S extends UserAtCourse> S delete(S entity) {
+        Class<? extends UserAtCourse> entityClass = entity.getClass();
         @SuppressWarnings("unchecked")
         S entityFound = (S) getEntityManager().getReference(entityClass, entity.getUsers().getEmail());
         getEntityManager().remove(entityFound);
@@ -31,10 +31,10 @@ public class UsersRolesRepository extends CommonDaoImpl<UsersRoles> implements U
     }
 
     @Override
-    public <S extends UsersRoles> Collection<S> deleteAll(Iterable<S> entities) {
+    public <S extends UserAtCourse> Collection<S> deleteAll(Iterable<S> entities) {
         List<S> result = new ArrayList<>();
         for (S s : entities) {
-            Class<? extends UsersRoles> entityClass = s.getClass();
+            Class<? extends UserAtCourse> entityClass = s.getClass();
             @SuppressWarnings("unchecked")
             S entityFound = (S) getEntityManager().getReference(entityClass, s.getUsers().getEmail());
             getEntityManager().remove(entityFound);
@@ -46,18 +46,18 @@ public class UsersRolesRepository extends CommonDaoImpl<UsersRoles> implements U
     }
 
     @Override
-    public <S extends UsersRoles> S findOneById(S entity) {
-        Class<? extends UsersRoles> entityClass = entity.getClass();
+    public <S extends UserAtCourse> S findOneById(S entity) {
+        Class<? extends UserAtCourse> entityClass = entity.getClass();
         @SuppressWarnings("unchecked")
         S result = (S) getEntityManager().find(entityClass, entity.getUsers().getEmail(), LockModeType.PESSIMISTIC_READ);
         return result;
     }
 
     @Override
-    public <S extends UsersRoles> Collection<S> findAllById(Iterable<S> entities) {
+    public <S extends UserAtCourse> Collection<S> findAllById(Iterable<S> entities) {
         Set<S> result = new HashSet<>();
         for (S s : entities) {
-            Class<? extends UsersRoles> entityClass = s.getClass();
+            Class<? extends UserAtCourse> entityClass = s.getClass();
             @SuppressWarnings("unchecked")
             S entityFound = (S) getEntityManager().find(entityClass, s.getUsers().getEmail(), LockModeType.PESSIMISTIC_READ);
             result.add(entityFound);

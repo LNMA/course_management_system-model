@@ -18,8 +18,8 @@ import java.util.Date;
 @EntityListeners(AuditingEntityListener.class)
 @JsonIgnoreProperties(value = {"joinDate"}, allowGetters = true)
 @AttributeOverride(name = "email", column = @Column(name = "email", columnDefinition = "VARCHAR(200)", nullable = false))
-public class Admin extends GenericAccounts {
-    private static final long serialVersionUID = 7273903547850056462L;
+public class Admin extends Accounts {
+    private static final long serialVersionUID = 8513727386545257049L;
     @Column(name = "password", nullable = false, length = 100, columnDefinition = "VARCHAR(100)")
     private String password;
 
@@ -52,14 +52,8 @@ public class Admin extends GenericAccounts {
 
     @Transient
     @Override
-    public int compareTo(GenericAccounts o) {
-        return this.getEmail().compareTo(o.getEmail());
-    }
-
-    @Transient
-    @Override
     public String toString() {
-        return super.toString()+", Admin{" +
+        return super.toString() + ", Admin{" +
                 "password='" + password + '\'' +
                 ", joinDate=" + joinDate +
                 '}';

@@ -16,8 +16,10 @@ public abstract class MaterialContent extends CourseMaterials {
     private static final long serialVersionUID = 3603610715061233435L;
     @Temporal(TemporalType.TIMESTAMP)
     @LastModifiedDate
+    @Column(columnDefinition = "TIMESTAMP(0)")
     private Date uploadDate;
 
+    @Column(columnDefinition = "VARCHAR(200)")
     private String materialName;
 
     public Date getUploadDate() {
