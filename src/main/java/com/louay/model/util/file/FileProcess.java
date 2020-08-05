@@ -1,7 +1,10 @@
 package com.louay.model.util.file;
 
+import org.springframework.stereotype.Component;
+
 import java.io.*;
 
+@Component
 public class FileProcess {
     public byte[] readFile(String path) throws IOException {
         byte[] bytes;
