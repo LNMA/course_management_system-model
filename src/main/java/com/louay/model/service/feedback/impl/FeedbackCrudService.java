@@ -16,26 +16,25 @@ import java.io.Serializable;
 
 @Service
 public class FeedbackCrudService implements FeedbackService, Serializable {
-    private static final long serialVersionUID = -1069128131448525369L;
-    private FeedbackDao feedbackDao;
-    private CourseFeedbackDao courseFeedbackDao;
+    private static final long serialVersionUID = 5174310038229708383L;
+    private final FeedbackDao feedbackDao;
+    private final CourseFeedbackDao courseFeedbackDao;
 
-    public FeedbackDao getFeedbackDao() {
+    @Autowired
+    public FeedbackCrudService(FeedbackDao feedbackDao, CourseFeedbackDao courseFeedbackDao) {
+        if (courseFeedbackDao == null || feedbackDao == null){
+            throw new IllegalArgumentException("DAO cannot be null at FeedbackCrudService.class");
+        }
+        this.feedbackDao = feedbackDao;
+        this.courseFeedbackDao = courseFeedbackDao;
+    }
+
+    private FeedbackDao getFeedbackDao() {
         return feedbackDao;
     }
 
-    @Autowired
-    public void setFeedbackDao(FeedbackDao feedbackDao) {
-        this.feedbackDao = feedbackDao;
-    }
-
-    public CourseFeedbackDao getCourseFeedbackDao() {
+    private CourseFeedbackDao getCourseFeedbackDao() {
         return courseFeedbackDao;
-    }
-
-    @Autowired
-    public void setCourseFeedbackDao(CourseFeedbackDao courseFeedbackDao) {
-        this.courseFeedbackDao = courseFeedbackDao;
     }
 
     @Transactional

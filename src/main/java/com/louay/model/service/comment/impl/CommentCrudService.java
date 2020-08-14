@@ -12,16 +12,19 @@ import java.io.Serializable;
 
 @Service
 public class CommentCrudService implements CommentService, Serializable {
-    private static final long serialVersionUID = -8871520160623685053L;
-    private CommentDao commentDao;
-
-    public CommentDao getCommentDao() {
-        return commentDao;
-    }
+    private static final long serialVersionUID = 2407643217403173488L;
+    private final CommentDao commentDao;
 
     @Autowired
-    public void setCommentDao(CommentDao commentDao) {
+    public CommentCrudService(CommentDao commentDao) {
+        if (commentDao == null){
+            throw new IllegalArgumentException("DAO cannot be null at CommentCrudService.class");
+        }
         this.commentDao = commentDao;
+    }
+
+    private CommentDao getCommentDao() {
+        return commentDao;
     }
 
     @Transactional

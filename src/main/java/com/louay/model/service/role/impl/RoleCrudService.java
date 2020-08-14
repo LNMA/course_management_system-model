@@ -14,26 +14,25 @@ import java.io.Serializable;
 
 @Service
 public class RoleCrudService implements RoleService, Serializable {
-    private static final long serialVersionUID = -3070531115812342304L;
-    private AccountRolesDao accountRolesDao;
-    private UsersRolesDao usersRolesDao;
+    private static final long serialVersionUID = -569575096437487460L;
+    private final AccountRolesDao accountRolesDao;
+    private final UsersRolesDao usersRolesDao;
 
-    public AccountRolesDao getAccountRolesDao() {
+    @Autowired
+    public RoleCrudService(AccountRolesDao accountRolesDao, UsersRolesDao usersRolesDao) {
+        if (accountRolesDao == null || usersRolesDao == null){
+            throw new IllegalArgumentException("DAO cannot be null at RoleCrudService.class");
+        }
+        this.accountRolesDao = accountRolesDao;
+        this.usersRolesDao = usersRolesDao;
+    }
+
+    private AccountRolesDao getAccountRolesDao() {
         return accountRolesDao;
     }
 
-    @Autowired
-    public void setAccountRolesDao(AccountRolesDao accountRolesDao) {
-        this.accountRolesDao = accountRolesDao;
-    }
-
-    public UsersRolesDao getUsersRolesDao() {
+    private UsersRolesDao getUsersRolesDao() {
         return usersRolesDao;
-    }
-
-    @Autowired
-    public void setUsersRolesDao(UsersRolesDao usersRolesDao) {
-        this.usersRolesDao = usersRolesDao;
     }
 
     @Transactional

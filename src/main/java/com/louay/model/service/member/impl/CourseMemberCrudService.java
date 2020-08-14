@@ -12,16 +12,19 @@ import java.io.Serializable;
 
 @Service
 public class CourseMemberCrudService implements CourseMemberService, Serializable {
-    private static final long serialVersionUID = -5824570950859492038L;
-    private CourseMemberDao courseMemberDao;
-
-    public CourseMemberDao getCourseMemberDao() {
-        return courseMemberDao;
-    }
+    private static final long serialVersionUID = 6321313230590810028L;
+    private final CourseMemberDao courseMemberDao;
 
     @Autowired
-    public void setCourseMemberDao(CourseMemberDao courseMemberDao) {
+    public CourseMemberCrudService(CourseMemberDao courseMemberDao) {
+        if (courseMemberDao == null){
+            throw new IllegalArgumentException("DAO cannot be null at CourseMemberCrudService.class");
+        }
         this.courseMemberDao = courseMemberDao;
+    }
+
+    private CourseMemberDao getCourseMemberDao() {
+        return courseMemberDao;
     }
 
     @Transactional
