@@ -97,7 +97,7 @@ public class AccountTestCase extends TestCase {
         users.setBirthday(Date.valueOf("2020-07-26"));
         users.setCountry("Test");
         users.setState("model");
-        users.setPhone(875454);
+        users.setPhone("875454");
         users.setAddress("AccountTestCaseClass");
 
         this.accountService.createUsers(users);
@@ -151,7 +151,7 @@ public class AccountTestCase extends TestCase {
         instructor.setBirthday(Date.valueOf("2020-07-26"));
         instructor.setCountry("Test");
         instructor.setState("model");
-        instructor.setPhone(875454);
+        instructor.setPhone("875454");
         instructor.setAddress("AccountTestCaseClass");
         instructor.setHeadline("i am instructor");
         instructor.setNickname("dr");
@@ -210,13 +210,13 @@ public class AccountTestCase extends TestCase {
         student.setBirthday(Date.valueOf("2020-07-26"));
         student.setCountry("Test");
         student.setState("model");
-        student.setPhone(875454);
+        student.setPhone("875454");
         student.setAddress("AccountTestCaseClass");
         student.setGender(Gender.MALE);
         student.setBirthday(Date.valueOf("2020-07-26"));
         student.setCountry("Test");
         student.setState("Model");
-        student.setPhone(123456);
+        student.setPhone("123456");
         student.setAddress("AccountTestCaseClass");
         student.setHeadline("i am student");
         student.setInterests("football");

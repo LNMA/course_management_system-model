@@ -39,17 +39,17 @@ public class Users extends Accounts {
     @Enumerated(EnumType.STRING)
     private Gender gender;
 
-    @Column(name = "phone", columnDefinition = "INT(10)")
-    private Integer phone;
+    @Column(name = "phone", length = 20, columnDefinition = "VARCHAR(20)")
+    private String phone;
 
     @Column(name = "birthday",columnDefinition = "DATE")
     @Temporal(TemporalType.DATE)
     private Date birthday;
 
-    @Column(name = "country", length = 100, columnDefinition = "VARCHAR(20)")
+    @Column(name = "country", length = 60, columnDefinition = "VARCHAR(60)")
     private String country;
 
-    @Column(name = "state", length = 100, columnDefinition = "VARCHAR(20)")
+    @Column(name = "state", length = 60, columnDefinition = "VARCHAR(60)")
     private String state;
 
     @Column(name = "address", length = 200, columnDefinition = "VARCHAR(200)")
@@ -87,11 +87,11 @@ public class Users extends Accounts {
         this.gender = gender;
     }
 
-    public Integer getPhone() {
+    public String getPhone() {
         return phone;
     }
 
-    public void setPhone(Integer phone) {
+    public void setPhone(String phone) {
         this.phone = phone;
     }
 

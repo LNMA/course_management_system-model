@@ -53,7 +53,7 @@ public class ProfilePicTestCase {
         users.setBirthday(Date.valueOf("2020-07-26"));
         users.setCountry("Test");
         users.setState("modal");
-        users.setPhone(123456);
+        users.setPhone("123456");
         users.setAddress("ProfilePicTestCaseClass");
 
         AccountService accountService = this.applicationContext.getBean(AccountService.class);

@@ -55,7 +55,7 @@ public class UserAttendanceTestCase {
         instructor.setBirthday(Date.valueOf("2020-07-26"));
         instructor.setCountry("Test");
         instructor.setState("model");
-        instructor.setPhone(875454);
+        instructor.setPhone("875454");
         instructor.setAddress("UserAttendanceTestCase");
         instructor.setHeadline("i am instructor");
         instructor.setNickname("dr");
@@ -81,7 +81,7 @@ public class UserAttendanceTestCase {
         student.setBirthday(Date.valueOf("2020-07-26"));
         student.setCountry("Test");
         student.setState("model");
-        student.setPhone(875454);
+        student.setPhone("875454");
         student.setAddress("UserAttendanceTestCase");
         student.setHeadline("i am instructor");
         student.setInterests("nothing");

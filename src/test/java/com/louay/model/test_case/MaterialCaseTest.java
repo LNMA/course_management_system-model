@@ -59,7 +59,7 @@ public class MaterialCaseTest {
         instructor.setBirthday(Date.valueOf("2020-07-26"));
         instructor.setCountry("Test");
         instructor.setState("model");
-        instructor.setPhone(875454);
+        instructor.setPhone("875454");
         instructor.setAddress("MaterialCaseTest");
         instructor.setHeadline("i am instructor");
         instructor.setNickname("dr");
