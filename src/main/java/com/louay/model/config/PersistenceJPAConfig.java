@@ -55,7 +55,7 @@ public class PersistenceJPAConfig {
         p.setRemoveAbandoned(true);
         p.setRemoveAbandonedTimeout(60);
         p.setSuspectTimeout(60);
-        p.setLogAbandoned(true);
+        p.setLogAbandoned(false);
         p.setJmxEnabled(true);
         p.setValidationInterval(3000);
         p.setMaxAge(7200000);

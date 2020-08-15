@@ -15,7 +15,7 @@ import java.io.Serializable;
 
 @Service
 public class AccountCrudService implements AccountService, Serializable {
-    private static final long serialVersionUID = -3626190829855605565L;
+    private static final long serialVersionUID = 1407091182688906499L;
     private final AccountDao accountDao;
 
     @Autowired
@@ -124,5 +124,15 @@ public class AccountCrudService implements AccountService, Serializable {
     @Override
     public Instructor findInstructorsDetailsByInstructorID(Instructor instructor) {
         return getAccountDao().findOneById(instructor);
+    }
+
+    @Override
+    public Boolean isExistAccount(Admin admin) {
+        return getAccountDao().isExist(admin);
+    }
+
+    @Override
+    public Boolean isExistUsers(Users users) {
+        return getAccountDao().isExist(users);
     }
 }

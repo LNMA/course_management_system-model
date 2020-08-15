@@ -21,7 +21,7 @@ import java.util.Date;
 @AttributeOverride(name = "email", column = @Column(name = "user_id", columnDefinition = "VARCHAR(200)", nullable = false))
 @Table( name = "users_details")
 public class Users extends Accounts {
-    private static final long serialVersionUID = -7994388727316039638L;
+    private static final long serialVersionUID = 390442755675747867L;
     @MapsId
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, targetEntity = Admin.class)
     @JoinColumn(name = "user_id", referencedColumnName = "email", columnDefinition = "VARCHAR(200)", foreignKey =

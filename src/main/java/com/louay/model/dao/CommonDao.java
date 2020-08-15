@@ -10,4 +10,6 @@ public interface CommonDao<T> {
     <S extends T> S update(S entity);
 
     <S extends T> Collection<S> updateAll(Iterable<S> entities);
+
+    <S extends T> Boolean isExist(S entity);
 }
