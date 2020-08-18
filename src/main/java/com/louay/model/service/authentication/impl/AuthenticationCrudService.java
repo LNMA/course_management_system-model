@@ -14,7 +14,7 @@ import java.io.Serializable;
 
 @Service
 public class AuthenticationCrudService implements AuthenticationService, Serializable {
-    private static final long serialVersionUID = 5510874537225379407L;
+    private static final long serialVersionUID = -1931217921340122159L;
     private final UserAuthenticationDao userAuthenticationDao;
     private final CookieLoginDao cookieLoginDao;
 
@@ -81,5 +81,17 @@ public class AuthenticationCrudService implements AuthenticationService, Seriali
     @Override
     public CookieLogin findCookieLoginByEmail(CookieLogin cookieLogin) {
         return getCookieLoginDao().findOneById(cookieLogin);
+    }
+
+    @Transactional
+    @Override
+    public Boolean isExistUsersAuthentication(UsersAuthentication usersAuthentication) {
+        return getUserAuthenticationDao().isExist(usersAuthentication);
+    }
+
+    @Transactional
+    @Override
+    public Boolean isExistCookieLogin(CookieLogin cookieLogin) {
+        return getCookieLoginDao().isExist(cookieLogin);
     }
 }

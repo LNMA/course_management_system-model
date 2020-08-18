@@ -19,4 +19,8 @@ public interface AuthenticationService {
     CookieLogin updateCookieLogin(CookieLogin cookieLogin);
 
     CookieLogin findCookieLoginByEmail(CookieLogin cookieLogin);
+
+    Boolean isExistUsersAuthentication(UsersAuthentication usersAuthentication);
+
+    Boolean isExistCookieLogin(CookieLogin cookieLogin);
 }

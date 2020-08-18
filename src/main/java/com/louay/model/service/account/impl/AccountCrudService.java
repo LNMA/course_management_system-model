@@ -126,11 +126,13 @@ public class AccountCrudService implements AccountService, Serializable {
         return getAccountDao().findOneById(instructor);
     }
 
+    @Transactional
     @Override
     public Boolean isExistAccount(Admin admin) {
         return getAccountDao().isExist(admin);
     }
 
+    @Transactional
     @Override
     public Boolean isExistUsers(Users users) {
         return getAccountDao().isExist(users);

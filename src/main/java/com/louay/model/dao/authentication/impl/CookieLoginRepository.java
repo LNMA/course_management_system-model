@@ -14,8 +14,8 @@ public class CookieLoginRepository extends CommonDaoImpl<CookieLogin> implements
 
     @Override
     public <S extends CookieLogin> Boolean isExist(S entity) {
-        return !getEntityManager().createQuery("SELECT c From CookieLogin c WHERE c.email = :email")
-                .setParameter("email", entity.getEmail())
+        return !getEntityManager().createQuery("SELECT c From CookieLogin c WHERE c.admin.email = :email")
+                .setParameter("email", entity.getAdmin().getEmail())
                 .setMaxResults(1)
                 .getResultList()
                 .isEmpty();
@@ -25,7 +25,7 @@ public class CookieLoginRepository extends CommonDaoImpl<CookieLogin> implements
     public <S extends CookieLogin> S delete(S entity) {
         Class<? extends CookieLogin> entityClass = entity.getClass();
         @SuppressWarnings("unchecked")
-        S entityFound = (S) getEntityManager().getReference(entityClass, entity.getEmail());
+        S entityFound = (S) getEntityManager().getReference(entityClass, entity.getAdmin().getEmail());
         getEntityManager().remove(entityFound);
         return entity;
     }
@@ -36,7 +36,7 @@ public class CookieLoginRepository extends CommonDaoImpl<CookieLogin> implements
         for (S s : entities) {
             Class<? extends CookieLogin> entityClass = s.getClass();
             @SuppressWarnings("unchecked")
-            S entityFound = (S) getEntityManager().getReference(entityClass, s.getEmail());
+            S entityFound = (S) getEntityManager().getReference(entityClass, s.getAdmin().getEmail());
             getEntityManager().remove(entityFound);
             getEntityManager().flush();
             result.add(s);
@@ -49,7 +49,7 @@ public class CookieLoginRepository extends CommonDaoImpl<CookieLogin> implements
     public <S extends CookieLogin> S findOneById(S entity) {
         Class<? extends CookieLogin> entityClass = entity.getClass();
         @SuppressWarnings("unchecked")
-        S result = (S) getEntityManager().find(entityClass, entity.getEmail(), LockModeType.PESSIMISTIC_READ);
+        S result = (S) getEntityManager().find(entityClass, entity.getAdmin().getEmail(), LockModeType.PESSIMISTIC_READ);
         return result;
     }
 
@@ -59,7 +59,7 @@ public class CookieLoginRepository extends CommonDaoImpl<CookieLogin> implements
         for (S s : entities) {
             Class<? extends CookieLogin> entityClass = s.getClass();
             @SuppressWarnings("unchecked")
-            S entityFound = (S) getEntityManager().find(entityClass, s.getEmail(), LockModeType.PESSIMISTIC_READ);
+            S entityFound = (S) getEntityManager().find(entityClass, s.getAdmin().getEmail(), LockModeType.PESSIMISTIC_READ);
             result.add(entityFound);
             getEntityManager().flush();
             getEntityManager().clear();
