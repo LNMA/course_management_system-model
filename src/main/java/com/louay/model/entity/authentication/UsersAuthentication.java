@@ -94,7 +94,7 @@ public class UsersAuthentication implements Serializable, Comparable<UsersAuthen
     public String toString() {
         return "UsersAuthentication{" +
                 "userId='" + userId + '\'' +
-                ", users=" + users +
+                ", users=" + users.getEmail() +
                 ", verificationNumber=" + verificationNumber +
                 ", lastUpdateDate=" + lastUpdateDate +
                 '}';
