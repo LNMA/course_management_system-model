@@ -6,27 +6,27 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.util.Calendar;
 
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
 @JsonIgnoreProperties(value = {"uploadDate"}, allowGetters = true)
 @PrimaryKeyJoinColumn(name = "material_id", referencedColumnName = "material_id", columnDefinition = "BIGINT(20)")
 public abstract class MaterialContent extends CourseMaterials {
-    private static final long serialVersionUID = 3603610715061233435L;
+    private static final long serialVersionUID = 9192937073759975046L;
     @Temporal(TemporalType.TIMESTAMP)
     @LastModifiedDate
     @Column(columnDefinition = "TIMESTAMP(0)")
-    private Date uploadDate;
+    private Calendar uploadDate;
 
     @Column(columnDefinition = "VARCHAR(200)")
     private String materialName;
 
-    public Date getUploadDate() {
+    public Calendar getUploadDate() {
         return uploadDate;
     }
 
-    public void setUploadDate(Date uploadDate) {
+    public void setUploadDate(Calendar uploadDate) {
         this.uploadDate = uploadDate;
     }
 

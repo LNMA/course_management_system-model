@@ -18,7 +18,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.sql.Date;
+import java.util.Calendar;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = {MySpringBootJDBCApplication.class})
@@ -50,10 +50,12 @@ public class StatusTestCase {
         users.setForename("Users Status");
         users.setSurname("Test");
         users.setGender(Gender.MALE);
-        users.setBirthday(Date.valueOf("2020-07-26"));
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(2020, Calendar.SEPTEMBER, 22);
+        users.setBirthday(calendar);
         users.setCountry("Test");
         users.setState("modal");
-        users.setPhone(123456);
+        users.setPhone("123456");
         users.setAddress("StatusTestCaseClass");
 
         AccountService accountService = this.applicationContext.getBean(AccountService.class);

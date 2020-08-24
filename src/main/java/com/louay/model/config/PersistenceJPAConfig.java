@@ -4,7 +4,6 @@ import org.apache.tomcat.jdbc.pool.DataSource;
 import org.apache.tomcat.jdbc.pool.PoolProperties;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
-import org.springframework.context.annotation.AdviceMode;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -36,7 +35,7 @@ public class PersistenceJPAConfig {
         org.apache.tomcat.jdbc.pool.DataSource dataSource = new org.apache.tomcat.jdbc.pool.DataSource();
         PoolProperties p = new PoolProperties();
         p.setDriverClassName("com.mysql.cj.jdbc.Driver");
-        p.setUrl("jdbc:mysql://localhost:3306/course_management_system?useSSL=false");
+        p.setUrl("jdbc:mysql://localhost:3306/course_management_system");
         p.setUsername("root");
         p.setPassword("1729384#General");
         p.setMaxActive(100);
@@ -56,7 +55,7 @@ public class PersistenceJPAConfig {
         p.setRemoveAbandoned(true);
         p.setRemoveAbandonedTimeout(60);
         p.setSuspectTimeout(60);
-        p.setLogAbandoned(true);
+        p.setLogAbandoned(false);
         p.setJmxEnabled(true);
         p.setValidationInterval(3000);
         p.setMaxAge(7200000);

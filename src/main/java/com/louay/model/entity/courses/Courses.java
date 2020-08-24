@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Date;
+import java.util.Calendar;
 import java.util.Objects;
 
 @Component
@@ -15,7 +15,7 @@ import java.util.Objects;
 @Entity
 @Table(name = "courses", indexes = {@Index(name = "courses_instructor_id_IX", columnList = "instructor_id")})
 public class Courses implements Comparable<Courses>, Serializable {
-    private static final long serialVersionUID = 6725739113423353373L;
+    private static final long serialVersionUID = 6029154954933918718L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "course_id", nullable = false, columnDefinition = "BIGINT(20)")
@@ -26,11 +26,11 @@ public class Courses implements Comparable<Courses>, Serializable {
 
     @Column(name = "start_date", nullable = false, columnDefinition = "TIMESTAMP(0)")
     @Temporal(TemporalType.TIMESTAMP)
-    private Date startDate;
+    private Calendar startDate;
 
     @Column(name = "end_date", nullable = false, columnDefinition = "TIMESTAMP(0)")
     @Temporal(TemporalType.TIMESTAMP)
-    private Date endDate;
+    private Calendar endDate;
 
     @ManyToOne(targetEntity = Instructor.class, fetch = FetchType.LAZY)
     @JoinColumn(name = "instructor_id", referencedColumnName = "instructors_id", nullable = false, foreignKey =
@@ -55,19 +55,19 @@ public class Courses implements Comparable<Courses>, Serializable {
         this.courseName = courseName;
     }
 
-    public Date getStartDate() {
+    public Calendar getStartDate() {
         return this.startDate;
     }
 
-    public void setStartDate(Date startDate) {
+    public void setStartDate(Calendar startDate) {
         this.startDate = startDate;
     }
 
-    public Date getEndDate() {
+    public Calendar getEndDate() {
         return this.endDate;
     }
 
-    public void setEndDate(Date endDate) {
+    public void setEndDate(Calendar endDate) {
         this.endDate = endDate;
     }
 

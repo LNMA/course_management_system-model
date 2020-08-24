@@ -5,7 +5,6 @@ import com.louay.model.dao.comment.CommentDao;
 import com.louay.model.entity.feedback.comment.Comment;
 import org.springframework.stereotype.Repository;
 
-import javax.persistence.LockModeType;
 import java.util.*;
 
 @Repository
@@ -49,7 +48,7 @@ public class CommentRepository extends CommonDaoImpl<Comment> implements Comment
     public <S extends Comment> S findOneById(S entity) {
         Class<? extends Comment> entityClass = entity.getClass();
         @SuppressWarnings("unchecked")
-        S result = (S) getEntityManager().find(entityClass, entity.getCommentID(), LockModeType.PESSIMISTIC_READ);
+        S result = (S) getEntityManager().find(entityClass, entity.getCommentID());
         return result;
     }
 
@@ -59,7 +58,7 @@ public class CommentRepository extends CommonDaoImpl<Comment> implements Comment
         for (S s : entities) {
             Class<? extends Comment> entityClass = s.getClass();
             @SuppressWarnings("unchecked")
-            S entityFound = (S) getEntityManager().find(entityClass, s.getCommentID(), LockModeType.PESSIMISTIC_READ);
+            S entityFound = (S) getEntityManager().find(entityClass, s.getCommentID());
             result.add(entityFound);
             getEntityManager().flush();
             getEntityManager().clear();

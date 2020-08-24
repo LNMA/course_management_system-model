@@ -18,8 +18,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.test.context.junit4.SpringRunner;
 
-
-import java.sql.Date;
+import java.util.Calendar;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = {MySpringBootJDBCApplication.class})
@@ -94,10 +93,12 @@ public class AccountTestCase extends TestCase {
         users.setForename("Account");
         users.setSurname("Test");
         users.setGender(Gender.MALE);
-        users.setBirthday(Date.valueOf("2020-07-26"));
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(2000, Calendar.SEPTEMBER, 22);
+        users.setBirthday(calendar);
         users.setCountry("Test");
         users.setState("model");
-        users.setPhone(875454);
+        users.setPhone("875454");
         users.setAddress("AccountTestCaseClass");
 
         this.accountService.createUsers(users);
@@ -148,10 +149,12 @@ public class AccountTestCase extends TestCase {
         instructor.setForename("Account");
         instructor.setSurname("Test");
         instructor.setGender(Gender.MALE);
-        instructor.setBirthday(Date.valueOf("2020-07-26"));
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(2000, Calendar.SEPTEMBER, 22);
+        instructor.setBirthday(calendar);
         instructor.setCountry("Test");
         instructor.setState("model");
-        instructor.setPhone(875454);
+        instructor.setPhone("875454");
         instructor.setAddress("AccountTestCaseClass");
         instructor.setHeadline("i am instructor");
         instructor.setNickname("dr");
@@ -162,6 +165,7 @@ public class AccountTestCase extends TestCase {
         this.accountService.createInstructorsDetails(instructor);
 
         System.out.println(instructor);
+        System.out.println(instructor.getAge());
     }
 
     @Test
@@ -207,16 +211,12 @@ public class AccountTestCase extends TestCase {
         student.setForename("Account");
         student.setSurname("Test");
         student.setGender(Gender.MALE);
-        student.setBirthday(Date.valueOf("2020-07-26"));
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(2000, Calendar.SEPTEMBER, 22);
+        student.setBirthday(calendar);
         student.setCountry("Test");
         student.setState("model");
-        student.setPhone(875454);
-        student.setAddress("AccountTestCaseClass");
-        student.setGender(Gender.MALE);
-        student.setBirthday(Date.valueOf("2020-07-26"));
-        student.setCountry("Test");
-        student.setState("Model");
-        student.setPhone(123456);
+        student.setPhone("875454");
         student.setAddress("AccountTestCaseClass");
         student.setHeadline("i am student");
         student.setInterests("football");

@@ -12,16 +12,19 @@ import java.io.Serializable;
 
 @Service
 public class AttendanceCrudService implements UsersAttendanceService, Serializable {
-    private static final long serialVersionUID = 5411356917719085167L;
-    private UsersAttendanceDao usersAttendanceDao;
-
-    public UsersAttendanceDao getUsersAttendanceDao() {
-        return usersAttendanceDao;
-    }
+    private static final long serialVersionUID = -5874737498296171347L;
+    private final UsersAttendanceDao usersAttendanceDao;
 
     @Autowired
-    public void setUsersAttendanceDao(UsersAttendanceDao usersAttendanceDao) {
+    public AttendanceCrudService(UsersAttendanceDao usersAttendanceDao) {
+        if (usersAttendanceDao == null){
+            throw new IllegalArgumentException("DAO cannot be null at AttendanceCrudService.class");
+        }
         this.usersAttendanceDao = usersAttendanceDao;
+    }
+
+    private UsersAttendanceDao getUsersAttendanceDao() {
+        return usersAttendanceDao;
     }
 
     @Transactional

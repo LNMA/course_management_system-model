@@ -15,16 +15,19 @@ import java.io.Serializable;
 
 @Service
 public class AccountCrudService implements AccountService, Serializable {
-    private static final long serialVersionUID = -6163818466720439509L;
-    private AccountDao accountDao;
-
-    public AccountDao getAccountDao() {
-        return this.accountDao;
-    }
+    private static final long serialVersionUID = 1407091182688906499L;
+    private final AccountDao accountDao;
 
     @Autowired
-    public void setAccountDao(AccountDao accountDao) {
+    public AccountCrudService(AccountDao accountDao) {
+        if (accountDao == null){
+            throw new IllegalArgumentException("DAO cannot be null at AccountCrudService.class");
+        }
         this.accountDao = accountDao;
+    }
+
+    private AccountDao getAccountDao() {
+        return this.accountDao;
     }
 
     @Transactional
@@ -121,5 +124,17 @@ public class AccountCrudService implements AccountService, Serializable {
     @Override
     public Instructor findInstructorsDetailsByInstructorID(Instructor instructor) {
         return getAccountDao().findOneById(instructor);
+    }
+
+    @Transactional
+    @Override
+    public Boolean isExistAccount(Admin admin) {
+        return getAccountDao().isExist(admin);
+    }
+
+    @Transactional
+    @Override
+    public Boolean isExistUsers(Users users) {
+        return getAccountDao().isExist(users);
     }
 }

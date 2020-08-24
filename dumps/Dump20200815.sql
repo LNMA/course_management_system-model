@@ -372,6 +372,31 @@ LOCK TABLES `users` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `users_authentication`
+--
+
+DROP TABLE IF EXISTS `users_authentication`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `users_authentication` (
+  `user_id` varchar(200) NOT NULL,
+  `verification_number` int DEFAULT NULL,
+  `last_update_date` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`user_id`),
+  CONSTRAINT `fk_user_details_id_users_authentication_id` FOREIGN KEY (`user_id`) REFERENCES `users_details` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `users_authentication`
+--
+
+LOCK TABLES `users_authentication` WRITE;
+/*!40000 ALTER TABLE `users_authentication` DISABLE KEYS */;
+/*!40000 ALTER TABLE `users_authentication` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `users_course_join`
 --
 
@@ -408,10 +433,10 @@ CREATE TABLE `users_details` (
   `forename` varchar(50) NOT NULL,
   `surname` varchar(50) NOT NULL,
   `gender` enum('MALE','FEMALE') DEFAULT NULL,
-  `phone` int DEFAULT NULL,
+  `phone` varchar(20) DEFAULT NULL,
   `birthday` date DEFAULT NULL,
-  `country` varchar(20) DEFAULT NULL,
-  `state` varchar(20) DEFAULT NULL,
+  `country` varchar(60) DEFAULT NULL,
+  `state` varchar(60) DEFAULT NULL,
   `address` varchar(200) DEFAULT NULL,
   PRIMARY KEY (`user_id`),
   CONSTRAINT `fk_users_email_users_details_user_id` FOREIGN KEY (`user_id`) REFERENCES `users` (`email`) ON DELETE CASCADE ON UPDATE CASCADE
@@ -538,4 +563,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-08-03  1:45:40
+-- Dump completed on 2020-08-15 15:30:52

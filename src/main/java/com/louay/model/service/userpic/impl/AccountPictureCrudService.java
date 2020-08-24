@@ -12,16 +12,19 @@ import java.io.Serializable;
 
 @Service
 public class AccountPictureCrudService implements AccountPictureService, Serializable {
-    private static final long serialVersionUID = -5629181258065219721L;
-    private AccountPictureDao accountPictureDao;
-
-    public AccountPictureDao getAccountPictureDao() {
-        return accountPictureDao;
-    }
+    private static final long serialVersionUID = 546049780487186833L;
+    private final AccountPictureDao accountPictureDao;
 
     @Autowired
-    public void setAccountPictureDao(AccountPictureDao accountPictureDao) {
+    public AccountPictureCrudService(AccountPictureDao accountPictureDao) {
+        if (accountPictureDao == null){
+            throw new IllegalArgumentException("DAO cannot be null at AccountPictureCrudService.class");
+        }
         this.accountPictureDao = accountPictureDao;
+    }
+
+    private AccountPictureDao getAccountPictureDao() {
+        return accountPictureDao;
     }
 
     @Transactional

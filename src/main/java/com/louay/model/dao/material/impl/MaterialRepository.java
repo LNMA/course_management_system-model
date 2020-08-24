@@ -5,7 +5,6 @@ import com.louay.model.dao.material.MaterialDao;
 import com.louay.model.entity.material.CourseMaterials;
 import org.springframework.stereotype.Repository;
 
-import javax.persistence.LockModeType;
 import java.util.*;
 
 @Repository
@@ -49,7 +48,7 @@ public class MaterialRepository extends CommonDaoImpl<CourseMaterials> implement
     public <S extends CourseMaterials> S findOneById(S entity) {
         Class<? extends CourseMaterials> entityClass = entity.getClass();
         @SuppressWarnings("unchecked")
-        S result = (S) getEntityManager().find(entityClass, entity.getMaterialID(), LockModeType.PESSIMISTIC_READ);
+        S result = (S) getEntityManager().find(entityClass, entity.getMaterialID());
         return result;
     }
 
@@ -59,7 +58,7 @@ public class MaterialRepository extends CommonDaoImpl<CourseMaterials> implement
         for (S s : entities) {
             Class<? extends CourseMaterials> entityClass = s.getClass();
             @SuppressWarnings("unchecked")
-            S entityFound = (S) getEntityManager().find(entityClass, s.getMaterialID(), LockModeType.PESSIMISTIC_READ);
+            S entityFound = (S) getEntityManager().find(entityClass, s.getMaterialID());
             result.add(entityFound);
             getEntityManager().flush();
             getEntityManager().clear();

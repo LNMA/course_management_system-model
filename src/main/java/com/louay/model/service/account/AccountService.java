@@ -6,6 +6,10 @@ import com.louay.model.entity.users.Student;
 import com.louay.model.entity.users.Users;
 
 public interface AccountService {
+    Boolean isExistAccount(Admin admin);
+
+    Boolean isExistUsers(Users users);
+
     Admin createAccount(Admin admin);
 
     Users createUsers(Users users);

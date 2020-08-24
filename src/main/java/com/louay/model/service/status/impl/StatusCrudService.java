@@ -16,36 +16,31 @@ import java.io.Serializable;
 
 @Service
 public class StatusCrudService implements StatusService, Serializable {
-    private static final long serialVersionUID = 4372968355596441601L;
-    private UserAtCourseDao userAtCourseDao;
-    private UserAccountStatusDao userAccountStatusDao;
-    private UserSignInDao userSignInDao;
+    private static final long serialVersionUID = -8963067237499038425L;
+    private final UserAtCourseDao userAtCourseDao;
+    private final UserAccountStatusDao userAccountStatusDao;
+    private final UserSignInDao userSignInDao;
 
-    public UserAtCourseDao getUserAtCourseDao() {
+    @Autowired
+    public StatusCrudService(UserAtCourseDao userAtCourseDao, UserAccountStatusDao userAccountStatusDao, UserSignInDao userSignInDao) {
+        if (userAccountStatusDao == null || userAtCourseDao == null || userSignInDao == null){
+            throw new IllegalArgumentException("DAO cannot be null at StatusCrudService.class");
+        }
+        this.userAtCourseDao = userAtCourseDao;
+        this.userAccountStatusDao = userAccountStatusDao;
+        this.userSignInDao = userSignInDao;
+    }
+
+    private UserAtCourseDao getUserAtCourseDao() {
         return userAtCourseDao;
     }
 
-    @Autowired
-    public void setUserAtCourseDao(UserAtCourseDao userAtCourseDao) {
-        this.userAtCourseDao = userAtCourseDao;
-    }
-
-    public UserAccountStatusDao getUserAccountStatusDao() {
+    private UserAccountStatusDao getUserAccountStatusDao() {
         return userAccountStatusDao;
     }
 
-    @Autowired
-    public void setUserAccountStatusDao(UserAccountStatusDao userAccountStatusDao) {
-        this.userAccountStatusDao = userAccountStatusDao;
-    }
-
-    public UserSignInDao getUserSignInDao() {
+    private UserSignInDao getUserSignInDao() {
         return userSignInDao;
-    }
-
-    @Autowired
-    public void setUserSignInDao(UserSignInDao userSignInDao) {
-        this.userSignInDao = userSignInDao;
     }
 
     @Transactional

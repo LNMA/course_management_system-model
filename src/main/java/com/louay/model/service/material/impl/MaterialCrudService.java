@@ -13,16 +13,19 @@ import java.io.Serializable;
 
 @Service
 public class MaterialCrudService implements MaterialService, Serializable {
-    private static final long serialVersionUID = -6316380582581178394L;
-    private MaterialDao materialDao;
-
-    public MaterialDao getMaterialDao() {
-        return materialDao;
-    }
+    private static final long serialVersionUID = 571082965547024039L;
+    private final MaterialDao materialDao;
 
     @Autowired
-    public void setMaterialDao(MaterialDao materialDao) {
+    public MaterialCrudService(MaterialDao materialDao) {
+        if (materialDao == null){
+            throw new IllegalArgumentException("DAO cannot be null at MaterialCrudService.class");
+        }
         this.materialDao = materialDao;
+    }
+
+    private MaterialDao getMaterialDao() {
+        return materialDao;
     }
 
     @Transactional
