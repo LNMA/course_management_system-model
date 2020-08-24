@@ -5,7 +5,6 @@ import com.louay.model.dao.attendance.UsersAttendanceDao;
 import com.louay.model.entity.courses.members.UsersAttendance;
 import org.springframework.stereotype.Repository;
 
-import javax.persistence.LockModeType;
 import java.util.*;
 
 @Repository
@@ -49,7 +48,7 @@ public class UsersAttendanceRepository extends CommonDaoImpl<UsersAttendance> im
     public <S extends UsersAttendance> S findOneById(S entity) {
         Class<? extends UsersAttendance> entityClass = entity.getClass();
         @SuppressWarnings("unchecked")
-        S result = (S) getEntityManager().find(entityClass, entity.getAttendancesId(), LockModeType.PESSIMISTIC_READ);
+        S result = (S) getEntityManager().find(entityClass, entity.getAttendancesId());
         return result;
     }
 
@@ -59,7 +58,7 @@ public class UsersAttendanceRepository extends CommonDaoImpl<UsersAttendance> im
         for (S s : entities) {
             Class<? extends UsersAttendance> entityClass = s.getClass();
             @SuppressWarnings("unchecked")
-            S entityFound = (S) getEntityManager().find(entityClass, s.getAttendancesId(), LockModeType.PESSIMISTIC_READ);
+            S entityFound = (S) getEntityManager().find(entityClass, s.getAttendancesId());
             result.add(entityFound);
             getEntityManager().flush();
             getEntityManager().clear();

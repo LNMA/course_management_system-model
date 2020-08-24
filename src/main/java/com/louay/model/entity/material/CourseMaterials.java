@@ -10,7 +10,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Date;
+import java.util.Calendar;
 import java.util.Objects;
 
 @Entity
@@ -22,7 +22,7 @@ import java.util.Objects;
 @Inheritance(strategy = InheritanceType.JOINED)
 @Polymorphism(type = PolymorphismType.EXPLICIT)
 public abstract class CourseMaterials implements Comparable<CourseMaterials>, Serializable {
-    private static final long serialVersionUID = 4801878510584153344L;
+    private static final long serialVersionUID = 7329951003167505380L;
     @Id
     @Column(name = "material_id", unique = true, nullable = false, columnDefinition = "BIGINT(20)")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -43,7 +43,7 @@ public abstract class CourseMaterials implements Comparable<CourseMaterials>, Se
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "material_date", nullable = false, columnDefinition = "TIMESTAMP(0)")
     @CreatedDate
-    private Date materialDate;
+    private Calendar materialDate;
 
     public Long getMaterialID() {
         return materialID;
@@ -69,11 +69,11 @@ public abstract class CourseMaterials implements Comparable<CourseMaterials>, Se
         this.user = user;
     }
 
-    public Date getMaterialDate() {
+    public Calendar getMaterialDate() {
         return materialDate;
     }
 
-    public void setMaterialDate(Date materialDate) {
+    public void setMaterialDate(Calendar materialDate) {
         this.materialDate = materialDate;
     }
 

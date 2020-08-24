@@ -5,7 +5,6 @@ import com.louay.model.dao.authentication.UserAuthenticationDao;
 import com.louay.model.entity.authentication.UsersAuthentication;
 import org.springframework.stereotype.Repository;
 
-import javax.persistence.LockModeType;
 import java.util.*;
 
 @Repository
@@ -49,7 +48,7 @@ public class UserAuthenticationRepository extends CommonDaoImpl<UsersAuthenticat
     public <S extends UsersAuthentication> S findOneById(S entity) {
         Class<? extends UsersAuthentication> entityClass = entity.getClass();
         @SuppressWarnings("unchecked")
-        S result = (S) getEntityManager().find(entityClass, entity.getUserId(), LockModeType.PESSIMISTIC_READ);
+        S result = (S) getEntityManager().find(entityClass, entity.getUserId());
         return result;
     }
 
@@ -59,7 +58,7 @@ public class UserAuthenticationRepository extends CommonDaoImpl<UsersAuthenticat
         for (S s : entities) {
             Class<? extends UsersAuthentication> entityClass = s.getClass();
             @SuppressWarnings("unchecked")
-            S entityFound = (S) getEntityManager().find(entityClass, s.getUserId(), LockModeType.PESSIMISTIC_READ);
+            S entityFound = (S) getEntityManager().find(entityClass, s.getUserId());
             result.add(entityFound);
             getEntityManager().flush();
             getEntityManager().clear();

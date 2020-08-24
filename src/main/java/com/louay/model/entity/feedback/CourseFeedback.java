@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Date;
+import java.util.Calendar;
 import java.util.Objects;
 
 @Component
@@ -23,7 +23,7 @@ import java.util.Objects;
 @EntityListeners(AuditingEntityListener.class)
 @JsonIgnoreProperties(value = {"feedbackDate"}, allowGetters = true)
 public class CourseFeedback implements Comparable<CourseFeedback>, Serializable {
-    private static final long serialVersionUID = -7182542334355434557L;
+    private static final long serialVersionUID = -5813150357556784014L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "feedback_id", nullable = false, columnDefinition = "BIGINT(20)")
@@ -44,7 +44,7 @@ public class CourseFeedback implements Comparable<CourseFeedback>, Serializable 
     @Column(name = "feedback_date", columnDefinition = "TIMESTAMP(0)", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     @CreatedDate
-    private Date feedbackDate;
+    private Calendar feedbackDate;
 
     @OneToOne(fetch = FetchType.LAZY, mappedBy = "courseFeedback", cascade = CascadeType.ALL, orphanRemoval = true)
     private FeedbackContent feedbackContent;
@@ -73,11 +73,11 @@ public class CourseFeedback implements Comparable<CourseFeedback>, Serializable 
         this.user = user;
     }
 
-    public Date getFeedbackDate() {
+    public Calendar getFeedbackDate() {
         return feedbackDate;
     }
 
-    public void setFeedbackDate(Date feedbackDate) {
+    public void setFeedbackDate(Calendar feedbackDate) {
         this.feedbackDate = feedbackDate;
     }
 

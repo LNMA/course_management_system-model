@@ -11,10 +11,7 @@ import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Arrays;
-import java.util.Base64;
-import java.util.Date;
-import java.util.Objects;
+import java.util.*;
 
 @Component
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
@@ -23,7 +20,7 @@ import java.util.Objects;
 @EntityListeners(AuditingEntityListener.class)
 @JsonIgnoreProperties(value = {"uploadPicDate"}, allowGetters = true)
 public class AccountPicture implements Comparable<AccountPicture>, Serializable {
-    private static final long serialVersionUID = -1629166353873013035L;
+    private static final long serialVersionUID = -33252557525230485L;
     @Id
     @OneToOne(fetch = FetchType.LAZY, targetEntity = Users.class)
     @JoinColumn(name = "user_id", referencedColumnName = "user_id", columnDefinition = "VARCHAR(200)", foreignKey =
@@ -40,7 +37,7 @@ public class AccountPicture implements Comparable<AccountPicture>, Serializable 
     @Column(name = "upload_date", columnDefinition = "TIMESTAMP(0)", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     @LastModifiedDate
-    private Date uploadPicDate;
+    private Calendar uploadPicDate;
 
     public Users getUsers() {
         return users;
@@ -58,11 +55,11 @@ public class AccountPicture implements Comparable<AccountPicture>, Serializable 
         this.picture = picture;
     }
 
-    public Date getUploadPicDate() {
+    public Calendar getUploadPicDate() {
         return uploadPicDate;
     }
 
-    public void setUploadPicDate(Date uploadPicDate) {
+    public void setUploadPicDate(Calendar uploadPicDate) {
         this.uploadPicDate = uploadPicDate;
     }
 

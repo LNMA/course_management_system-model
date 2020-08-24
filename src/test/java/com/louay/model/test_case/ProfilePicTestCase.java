@@ -18,7 +18,7 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.io.IOException;
-import java.sql.Date;
+import java.util.Calendar;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = {MySpringBootJDBCApplication.class})
@@ -50,7 +50,9 @@ public class ProfilePicTestCase {
         users.setForename("Profile Picture");
         users.setSurname("Test");
         users.setGender(Gender.MALE);
-        users.setBirthday(Date.valueOf("2020-07-26"));
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(2020, Calendar.SEPTEMBER, 22);
+        users.setBirthday(calendar);
         users.setCountry("Test");
         users.setState("modal");
         users.setPhone("123456");

@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Date;
+import java.util.Calendar;
 import java.util.Objects;
 
 @Component
@@ -20,7 +20,7 @@ import java.util.Objects;
 @EntityListeners(AuditingEntityListener.class)
 @JsonIgnoreProperties(value = {"lastUpdateDate"}, allowGetters = true)
 public class UsersAuthentication implements Serializable, Comparable<UsersAuthentication> {
-    private static final long serialVersionUID = 9176633749531513785L;
+    private static final long serialVersionUID = -1977165795674363512L;
     @Id
     @Column(name = "user_id", length = 200, columnDefinition = "VARCHAR(200)", nullable = false)
     private String userId;
@@ -38,7 +38,7 @@ public class UsersAuthentication implements Serializable, Comparable<UsersAuthen
     @Temporal(TemporalType.TIMESTAMP)
     @LastModifiedDate
     @Column(name = "last_update_date", columnDefinition = "TIMESTAMP(0)")
-    private Date lastUpdateDate;
+    private Calendar lastUpdateDate;
 
     public String getUserId() {
         return userId;
@@ -64,11 +64,11 @@ public class UsersAuthentication implements Serializable, Comparable<UsersAuthen
         this.verificationNumber = verificationNumber;
     }
 
-    public Date getLastUpdateDate() {
+    public Calendar getLastUpdateDate() {
         return lastUpdateDate;
     }
 
-    public void setLastUpdateDate(Date lastUpdateDate) {
+    public void setLastUpdateDate(Calendar lastUpdateDate) {
         this.lastUpdateDate = lastUpdateDate;
     }
 

@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Date;
+import java.util.Calendar;
 import java.util.Objects;
 
 @Component
@@ -23,7 +23,7 @@ import java.util.Objects;
 @EntityListeners(AuditingEntityListener.class)
 @JsonIgnoreProperties(value = {"commentDate"}, allowGetters = true)
 public class Comment implements Comparable<Comment>, Serializable {
-    private static final long serialVersionUID = -1203353711305645172L;
+    private static final long serialVersionUID = -8670691741166252251L;
     @Id
     @Column(name = "comment_id", nullable = false, columnDefinition = "BIGINT(20)")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -47,7 +47,7 @@ public class Comment implements Comparable<Comment>, Serializable {
     @Column(name = "comment_date", nullable = false, columnDefinition = "TIMESTAMP(0)")
     @Temporal(TemporalType.TIMESTAMP)
     @LastModifiedDate
-    private Date commentDate;
+    private Calendar commentDate;
 
     public Long getCommentID() {
         return commentID;
@@ -81,11 +81,11 @@ public class Comment implements Comparable<Comment>, Serializable {
         this.commentMessage = commentMessage;
     }
 
-    public Date getCommentDate() {
+    public Calendar getCommentDate() {
         return commentDate;
     }
 
-    public void setCommentDate(Date commentDate) {
+    public void setCommentDate(Calendar commentDate) {
         this.commentDate = commentDate;
     }
 

@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Date;
+import java.util.Calendar;
 import java.util.Objects;
 
 @Component
@@ -20,7 +20,7 @@ import java.util.Objects;
 @EntityListeners(AuditingEntityListener.class)
 @JsonIgnoreProperties(value = {"joinDate"}, allowGetters = true)
 public class UserAtCourse implements Comparable<UserAtCourse>, Serializable {
-    private static final long serialVersionUID = -7200970705753883476L;
+    private static final long serialVersionUID = -4296226793260819196L;
     @Id
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "users_id", referencedColumnName = "user_id", columnDefinition = "VARCHAR(200)", foreignKey =
@@ -31,7 +31,7 @@ public class UserAtCourse implements Comparable<UserAtCourse>, Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     @LastModifiedDate
     @Column(name = "join_date", columnDefinition = "TIMESTAMP(0)")
-    private Date joinDate;
+    private Calendar joinDate;
 
     @Column(name = "is_busy", columnDefinition = "TINYINT(1) default 0")
     private Boolean busy;
@@ -44,11 +44,11 @@ public class UserAtCourse implements Comparable<UserAtCourse>, Serializable {
         this.users = users;
     }
 
-    public Date getJoinDate() {
+    public Calendar getJoinDate() {
         return joinDate;
     }
 
-    public void setJoinDate(Date joinDate) {
+    public void setJoinDate(Calendar joinDate) {
         this.joinDate = joinDate;
     }
 

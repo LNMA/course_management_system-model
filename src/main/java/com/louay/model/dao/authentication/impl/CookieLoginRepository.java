@@ -5,11 +5,11 @@ import com.louay.model.dao.authentication.CookieLoginDao;
 import com.louay.model.entity.authentication.CookieLogin;
 import org.springframework.stereotype.Repository;
 
-import javax.persistence.LockModeType;
 import java.util.*;
 
 @Repository
 public class CookieLoginRepository extends CommonDaoImpl<CookieLogin> implements CookieLoginDao {
+
     private static final long serialVersionUID = 7102139416337757502L;
 
     @Override
@@ -49,7 +49,7 @@ public class CookieLoginRepository extends CommonDaoImpl<CookieLogin> implements
     public <S extends CookieLogin> S findOneById(S entity) {
         Class<? extends CookieLogin> entityClass = entity.getClass();
         @SuppressWarnings("unchecked")
-        S result = (S) getEntityManager().find(entityClass, entity.getAdmin().getEmail(), LockModeType.PESSIMISTIC_READ);
+        S result = (S) getEntityManager().find(entityClass, entity.getAdmin().getEmail());
         return result;
     }
 
@@ -59,7 +59,7 @@ public class CookieLoginRepository extends CommonDaoImpl<CookieLogin> implements
         for (S s : entities) {
             Class<? extends CookieLogin> entityClass = s.getClass();
             @SuppressWarnings("unchecked")
-            S entityFound = (S) getEntityManager().find(entityClass, s.getAdmin().getEmail(), LockModeType.PESSIMISTIC_READ);
+            S entityFound = (S) getEntityManager().find(entityClass, s.getAdmin().getEmail());
             result.add(entityFound);
             getEntityManager().flush();
             getEntityManager().clear();

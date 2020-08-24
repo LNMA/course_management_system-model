@@ -5,7 +5,6 @@ import com.louay.model.dao.account.AccountDao;
 import com.louay.model.entity.users.Accounts;
 import org.springframework.stereotype.Repository;
 
-import javax.persistence.LockModeType;
 import java.util.*;
 
 @Repository
@@ -49,7 +48,7 @@ public class AccountRepository extends CommonDaoImpl<Accounts> implements Accoun
     public <S extends Accounts> S findOneById(S entity) {
         Class<? extends Accounts> entityClass = entity.getClass();
         @SuppressWarnings("unchecked")
-        S result = (S) getEntityManager().find(entityClass, entity.getEmail(), LockModeType.PESSIMISTIC_READ);
+        S result = (S) getEntityManager().find(entityClass, entity.getEmail());
         return result;
     }
 
@@ -59,7 +58,7 @@ public class AccountRepository extends CommonDaoImpl<Accounts> implements Accoun
         for (S s : entities) {
             Class<? extends Accounts> entityClass = s.getClass();
             @SuppressWarnings("unchecked")
-            S entityFound = (S) getEntityManager().find(entityClass, s.getEmail(), LockModeType.PESSIMISTIC_READ);
+            S entityFound = (S) getEntityManager().find(entityClass, s.getEmail());
             result.add(entityFound);
             getEntityManager().flush();
             getEntityManager().clear();

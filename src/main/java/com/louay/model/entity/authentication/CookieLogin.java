@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Date;
+import java.util.Calendar;
 import java.util.Objects;
 
 @Component
@@ -20,8 +20,7 @@ import java.util.Objects;
 @EntityListeners(AuditingEntityListener.class)
 @JsonIgnoreProperties(value = {"cookieGenerateDate"}, allowGetters = true)
 public class CookieLogin implements Serializable, Comparable<CookieLogin>{
-    private static final long serialVersionUID = 8036200788889824887L;
-
+    private static final long serialVersionUID = -3908092247779839080L;
     @Id
     @OneToOne(fetch = FetchType.LAZY, targetEntity = Admin.class)
     @JoinColumn(name = "email", referencedColumnName = "email", columnDefinition = "VARCHAR(200)", foreignKey =
@@ -35,7 +34,7 @@ public class CookieLogin implements Serializable, Comparable<CookieLogin>{
     @Temporal(TemporalType.TIMESTAMP)
     @LastModifiedDate
     @Column(name = "cookie_create_date", columnDefinition = "TIMESTAMP(0)", nullable = false)
-    private Date cookieGenerateDate;
+    private Calendar cookieGenerateDate;
 
     public Admin getAdmin() {
         return admin;
@@ -53,11 +52,11 @@ public class CookieLogin implements Serializable, Comparable<CookieLogin>{
         this.secureCode = secureCode;
     }
 
-    public Date getCookieGenerateDate() {
+    public Calendar getCookieGenerateDate() {
         return cookieGenerateDate;
     }
 
-    public void setCookieGenerateDate(Date cookieGenerateDate) {
+    public void setCookieGenerateDate(Calendar cookieGenerateDate) {
         this.cookieGenerateDate = cookieGenerateDate;
     }
 

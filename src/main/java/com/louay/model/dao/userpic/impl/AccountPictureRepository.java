@@ -5,7 +5,6 @@ import com.louay.model.dao.userpic.AccountPictureDao;
 import com.louay.model.entity.users.picute.AccountPicture;
 import org.springframework.stereotype.Repository;
 
-import javax.persistence.LockModeType;
 import java.util.*;
 
 @Repository
@@ -49,7 +48,7 @@ public class AccountPictureRepository extends CommonDaoImpl<AccountPicture> impl
     public <S extends AccountPicture> S findOneById(S entity) {
         Class<? extends AccountPicture> entityClass = entity.getClass();
         @SuppressWarnings("unchecked")
-        S result = (S) getEntityManager().find(entityClass, entity.getUsers().getEmail(), LockModeType.PESSIMISTIC_READ);
+        S result = (S) getEntityManager().find(entityClass, entity.getUsers().getEmail());
         return result;
     }
 
@@ -59,7 +58,7 @@ public class AccountPictureRepository extends CommonDaoImpl<AccountPicture> impl
         for (S s : entities) {
             Class<? extends AccountPicture> entityClass = s.getClass();
             @SuppressWarnings("unchecked")
-            S entityFound = (S) getEntityManager().find(entityClass, s.getUsers().getEmail(), LockModeType.PESSIMISTIC_READ);
+            S entityFound = (S) getEntityManager().find(entityClass, s.getUsers().getEmail());
             result.add(entityFound);
             getEntityManager().flush();
             getEntityManager().clear();

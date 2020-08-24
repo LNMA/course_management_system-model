@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Date;
+import java.util.Calendar;
 import java.util.Objects;
 
 @Component
@@ -20,7 +20,7 @@ import java.util.Objects;
 @JsonIgnoreProperties(value = {"signInDate"}, allowGetters = true)
 @Table(name = "users_sign_in_date", indexes = {@Index(name = "users_sign_in_date_user_id_IX", columnList = "user_id")})
 public class UserSignIn implements Comparable<UserSignIn>, Serializable {
-    private static final long serialVersionUID = 392910671765313707L;
+    private static final long serialVersionUID = -849658875009432193L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_sign_in_id", nullable = false, columnDefinition = "BIGINT(20)")
@@ -35,7 +35,7 @@ public class UserSignIn implements Comparable<UserSignIn>, Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     @CreatedDate
     @Column(name = "sign_in_date", nullable = false, columnDefinition = "TIMESTAMP(0)")
-    private Date signInDate;
+    private Calendar signInDate;
 
     public Long getUserSignInId() {
         return userSignInId;
@@ -53,11 +53,11 @@ public class UserSignIn implements Comparable<UserSignIn>, Serializable {
         this.users = users;
     }
 
-    public Date getSignInDate() {
+    public Calendar getSignInDate() {
         return signInDate;
     }
 
-    public void setSignInDate(Date signInDate) {
+    public void setSignInDate(Calendar signInDate) {
         this.signInDate = signInDate;
     }
 

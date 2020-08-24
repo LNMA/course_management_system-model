@@ -9,7 +9,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.util.Calendar;
 
 @Component
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
@@ -19,14 +19,14 @@ import java.util.Date;
 @JsonIgnoreProperties(value = {"joinDate"}, allowGetters = true)
 @AttributeOverride(name = "email", column = @Column(name = "email", columnDefinition = "VARCHAR(200)", nullable = false))
 public class Admin extends Accounts {
-    private static final long serialVersionUID = 8513727386545257049L;
+    private static final long serialVersionUID = 8921901148786175549L;
     @Column(name = "password", nullable = false, length = 100, columnDefinition = "VARCHAR(100)")
     private String password;
 
     @Column(name = "join_date", nullable = false, columnDefinition = "TIMESTAMP(0)")
     @CreatedDate
     @Temporal(TemporalType.TIMESTAMP)
-    private Date joinDate;
+    private Calendar joinDate;
 
     public String getPassword() {
         return password;
@@ -36,11 +36,11 @@ public class Admin extends Accounts {
         this.password = password;
     }
 
-    public Date getJoinDate() {
+    public Calendar getJoinDate() {
         return joinDate;
     }
 
-    public void setJoinDate(Date joinDate) {
+    public void setJoinDate(Calendar joinDate) {
         this.joinDate = joinDate;
     }
 

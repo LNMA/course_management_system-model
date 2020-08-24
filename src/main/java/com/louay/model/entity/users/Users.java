@@ -1,5 +1,6 @@
 package com.louay.model.entity.users;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.louay.model.entity.users.constant.Gender;
 import com.louay.model.entity.users.constant.Role;
 import org.hibernate.annotations.Polymorphism;
@@ -10,7 +11,10 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.Calendar;
+import java.util.TimeZone;
 
 @Component
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
@@ -21,7 +25,8 @@ import java.util.Date;
 @AttributeOverride(name = "email", column = @Column(name = "user_id", columnDefinition = "VARCHAR(200)", nullable = false))
 @Table( name = "users_details")
 public class Users extends Accounts {
-    private static final long serialVersionUID = 390442755675747867L;
+    private static final long serialVersionUID = 4919354445622068411L;
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @MapsId
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, targetEntity = Admin.class)
     @JoinColumn(name = "user_id", referencedColumnName = "email", columnDefinition = "VARCHAR(200)", foreignKey =
@@ -44,7 +49,7 @@ public class Users extends Accounts {
 
     @Column(name = "birthday",columnDefinition = "DATE")
     @Temporal(TemporalType.DATE)
-    private Date birthday;
+    private Calendar birthday;
 
     @Column(name = "country", length = 60, columnDefinition = "VARCHAR(60)")
     private String country;
@@ -95,11 +100,11 @@ public class Users extends Accounts {
         this.phone = phone;
     }
 
-    public Date getBirthday() {
+    public Calendar getBirthday() {
         return birthday;
     }
 
-    public void setBirthday(Date birthday) {
+    public void setBirthday(Calendar birthday) {
         this.birthday = birthday;
     }
 
@@ -131,6 +136,18 @@ public class Users extends Accounts {
     @Override
     public Role getUserRole() {
         return Role.USER;
+    }
+
+    @Transient
+    public String getAge(){
+        TimeZone timeZone = this.birthday.getTimeZone();
+        ZoneId zoneId = timeZone == null ? ZoneId.systemDefault() : timeZone.toZoneId();
+        LocalDate birthday = LocalDate.ofInstant(this.birthday.toInstant(), zoneId);
+        LocalDate now = LocalDate.now();
+        int year = birthday.until(now).getYears();
+        int month = birthday.until(now).getMonths();
+        int day = birthday.until(now).getDays();
+        return String.format("%d day, %d month, %d year",day, month, year);
     }
 
     @Transient

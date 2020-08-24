@@ -9,7 +9,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Date;
+import java.util.Calendar;
 import java.util.Objects;
 
 @Entity
@@ -20,7 +20,7 @@ import java.util.Objects;
 @DiscriminatorColumn(name = "feedback_type", discriminatorType = DiscriminatorType.INTEGER, columnDefinition = "TINYINT(1)")
 @Polymorphism(type = PolymorphismType.EXPLICIT)
 public abstract class FeedbackContent implements Comparable<FeedbackContent>, Serializable {
-    private static final long serialVersionUID = -826336148729962682L;
+    private static final long serialVersionUID = -7450061396329285787L;
     @Id
     @Column(name = "feedback_id", columnDefinition = "BIGINT(20)", nullable = false)
     private Long feedbackId;
@@ -35,7 +35,7 @@ public abstract class FeedbackContent implements Comparable<FeedbackContent>, Se
     @Column(name = "content_date", columnDefinition = "TIMESTAMP(0)")
     @Temporal(TemporalType.TIMESTAMP)
     @LastModifiedDate
-    private Date contentDate;
+    private Calendar contentDate;
 
     public Long getFeedbackId() {
         return feedbackId;
@@ -53,11 +53,11 @@ public abstract class FeedbackContent implements Comparable<FeedbackContent>, Se
         this.courseFeedback = courseFeedback;
     }
 
-    public Date getContentDate() {
+    public Calendar getContentDate() {
         return contentDate;
     }
 
-    public void setContentDate(Date contentDate) {
+    public void setContentDate(Calendar contentDate) {
         this.contentDate = contentDate;
     }
 

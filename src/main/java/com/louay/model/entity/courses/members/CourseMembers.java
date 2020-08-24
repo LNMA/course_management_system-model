@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Objects;
 
@@ -24,7 +25,7 @@ import java.util.Objects;
 @EntityListeners(AuditingEntityListener.class)
 @JsonIgnoreProperties(value = {"registerDate"}, allowGetters = true)
 public class CourseMembers implements Serializable, Comparable<CourseMembers> {
-    private static final long serialVersionUID = 4042682674551510313L;
+    private static final long serialVersionUID = 9064521402411668834L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "member_id", columnDefinition = "BIGINT(20)", nullable = false)
@@ -45,7 +46,7 @@ public class CourseMembers implements Serializable, Comparable<CourseMembers> {
     @Temporal(TemporalType.TIMESTAMP)
     @CreatedDate
     @Column(name = "register_date", columnDefinition = "TIMESTAMP(0)", nullable = false)
-    private Date registerDate;
+    private Calendar registerDate;
 
     public Long getMemberId() {
         return memberId;
@@ -71,11 +72,11 @@ public class CourseMembers implements Serializable, Comparable<CourseMembers> {
         this.course = course;
     }
 
-    public Date getRegisterDate() {
+    public Calendar getRegisterDate() {
         return registerDate;
     }
 
-    public void setRegisterDate(Date registerDate) {
+    public void setRegisterDate(Calendar registerDate) {
         this.registerDate = registerDate;
     }
 

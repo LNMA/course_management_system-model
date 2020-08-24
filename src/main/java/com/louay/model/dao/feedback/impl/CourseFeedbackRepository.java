@@ -5,7 +5,6 @@ import com.louay.model.dao.feedback.CourseFeedbackDao;
 import com.louay.model.entity.feedback.CourseFeedback;
 import org.springframework.stereotype.Repository;
 
-import javax.persistence.LockModeType;
 import java.util.*;
 
 @Repository
@@ -49,7 +48,7 @@ public class CourseFeedbackRepository extends CommonDaoImpl<CourseFeedback> impl
     public <S extends CourseFeedback> S findOneById(S entity) {
         Class<? extends CourseFeedback> entityClass = entity.getClass();
         @SuppressWarnings("unchecked")
-        S result = (S) getEntityManager().find(entityClass, entity.getFeedbackID(), LockModeType.PESSIMISTIC_READ);
+        S result = (S) getEntityManager().find(entityClass, entity.getFeedbackID());
         return result;
     }
 
@@ -59,7 +58,7 @@ public class CourseFeedbackRepository extends CommonDaoImpl<CourseFeedback> impl
         for (S s : entities) {
             Class<? extends CourseFeedback> entityClass = s.getClass();
             @SuppressWarnings("unchecked")
-            S entityFound = (S) getEntityManager().find(entityClass, s.getFeedbackID(), LockModeType.PESSIMISTIC_READ);
+            S entityFound = (S) getEntityManager().find(entityClass, s.getFeedbackID());
             result.add(entityFound);
             getEntityManager().flush();
             getEntityManager().clear();

@@ -23,7 +23,7 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.io.IOException;
-import java.sql.Date;
+import java.util.Calendar;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = {MySpringBootJDBCApplication.class})
@@ -56,7 +56,9 @@ public class MaterialCaseTest {
         instructor.setForename("Material");
         instructor.setSurname("Test");
         instructor.setGender(Gender.MALE);
-        instructor.setBirthday(Date.valueOf("2020-07-26"));
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(2020, Calendar.SEPTEMBER, 22);
+        instructor.setBirthday(calendar);
         instructor.setCountry("Test");
         instructor.setState("model");
         instructor.setPhone("875454");
@@ -80,8 +82,11 @@ public class MaterialCaseTest {
 
         Courses courses = this.applicationContext.getBean(Courses.class);
         courses.setCourseName("math");
-        courses.setStartDate(java.sql.Date.valueOf("2020-07-26"));
-        courses.setEndDate(java.sql.Date.valueOf("2020-07-27"));
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(2020, Calendar.JULY,26);
+        courses.setStartDate(calendar);
+        calendar.set(2020,Calendar.JULY,27);
+        courses.setEndDate(calendar);
         courses.setInstructor(instructor);
 
         CourseService courseService = this.applicationContext.getBean(CourseService.class);
