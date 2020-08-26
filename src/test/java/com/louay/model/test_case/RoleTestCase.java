@@ -13,6 +13,7 @@ import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.MethodSorters;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -22,23 +23,19 @@ import org.springframework.test.context.junit4.SpringRunner;
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class RoleTestCase extends TestCase {
     private AnnotationConfigApplicationContext applicationContext;
+    @Autowired
     private RoleService roleService;
 
     @Before
-    public void initialize02_ApplicationContext() {
+    public void initialize01_ApplicationContext() {
         this.applicationContext = new AnnotationConfigApplicationContext();
         this.applicationContext.scan("com.louay.model");
         this.applicationContext.refresh();
     }
 
-    @Before
-    public void initialize01_RoleService() {
-        this.roleService = this.applicationContext.getBean(RoleService.class);
-    }
-
     @Test
     public void testCase01_create_account() {
-        Admin admin = this.applicationContext.getBean(Admin.class);
+        Admin admin = new Admin();
         admin.setEmail("role@test.com");
         admin.setPassword("1234");
 
@@ -48,15 +45,15 @@ public class RoleTestCase extends TestCase {
 
     @Test
     public void testCase02_create_accountRole_and_userRole() {
-        AccountsRoles accountsRoles = this.applicationContext.getBean(AccountsRoles.class);
+        AccountsRoles accountsRoles = new AccountsRoles();
         accountsRoles.setRoleName(Role.INSTRUCTOR);
 
-        Admin admin = this.applicationContext.getBean(Admin.class);
+        Admin admin = new Admin();
         admin.setEmail("role@test.com");
         AccountService accountService = this.applicationContext.getBean(AccountService.class);
         admin = accountService.findAccountByEmail(admin);
 
-        UsersRoles usersRoles = this.applicationContext.getBean(UsersRoles.class);
+        UsersRoles usersRoles = new UsersRoles();
         usersRoles.setUsers(admin);
         usersRoles.setAccountsRoles(accountsRoles);
 
@@ -67,7 +64,7 @@ public class RoleTestCase extends TestCase {
 
     @Test
     public void testCase03_find_and_update_accountRole() {
-        AccountsRoles accountsRoles = this.applicationContext.getBean(AccountsRoles.class);
+        AccountsRoles accountsRoles = new AccountsRoles();
         accountsRoles.setRoleID((long) 1);
         accountsRoles = this.roleService.findAccountRoleByRoleId(accountsRoles);
 
@@ -78,10 +75,10 @@ public class RoleTestCase extends TestCase {
 
     @Test
     public void testCase04_find_and_update_userRole() {
-        Admin admin = this.applicationContext.getBean(Admin.class);
+        Admin admin = new Admin();
         admin.setEmail("role@test.com");
 
-        UsersRoles usersRoles = this.applicationContext.getBean(UsersRoles.class);
+        UsersRoles usersRoles = new UsersRoles();
         usersRoles.setUsers(admin);
         usersRoles = this.roleService.findUsersRolesByUserId(usersRoles);
 
@@ -92,7 +89,7 @@ public class RoleTestCase extends TestCase {
 
     @Test
     public void testCase05_find_and_delete_accountRole_and_userRole() {
-        AccountsRoles accountsRoles = this.applicationContext.getBean(AccountsRoles.class);
+        AccountsRoles accountsRoles = new AccountsRoles();
         accountsRoles.setRoleID((long) 1);
         accountsRoles = this.roleService.findAccountRoleByRoleId(accountsRoles);
 
@@ -103,7 +100,7 @@ public class RoleTestCase extends TestCase {
 
     @Test
     public void testCase07_find_and_delete_account() {
-        Admin admin = this.applicationContext.getBean(Admin.class);
+        Admin admin = new Admin();
         admin.setEmail("role@test.com");
 
         AccountService accountService = this.applicationContext.getBean(AccountService.class);

@@ -3,16 +3,11 @@ package com.louay.model.entity.material;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.louay.model.entity.material.constant.MaterialType;
 import org.hibernate.annotations.LazyGroup;
-import org.springframework.beans.factory.config.ConfigurableBeanFactory;
-import org.springframework.context.annotation.Scope;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
 import java.util.Arrays;
 
-@Component
-@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 @Entity
 @Table(name = "materials_files")
 @EntityListeners(AuditingEntityListener.class)

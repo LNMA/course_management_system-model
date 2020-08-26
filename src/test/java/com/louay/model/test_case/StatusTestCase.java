@@ -14,6 +14,7 @@ import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.MethodSorters;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -25,27 +26,23 @@ import java.util.Calendar;
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class StatusTestCase {
     private AnnotationConfigApplicationContext applicationContext;
+    @Autowired
     private StatusService statusService;
 
     @Before
-    public void initialize02_ApplicationContext() {
+    public void initialize01_ApplicationContext() {
         this.applicationContext = new AnnotationConfigApplicationContext();
         this.applicationContext.scan("com.louay.model");
         this.applicationContext.refresh();
     }
 
-    @Before
-    public void initialize01_StatusService() {
-        this.statusService = this.applicationContext.getBean(StatusService.class);
-    }
-
     @Test
     public void testCase01_create_users() {
-        Admin admin = this.applicationContext.getBean(Admin.class);
+        Admin admin = new Admin();
         admin.setEmail("status@test.com");
         admin.setPassword("1234");
 
-        Users users = this.applicationContext.getBean("users", Users.class);
+        Users users = new Users();
         users.setAdmin(admin);
         users.setForename("Users Status");
         users.setSurname("Test");
@@ -64,12 +61,12 @@ public class StatusTestCase {
 
     @Test
     public void testCase02_create_userAccountStatus() {
-        Users users = this.applicationContext.getBean("users", Users.class);
+        Users users = new Users();
         users.setEmail("status@test.com");
         AccountService accountService = this.applicationContext.getBean(AccountService.class);
         users = accountService.findUsersByUserID(users);
 
-        UserAccountStatus userAccountStatus = this.applicationContext.getBean(UserAccountStatus.class);
+        UserAccountStatus userAccountStatus = new UserAccountStatus();
         userAccountStatus.setUsers(users);
         userAccountStatus.setValid(false);
         userAccountStatus.setOnline(false);
@@ -81,10 +78,10 @@ public class StatusTestCase {
 
     @Test
     public void testCase03_find_and_update_userAccountStatus() {
-        Users users = this.applicationContext.getBean("users", Users.class);
+        Users users = new Users();
         users.setEmail("status@test.com");
 
-        UserAccountStatus userAccountStatus = this.applicationContext.getBean(UserAccountStatus.class);
+        UserAccountStatus userAccountStatus = new UserAccountStatus();
         userAccountStatus.setUsers(users);
 
         userAccountStatus = this.statusService.findUserAccountStatusByUserId(userAccountStatus);
@@ -98,10 +95,10 @@ public class StatusTestCase {
 
     @Test
     public void testCase04_delete_userAccountStatus() {
-        Users users = this.applicationContext.getBean("users", Users.class);
+        Users users = new Users();
         users.setEmail("status@test.com");
 
-        UserAccountStatus userAccountStatus = this.applicationContext.getBean(UserAccountStatus.class);
+        UserAccountStatus userAccountStatus = new UserAccountStatus();
         userAccountStatus.setUsers(users);
 
         this.statusService.deleteUserAccountStatusByUserId(userAccountStatus);
@@ -109,12 +106,12 @@ public class StatusTestCase {
 
     @Test
     public void testCase05_create_UserAtCourse() {
-        Users users = this.applicationContext.getBean("users", Users.class);
+        Users users = new Users();
         users.setEmail("status@test.com");
         AccountService accountService = this.applicationContext.getBean(AccountService.class);
         users = accountService.findUsersByUserID(users);
 
-        UserAtCourse userAtCourse = this.applicationContext.getBean(UserAtCourse.class);
+        UserAtCourse userAtCourse = new UserAtCourse();
         userAtCourse.setUsers(users);
         userAtCourse.setBusy(true);
 
@@ -125,10 +122,10 @@ public class StatusTestCase {
 
     @Test
     public void testCase06_find_and_update_UserAtCourse() {
-        Users users = this.applicationContext.getBean("users", Users.class);
+        Users users = new Users();
         users.setEmail("status@test.com");
 
-        UserAtCourse userAtCourse = this.applicationContext.getBean(UserAtCourse.class);
+        UserAtCourse userAtCourse = new UserAtCourse();
         userAtCourse.setUsers(users);
         userAtCourse = this.statusService.findUserAtCourseByUserId(userAtCourse);
         userAtCourse.setBusy(false);
@@ -140,10 +137,10 @@ public class StatusTestCase {
 
     @Test
     public void testCase07_delete_UserAtCourse() {
-        Users users = this.applicationContext.getBean("users", Users.class);
+        Users users = new Users();
         users.setEmail("status@test.com");
 
-        UserAtCourse userAtCourse = this.applicationContext.getBean(UserAtCourse.class);
+        UserAtCourse userAtCourse = new UserAtCourse();
         userAtCourse.setUsers(users);
 
         this.statusService.deleteUserAtCourseByUserId(userAtCourse);
@@ -151,12 +148,12 @@ public class StatusTestCase {
 
     @Test
     public void testCase08_create_UserSignIn() {
-        Users users = this.applicationContext.getBean("users", Users.class);
+        Users users = new Users();
         users.setEmail("status@test.com");
         AccountService accountService = this.applicationContext.getBean(AccountService.class);
         users = accountService.findUsersByUserID(users);
 
-        UserSignIn userSignIn = this.applicationContext.getBean(UserSignIn.class);
+        UserSignIn userSignIn = new UserSignIn();
         userSignIn.setUsers(users);
 
         this.statusService.createUserSignIn(userSignIn);
@@ -166,7 +163,7 @@ public class StatusTestCase {
 
     @Test
     public void testCase09_find_and_update_UserSignIn() {
-        UserSignIn userSignIn = this.applicationContext.getBean(UserSignIn.class);
+        UserSignIn userSignIn = new UserSignIn();
         userSignIn.setUserSignInId((long) 1);
 
         userSignIn = this.statusService.findUserSignInBySignInId(userSignIn);
@@ -178,7 +175,7 @@ public class StatusTestCase {
 
     @Test
     public void testCase10_delete_UserSignIn() {
-        UserSignIn userSignIn = this.applicationContext.getBean(UserSignIn.class);
+        UserSignIn userSignIn = new UserSignIn();
         userSignIn.setUserSignInId((long) 1);
 
         this.statusService.deleteUserSignInBySignInId(userSignIn);
@@ -186,7 +183,7 @@ public class StatusTestCase {
 
     @Test
     public void testCase11_delete_User() {
-        Users users = this.applicationContext.getBean("users", Users.class);
+        Users users = new Users();
         users.setEmail("status@test.com");
 
         AccountService accountService = this.applicationContext.getBean(AccountService.class);

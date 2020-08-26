@@ -1,16 +1,9 @@
 package com.louay.model.entity.users;
 
 import com.louay.model.entity.users.constant.Role;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.beans.factory.config.ConfigurableBeanFactory;
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
 
-@Component
-@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-@Qualifier("student")
 @Entity
 @PrimaryKeyJoinColumn(name = "student_id", referencedColumnName = "user_id", columnDefinition = "VARCHAR(200)",
         foreignKey = @ForeignKey(name = "fk_users_details_id_students_details_student_id", foreignKeyDefinition =

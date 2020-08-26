@@ -1,15 +1,10 @@
 package com.louay.model.entity.wrapper;
 
 import com.louay.model.entity.users.Student;
-import org.springframework.beans.factory.config.ConfigurableBeanFactory;
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
 
 import java.io.Serializable;
 import java.util.Objects;
 
-@Component
-@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 public class StudentHomeWrapper implements Serializable, Comparable<StudentHomeWrapper> {
     private static final long serialVersionUID = -1969373294226748539L;
     private Student student;

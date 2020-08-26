@@ -1,7 +1,7 @@
 package com.louay.model.config;
 
-import org.apache.tomcat.jdbc.pool.DataSource;
-import org.apache.tomcat.jdbc.pool.PoolProperties;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.Bean;
@@ -11,6 +11,7 @@ import org.springframework.core.annotation.Order;
 import org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.JpaVendorAdapter;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
@@ -18,6 +19,7 @@ import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
+import javax.sql.DataSource;
 import java.util.Properties;
 
 @EnableAutoConfiguration
@@ -29,57 +31,37 @@ import java.util.Properties;
 @ComponentScan(basePackages = "com.louay.model")
 public class PersistenceJPAConfig {
 
-    @Bean(name = "pool")
+    @Bean("pool")
     @Order(1)
     public DataSource mysqlDataSource() {
-        org.apache.tomcat.jdbc.pool.DataSource dataSource = new org.apache.tomcat.jdbc.pool.DataSource();
-        PoolProperties p = new PoolProperties();
-        p.setDriverClassName("com.mysql.cj.jdbc.Driver");
-        p.setUrl("jdbc:mysql://localhost:3306/course_management_system");
-        p.setUsername("root");
-        p.setPassword("1729384#General");
-        p.setMaxActive(100);
-        p.setMaxIdle(100);
-        p.setMinIdle(10);
-        p.setInitialSize(10);
-        p.setMaxWait(20000);
-        p.setTestOnBorrow(true);
-        p.setTestOnConnect(false);
-        p.setTestOnReturn(false);
-        p.setTestWhileIdle(false);
-        p.setValidationQuery("SELECT 1");
-        p.setValidationQueryTimeout(-1);
-        p.setValidatorClassName(null);
-        p.setTimeBetweenEvictionRunsMillis(5000);
-        p.setMinEvictableIdleTimeMillis(30000);
-        p.setRemoveAbandoned(true);
-        p.setRemoveAbandonedTimeout(60);
-        p.setSuspectTimeout(60);
-        p.setLogAbandoned(false);
-        p.setJmxEnabled(true);
-        p.setValidationInterval(3000);
-        p.setMaxAge(7200000);
-        p.setDefaultAutoCommit(true);
-        p.setJdbcInterceptors(
-                "org.apache.tomcat.jdbc.pool.interceptor.ConnectionState;" +
-                        "org.apache.tomcat.jdbc.pool.interceptor.StatementFinalizer;"+
-                "org.apache.tomcat.jdbc.pool.interceptor.StatementFinalizer");
-        dataSource.setPoolProperties(p);
+        DriverManagerDataSource dataSource = new DriverManagerDataSource();
+        dataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
+        dataSource.setUrl("jdbc:mysql://localhost:3306/course_management_system");
+        dataSource.setUsername("root");
+        dataSource.setPassword("1729384#General");
         /*
         StackTraceElement[] st = Thread.currentThread().getStackTrace();
         System.out.println("create connection called from " + st[2]);
          */
-
         return dataSource;
     }
 
     @Bean
     @Order(2)
-    public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
+    public PlatformTransactionManager transactionManager(@Autowired @Qualifier("pool") DataSource dataSource) {
+        JpaTransactionManager transactionManager = new JpaTransactionManager();
+        transactionManager.setEntityManagerFactory(entityManagerFactory(dataSource).getObject());
+
+        return transactionManager;
+    }
+
+    @Bean
+    @Order(3)
+    public LocalContainerEntityManagerFactoryBean entityManagerFactory(DataSource dataSource) {
         JpaVendorAdapter vendorAdapter = getHibernateJpaVendorAdapter();
         LocalContainerEntityManagerFactoryBean entityManagerBean = new LocalContainerEntityManagerFactoryBean();
 
-        entityManagerBean.setDataSource(mysqlDataSource());
+        entityManagerBean.setDataSource(dataSource);
         entityManagerBean.setPackagesToScan("com.louay.model");
         entityManagerBean.setJpaVendorAdapter(vendorAdapter);
         entityManagerBean.setJpaProperties(additionalProperties());
@@ -92,14 +74,6 @@ public class PersistenceJPAConfig {
         return new HibernateJpaVendorAdapter();
     }
 
-    @Bean
-    @Order(3)
-    public PlatformTransactionManager transactionManager() {
-        JpaTransactionManager transactionManager = new JpaTransactionManager();
-        transactionManager.setEntityManagerFactory(entityManagerFactory().getObject());
-
-        return transactionManager;
-    }
 
     @Bean
     public PersistenceExceptionTranslationPostProcessor exceptionTranslation() {

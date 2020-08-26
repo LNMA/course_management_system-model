@@ -10,6 +10,7 @@ import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.MethodSorters;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -19,23 +20,19 @@ import org.springframework.test.context.junit4.SpringRunner;
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class AuthenticationTestCase {
     private AnnotationConfigApplicationContext applicationContext;
+    @Autowired
     private AuthenticationService authenticationService;
 
     @Before
-    public void initialize02_ApplicationContext() {
+    public void initialize01_ApplicationContext() {
         this.applicationContext = new AnnotationConfigApplicationContext();
         this.applicationContext.scan("com.louay.model");
         this.applicationContext.refresh();
     }
 
-    @Before
-    public void initialize01_authenticationService() {
-        this.authenticationService = this.applicationContext.getBean(AuthenticationService.class);
-    }
-
     @Test
     public void testCase01_create_account() {
-        Admin admin = this.applicationContext.getBean(Admin.class);
+        Admin admin = new Admin();
         admin.setEmail("authentication@test.com");
         admin.setPassword("1234");
 
@@ -47,7 +44,7 @@ public class AuthenticationTestCase {
 
     @Test
     public void testCase02_create_cookieLogin() {
-        Admin admin = this.applicationContext.getBean(Admin.class);
+        Admin admin = new Admin();
         admin.setEmail("authentication@test.com");
         AccountService accountService = this.applicationContext.getBean(AccountService.class);
         admin = accountService.findAccountByEmail(admin);
@@ -62,7 +59,7 @@ public class AuthenticationTestCase {
 
     @Test
     public void testCase03_find_and_update_cookieLogin() {
-        Admin admin = this.applicationContext.getBean(Admin.class);
+        Admin admin = new Admin();
         admin.setEmail("authentication@test.com");
         AccountService accountService = this.applicationContext.getBean(AccountService.class);
         admin = accountService.findAccountByEmail(admin);
@@ -79,7 +76,7 @@ public class AuthenticationTestCase {
 
     @Test
     public void testCase04_delete_cookieLogin() {
-        Admin admin = this.applicationContext.getBean(Admin.class);
+        Admin admin = new Admin();
         admin.setEmail("authentication@test.com");
 
         CookieLogin cookieLogin = this.applicationContext.getBean(CookieLogin.class);
@@ -89,7 +86,7 @@ public class AuthenticationTestCase {
 
     @Test
     public void testCase05_find_and_delete_account() {
-        Admin admin = this.applicationContext.getBean(Admin.class);
+        Admin admin = new Admin();
         admin.setEmail("authentication@test.com");
 
         AccountService accountService = this.applicationContext.getBean(AccountService.class);

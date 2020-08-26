@@ -1,16 +1,11 @@
 package com.louay.model.entity.role;
 
 import com.louay.model.entity.users.Admin;
-import org.springframework.beans.factory.config.ConfigurableBeanFactory;
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Objects;
 
-@Component
-@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 @Entity
 @Table(name = "users_roles", indexes = {
         @Index(name = "users_roles_role_id_UNIQUE", columnList = "role_id", unique = true),

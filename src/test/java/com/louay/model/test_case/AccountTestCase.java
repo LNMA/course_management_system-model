@@ -9,13 +9,12 @@ import com.louay.model.entity.users.constant.Gender;
 import com.louay.model.entity.users.constant.InstructorProfileVisibility;
 import com.louay.model.service.account.AccountService;
 import junit.framework.TestCase;
-import org.junit.Before;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.MethodSorters;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.Calendar;
@@ -24,24 +23,12 @@ import java.util.Calendar;
 @SpringBootTest(classes = {MySpringBootJDBCApplication.class})
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class AccountTestCase extends TestCase {
-    private AnnotationConfigApplicationContext applicationContext;
+    @Autowired
     private AccountService accountService;
-
-    @Before
-    public void initialize02_ApplicationContext() {
-        this.applicationContext = new AnnotationConfigApplicationContext();
-        this.applicationContext.scan("com.louay.model");
-        this.applicationContext.refresh();
-    }
-
-    @Before
-    public void initialize01_AccountService() {
-        this.accountService = this.applicationContext.getBean(AccountService.class);
-    }
 
     @Test
     public void testCase01_create_account() {
-        Admin admin = this.applicationContext.getBean(Admin.class);
+        Admin admin = new Admin();
         admin.setEmail("account@test.com");
         admin.setPassword("1234");
 
@@ -52,7 +39,7 @@ public class AccountTestCase extends TestCase {
 
     @Test
     public void testCase02_find_and_update_account() {
-        Admin admin = this.applicationContext.getBean(Admin.class);
+        Admin admin = new Admin();
         admin.setEmail("account@test.com");
         admin = this.accountService.findAccountByEmail(admin);
 
@@ -64,7 +51,7 @@ public class AccountTestCase extends TestCase {
 
     @Test
     public void testCase03_find_account() {
-        Admin admin = this.applicationContext.getBean(Admin.class);
+        Admin admin = new Admin();
         admin.setEmail("account@test.com");
 
         admin = this.accountService.findAccountByEmail(admin);
@@ -74,7 +61,7 @@ public class AccountTestCase extends TestCase {
 
     @Test
     public void testCase04_find_and_delete_account() {
-        Admin admin = this.applicationContext.getBean(Admin.class);
+        Admin admin = new Admin();
         admin.setEmail("account@test.com");
 
         System.out.println(admin);
@@ -84,11 +71,11 @@ public class AccountTestCase extends TestCase {
 
     @Test
     public void testCase05_create_users() {
-        Admin admin = this.applicationContext.getBean(Admin.class);
+        Admin admin = new Admin();
         admin.setEmail("accountUsers@test.com");
         admin.setPassword("1234");
 
-        Users users = this.applicationContext.getBean("users",Users.class);
+        Users users = new Users();
         users.setAdmin(admin);
         users.setForename("Account");
         users.setSurname("Test");
@@ -108,7 +95,7 @@ public class AccountTestCase extends TestCase {
 
     @Test
     public void testCase06_find_user() {
-        Users users = this.applicationContext.getBean("users",Users.class);
+        Users users = new Users();
         users.setEmail("accountUsers@test.com");
 
         users = this.accountService.findUsersByUserID(users);
@@ -118,7 +105,7 @@ public class AccountTestCase extends TestCase {
 
     @Test
     public void testCase07_find_and_update_users() {
-        Users users = this.applicationContext.getBean("users",Users.class);
+        Users users = new Users();
         users.setEmail("accountUsers@test.com");
 
         users = this.accountService.findUsersByUserID(users);
@@ -132,7 +119,7 @@ public class AccountTestCase extends TestCase {
 
     @Test
     public void testCase08_find_and_delete_users() {
-        Users users = this.applicationContext.getBean("users",Users.class);
+        Users users = new Users();
         users.setEmail("accountUsers@test.com");
 
         this.accountService.deleteUsersByUserID(users);
@@ -140,11 +127,11 @@ public class AccountTestCase extends TestCase {
 
     @Test
     public void testCase09_create_instructor() {
-        Admin admin = this.applicationContext.getBean(Admin.class);
+        Admin admin = new Admin();
         admin.setEmail("accountUsersInstructor@test.com");
         admin.setPassword("12345");
 
-        Instructor instructor = this.applicationContext.getBean("instructor",Instructor.class);
+        Instructor instructor = new Instructor();
         instructor.setAdmin(admin);
         instructor.setForename("Account");
         instructor.setSurname("Test");
@@ -170,7 +157,7 @@ public class AccountTestCase extends TestCase {
 
     @Test
     public void testCase10_find_and_update_instructor() {
-        Instructor instructor = this.applicationContext.getBean("instructor",Instructor.class);
+        Instructor instructor = new Instructor();
         instructor.setEmail("accountUsersInstructor@test.com");
         instructor = this.accountService.findInstructorsDetailsByInstructorID(instructor);
 
@@ -184,7 +171,7 @@ public class AccountTestCase extends TestCase {
 
     @Test
     public void testCase11_find_instructor() {
-        Instructor instructor = this.applicationContext.getBean("instructor",Instructor.class);
+        Instructor instructor = new Instructor();
         instructor.setEmail("accountUsersInstructor@test.com");
 
         instructor = this.accountService.findInstructorsDetailsByInstructorID(instructor);
@@ -194,7 +181,7 @@ public class AccountTestCase extends TestCase {
 
     @Test
     public void testCase12_find_and_delete_instructor() {
-        Instructor instructor = this.applicationContext.getBean("instructor",Instructor.class);
+        Instructor instructor = new Instructor();
         instructor.setEmail("accountUsersInstructor@test.com");
 
         this.accountService.deleteInstructorsDetailsByInstructorID(instructor);
@@ -202,11 +189,11 @@ public class AccountTestCase extends TestCase {
 
     @Test
     public void testCase13_create_student() {
-        Admin admin = this.applicationContext.getBean(Admin.class);
+        Admin admin = new Admin();
         admin.setEmail("accountUserStudent@test.com");
         admin.setPassword("123456");
 
-        Student student = this.applicationContext.getBean("student",Student.class);
+        Student student = new Student();
         student.setAdmin(admin);
         student.setForename("Account");
         student.setSurname("Test");
@@ -228,7 +215,7 @@ public class AccountTestCase extends TestCase {
 
     @Test
     public void testCase14_find_and_update_student() {
-        Student student = this.applicationContext.getBean("student",Student.class);
+        Student student = new Student();
         student.setEmail("accountUserStudent@test.com");
         student = this.accountService.findStudentsDetailsByStudentID(student);
 
@@ -242,7 +229,7 @@ public class AccountTestCase extends TestCase {
 
     @Test
     public void testCase15_find_student() {
-        Student student = this.applicationContext.getBean("student",Student.class);
+        Student student = new Student();
         student.setEmail("accountUserStudent@test.com");
 
         student = this.accountService.findStudentsDetailsByStudentID(student);
@@ -252,7 +239,7 @@ public class AccountTestCase extends TestCase {
 
     @Test
     public void testCase16_find_and_delete_student() {
-        Student student = this.applicationContext.getBean("student",Student.class);
+        Student student = new Student();
         student.setEmail("accountUserStudent@test.com");
 
         this.accountService.deleteStudentsDetailsByStudentID(student);

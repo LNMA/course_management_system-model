@@ -2,15 +2,10 @@ package com.louay.model.entity.feedback;
 
 import com.louay.model.entity.feedback.constant.FeedbackType;
 import org.hibernate.annotations.LazyGroup;
-import org.springframework.beans.factory.config.ConfigurableBeanFactory;
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
 import java.util.Arrays;
 
-@Component
-@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 @Entity
 @DiscriminatorValue("3")
 public class FileMessageFeedback extends FeedbackContent {

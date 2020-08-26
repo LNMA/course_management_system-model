@@ -1,10 +1,13 @@
 package com.louay.model.util.file;
 
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import java.io.*;
 
 @Component
+@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 public class FileProcess {
     public byte[] readFile(String path) throws IOException {
         byte[] bytes;

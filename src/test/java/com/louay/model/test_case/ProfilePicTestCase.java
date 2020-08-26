@@ -13,6 +13,7 @@ import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.MethodSorters;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -25,27 +26,23 @@ import java.util.Calendar;
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class ProfilePicTestCase {
     private AnnotationConfigApplicationContext applicationContext;
+    @Autowired
     private AccountPictureService pictureService;
 
     @Before
-    public void initialize02_ApplicationContext() {
+    public void initialize01_ApplicationContext() {
         this.applicationContext = new AnnotationConfigApplicationContext();
         this.applicationContext.scan("com.louay.model");
         this.applicationContext.refresh();
     }
 
-    @Before
-    public void initialize01_AccountPictureService() {
-        this.pictureService = this.applicationContext.getBean(AccountPictureService.class);
-    }
-
     @Test
     public void testCase01_create_users() {
-        Admin admin = this.applicationContext.getBean(Admin.class);
+        Admin admin = new Admin();
         admin.setEmail("profilePic@test.com");
         admin.setPassword("1234");
 
-        Users users = this.applicationContext.getBean("users", Users.class);
+        Users users = new Users();
         users.setAdmin(admin);
         users.setForename("Profile Picture");
         users.setSurname("Test");
@@ -64,13 +61,13 @@ public class ProfilePicTestCase {
 
     @Test
     public void testCase02_create_accountPicture() {
-        Users users = this.applicationContext.getBean("users", Users.class);
+        Users users = new Users();
         users.setEmail("profilePic@test.com");
         AccountService accountService = this.applicationContext.getBean(AccountService.class);
         users = accountService.findUsersByUserID(users);
 
         System.out.println(users);
-        AccountPicture accountPicture = this.applicationContext.getBean(AccountPicture.class);
+        AccountPicture accountPicture = new AccountPicture();
 
         FileProcess fileProcess = this.applicationContext.getBean(FileProcess.class);
         byte [] bytes = null;
@@ -89,10 +86,10 @@ public class ProfilePicTestCase {
 
     @Test
     public void testCase03_find_and_update_accountPicture() {
-        Users users = this.applicationContext.getBean("users", Users.class);
+        Users users = new Users();
         users.setEmail("profilePic@test.com");
 
-        AccountPicture accountPicture = this.applicationContext.getBean(AccountPicture.class);
+        AccountPicture accountPicture = new AccountPicture();
         accountPicture.setUsers(users);
 
         accountPicture = this.pictureService.findAccountPictureByUserId(accountPicture);
@@ -114,10 +111,10 @@ public class ProfilePicTestCase {
 
     @Test
     public void testCase04_find_and_delete_accountPicture() {
-        Users users = this.applicationContext.getBean("users", Users.class);
+        Users users = new Users();
         users.setEmail("profilePic@test.com");
 
-        AccountPicture accountPicture = this.applicationContext.getBean(AccountPicture.class);
+        AccountPicture accountPicture = new AccountPicture();
         accountPicture.setUsers(users);
 
         accountPicture = this.pictureService.findAccountPictureByUserId(accountPicture);
@@ -128,7 +125,7 @@ public class ProfilePicTestCase {
 
     @Test
     public void testCase05_find_and_delete_users() {
-        Users users = this.applicationContext.getBean("users", Users.class);
+        Users users = new Users();
         users.setEmail("profilePic@test.com");
 
         AccountService accountService = this.applicationContext.getBean(AccountService.class);

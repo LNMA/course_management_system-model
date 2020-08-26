@@ -13,6 +13,7 @@ import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.MethodSorters;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -24,27 +25,23 @@ import java.util.Calendar;
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class CourseTestCase {
     private AnnotationConfigApplicationContext applicationContext;
+    @Autowired
     private CourseService courseService;
 
     @Before
-    public void initialize02_ApplicationContext() {
+    public void initialize01_ApplicationContext() {
         this.applicationContext = new AnnotationConfigApplicationContext();
         this.applicationContext.scan("com.louay.model");
         this.applicationContext.refresh();
     }
 
-    @Before
-    public void initialize01_CourseService() {
-        this.courseService = this.applicationContext.getBean(CourseService.class);
-    }
-
     @Test
     public void testCase01_create_instructor() {
-        Admin admin = this.applicationContext.getBean(Admin.class);
+        Admin admin = new Admin();
         admin.setEmail("course@test.com");
         admin.setPassword("1234");
 
-        Instructor instructor = this.applicationContext.getBean("instructor",Instructor.class);
+        Instructor instructor = new Instructor();
         instructor.setAdmin(admin);
         instructor.setForename("Account");
         instructor.setSurname("Test");
@@ -68,12 +65,12 @@ public class CourseTestCase {
 
     @Test
     public void testCase02_create_course() {
-        Instructor instructor = this.applicationContext.getBean("instructor",Instructor.class);
+        Instructor instructor = new Instructor();
         instructor.setEmail("course@test.com");
         AccountService accountService = this.applicationContext.getBean(AccountService.class);
         instructor = accountService.findInstructorsDetailsByInstructorID(instructor);
 
-        Courses courses = this.applicationContext.getBean(Courses.class);
+        Courses courses = new Courses();
         courses.setCourseName("math");
         Calendar calendar = Calendar.getInstance();
         calendar.set(2020, Calendar.JULY,26);
@@ -87,7 +84,7 @@ public class CourseTestCase {
 
     @Test
     public void testCase03_find_and_update_course() {
-        Courses courses = this.applicationContext.getBean(Courses.class);
+        Courses courses = new Courses();
         courses.setCourseID((long)1);
 
         courses = this.courseService.findCourseByCourseId(courses);
@@ -101,7 +98,7 @@ public class CourseTestCase {
 
     @Test
     public void testCase04_find_and_delete_course() {
-        Courses courses = this.applicationContext.getBean(Courses.class);
+        Courses courses = new Courses();
         courses.setCourseID((long)1);
 
         courses = this.courseService.findCourseByCourseId(courses);
@@ -112,7 +109,7 @@ public class CourseTestCase {
 
     @Test
     public void testCase05_find_and_delete_account() {
-        Instructor instructor = this.applicationContext.getBean("instructor", Instructor.class);
+        Instructor instructor = new Instructor();
         instructor.setEmail("course@test.com");
 
         AccountService accountService = this.applicationContext.getBean(AccountService.class);
