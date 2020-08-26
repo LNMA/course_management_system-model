@@ -15,7 +15,7 @@ import java.io.Serializable;
 
 @Service
 public class AccountCrudService implements AccountService, Serializable {
-    private static final long serialVersionUID = 1407091182688906499L;
+    private static final long serialVersionUID = 2831027935225486098L;
     private final AccountDao accountDao;
 
     @Autowired
@@ -124,6 +124,12 @@ public class AccountCrudService implements AccountService, Serializable {
     @Override
     public Instructor findInstructorsDetailsByInstructorID(Instructor instructor) {
         return getAccountDao().findOneById(instructor);
+    }
+
+    @Transactional(isolation = Isolation.READ_COMMITTED, readOnly = true)
+    @Override
+    public Student findStudentJoinCourseMemberByStudentId(Student student) {
+        return getAccountDao().findStudentJoinCourseMemberByStudentId(student);
     }
 
     @Transactional

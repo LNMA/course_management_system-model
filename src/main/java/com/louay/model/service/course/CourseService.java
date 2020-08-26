@@ -2,6 +2,8 @@ package com.louay.model.service.course;
 
 import com.louay.model.entity.courses.Courses;
 
+import java.util.List;
+
 public interface CourseService {
     Courses createCourse(Courses courses);
 
@@ -10,4 +12,6 @@ public interface CourseService {
     Courses updateCourse(Courses courses);
 
     Courses findCourseByCourseId(Courses courses);
+
+    List<Courses> findAllCourse(int pageNumber, int pageSize);
 }

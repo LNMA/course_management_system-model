@@ -16,6 +16,7 @@ import org.junit.runners.MethodSorters;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.test.annotation.Repeat;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.Calendar;
@@ -93,6 +94,7 @@ public class CourseTestCase {
         courses.setCourseName("science");
 
         this.courseService.updateCourse(courses);
+        //this.courseService.findAllCourse(1, 6).forEach(System.out::println);
 
     }
 

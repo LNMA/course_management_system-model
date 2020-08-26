@@ -68,7 +68,7 @@ public class CourseMemberTestCase {
 
     @Test
     public void testCase02_create_student() {
-        Admin admin = this.applicationContext.getBean(Admin.class);
+        Admin admin = new Admin();
         admin.setEmail("courseMemberStudent@test.com");
         admin.setPassword("1234");
 
@@ -98,7 +98,7 @@ public class CourseMemberTestCase {
         AccountService accountService = this.applicationContext.getBean(AccountService.class);
         instructor = accountService.findInstructorsDetailsByInstructorID(instructor);
 
-        Courses courses = this.applicationContext.getBean(Courses.class);
+        Courses courses = new Courses();
         courses.setCourseName("math");
         Calendar calendar = Calendar.getInstance();
         calendar.set(2020, Calendar.JULY,26);
@@ -118,7 +118,7 @@ public class CourseMemberTestCase {
         AccountService accountService = this.applicationContext.getBean(AccountService.class);
         student = accountService.findStudentsDetailsByStudentID(student);
 
-        Courses courses = this.applicationContext.getBean(Courses.class);
+        Courses courses = new Courses();
         courses.setCourseID((long) 1);
         CourseService courseService = this.applicationContext.getBean(CourseService.class);
         courses = courseService.findCourseByCourseId(courses);
@@ -140,7 +140,17 @@ public class CourseMemberTestCase {
     }
 
     @Test
-    public void testCase06_find_and_delete_courseMember() {
+    public void testCase06_find_courseMember_join_student() {
+        Student student = new Student();
+        student.setEmail("courseMemberStudent@test.com");
+        AccountService accountService = this.applicationContext.getBean(AccountService.class);
+        student = accountService.findStudentJoinCourseMemberByStudentId(student);
+        student.getCourseMembers().forEach(System.out::println);
+
+    }
+
+    @Test
+    public void testCase07_find_and_delete_courseMember() {
         CourseMembers courseMembers = new CourseMembers();
         courseMembers.setMemberId((long) 1);
 
@@ -151,7 +161,7 @@ public class CourseMemberTestCase {
     }
 
     @Test
-    public void testCase07_find_and_delete_account1() {
+    public void testCase08_find_and_delete_account1() {
         Instructor instructor = new Instructor();
         instructor.setEmail("courseMemberInstructor@test.com");
 
@@ -164,7 +174,7 @@ public class CourseMemberTestCase {
     }
 
     @Test
-    public void testCase08_find_and_delete_account2() {
+    public void testCase09_find_and_delete_account2() {
         Student student = new Student();
         student.setEmail("courseMemberStudent@test.com");
 
