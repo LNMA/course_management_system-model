@@ -12,7 +12,6 @@ import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Objects;
 
-
 @Entity
 @Table(name = "course_members", indexes = {
         @Index(name = "course_members_course_id_IX", columnList = "course_id"),

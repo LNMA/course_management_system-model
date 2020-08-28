@@ -2,6 +2,7 @@ package com.louay.model.service.course;
 
 import com.louay.model.entity.courses.Courses;
 
+import java.util.Collection;
 import java.util.List;
 
 public interface CourseService {
@@ -13,5 +14,7 @@ public interface CourseService {
 
     Courses findCourseByCourseId(Courses courses);
 
-    List<Courses> findAllCourse(int pageNumber, int pageSize);
+    Collection<Courses> findAllCourseByCourseId(Iterable<Courses> courses);
+
+    List<Courses> findAllCoursePagination(int pageNumber, int pageSize);
 }

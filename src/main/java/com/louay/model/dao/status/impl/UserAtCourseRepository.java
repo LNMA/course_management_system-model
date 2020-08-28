@@ -37,9 +37,7 @@ public class UserAtCourseRepository extends CommonDaoImpl<UserAtCourse> implemen
             @SuppressWarnings("unchecked")
             S entityFound = (S) getEntityManager().getReference(entityClass, s.getUsers().getEmail());
             getEntityManager().remove(entityFound);
-            getEntityManager().flush();
             result.add(s);
-            getEntityManager().clear();
         }
         return result;
     }
@@ -60,8 +58,6 @@ public class UserAtCourseRepository extends CommonDaoImpl<UserAtCourse> implemen
             @SuppressWarnings("unchecked")
             S entityFound = (S) getEntityManager().find(entityClass, s.getUsers().getEmail());
             result.add(entityFound);
-            getEntityManager().flush();
-            getEntityManager().clear();
         }
         return result;
     }

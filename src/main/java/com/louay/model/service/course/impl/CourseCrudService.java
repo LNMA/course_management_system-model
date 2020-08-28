@@ -9,11 +9,12 @@ import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.List;
 
 @Service
 public class CourseCrudService implements CourseService, Serializable {
-    private static final long serialVersionUID = -7267284608040810789L;
+    private static final long serialVersionUID = 2955704602381762318L;
     private final CourseDao courseDao;
 
     @Autowired
@@ -54,7 +55,13 @@ public class CourseCrudService implements CourseService, Serializable {
 
     @Transactional(isolation = Isolation.READ_COMMITTED, readOnly = true)
     @Override
-    public List<Courses> findAllCourse(int pageNumber, int pageSize) {
+    public Collection<Courses> findAllCourseByCourseId(Iterable<Courses> courses) {
+        return getCourseDao().findAllById(courses);
+    }
+
+    @Transactional(isolation = Isolation.READ_COMMITTED, readOnly = true)
+    @Override
+    public List<Courses> findAllCoursePagination(int pageNumber, int pageSize) {
         return getCourseDao().findAllCourse(pageNumber, pageSize);
     }
 }

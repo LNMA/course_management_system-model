@@ -39,9 +39,7 @@ public abstract class CommonDaoImpl<T> implements CommonDao<T>, Serializable {
         for (S s : entities) {
             Assert.notNull(s, NOT_NULL_ENTITY);
             getEntityManager().persist(s);
-            getEntityManager().flush();
             result.add(s);
-            getEntityManager().clear();
         }
         return result;
     }
@@ -71,8 +69,6 @@ public abstract class CommonDaoImpl<T> implements CommonDao<T>, Serializable {
                     S emptyClass = (S) s.getClass().getConstructor().newInstance();
                     result.add(emptyClass);
                 }
-                getEntityManager().flush();
-                getEntityManager().clear();
             }
         } catch (InstantiationException | IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
             System.out.println(e.getMessage());

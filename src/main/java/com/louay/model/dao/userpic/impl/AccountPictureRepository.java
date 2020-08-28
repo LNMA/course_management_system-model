@@ -9,6 +9,7 @@ import java.util.*;
 
 @Repository
 public class AccountPictureRepository extends CommonDaoImpl<AccountPicture> implements AccountPictureDao {
+
     private static final long serialVersionUID = -8078667522346426810L;
 
     @Override
@@ -37,9 +38,7 @@ public class AccountPictureRepository extends CommonDaoImpl<AccountPicture> impl
             @SuppressWarnings("unchecked")
             S entityFound = (S) getEntityManager().getReference(entityClass, s.getUsers().getEmail());
             getEntityManager().remove(entityFound);
-            getEntityManager().flush();
             result.add(s);
-            getEntityManager().clear();
         }
         return result;
     }
@@ -60,8 +59,6 @@ public class AccountPictureRepository extends CommonDaoImpl<AccountPicture> impl
             @SuppressWarnings("unchecked")
             S entityFound = (S) getEntityManager().find(entityClass, s.getUsers().getEmail());
             result.add(entityFound);
-            getEntityManager().flush();
-            getEntityManager().clear();
         }
         return result;
     }

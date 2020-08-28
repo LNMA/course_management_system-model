@@ -1,16 +1,22 @@
 package com.louay.model.entity.courses;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.louay.model.entity.users.Instructor;
+import org.hibernate.annotations.LazyGroup;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Arrays;
+import java.util.Base64;
 import java.util.Calendar;
 import java.util.Objects;
 
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @Entity
 @Table(name = "courses", indexes = {@Index(name = "courses_instructor_id_IX", columnList = "instructor_id")})
-public class Courses implements Comparable<Courses>, Serializable {
-    private static final long serialVersionUID = 6029154954933918718L;
+public class Courses implements Serializable, Comparable<Courses> {
+    private static final long serialVersionUID = 2701871078712916431L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "course_id", nullable = false, columnDefinition = "BIGINT(20)")
@@ -18,6 +24,13 @@ public class Courses implements Comparable<Courses>, Serializable {
 
     @Column(name = "course_name", length = 150, nullable = false, columnDefinition = "VARCHAR(150)")
     private String courseName;
+
+    @JsonIgnore
+    @Lob
+    @Column(name = "course_picture", columnDefinition = "LONGBLOB", nullable = false)
+    @Basic(fetch = FetchType.LAZY)
+    @LazyGroup("lobs")
+    private byte[] picture;
 
     @Column(name = "start_date", nullable = false, columnDefinition = "TIMESTAMP(0)")
     @Temporal(TemporalType.TIMESTAMP)
@@ -27,6 +40,7 @@ public class Courses implements Comparable<Courses>, Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     private Calendar endDate;
 
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @ManyToOne(targetEntity = Instructor.class, fetch = FetchType.LAZY)
     @JoinColumn(name = "instructor_id", referencedColumnName = "instructors_id", nullable = false, foreignKey =
     @ForeignKey(name = "fk_instructors_details_id_courses_instructor_id", foreignKeyDefinition = "FOREIGN KEY " +
@@ -48,6 +62,14 @@ public class Courses implements Comparable<Courses>, Serializable {
 
     public void setCourseName(String courseName) {
         this.courseName = courseName;
+    }
+
+    public byte[] getPicture() {
+        return picture;
+    }
+
+    public void setPicture(byte[] picture) {
+        this.picture = picture;
     }
 
     public Calendar getStartDate() {
@@ -72,6 +94,14 @@ public class Courses implements Comparable<Courses>, Serializable {
 
     public void setInstructor(Instructor instructor) {
         this.instructor = instructor;
+    }
+
+    @Transient
+    public StringBuilder getCoursePictureBase64() {
+        StringBuilder stringBase46 = new StringBuilder();
+        stringBase46.append(Base64.getEncoder().encodeToString(this.picture));
+
+        return stringBase46;
     }
 
     @Transient
@@ -101,6 +131,7 @@ public class Courses implements Comparable<Courses>, Serializable {
         return "Courses{" +
                 "courseID=" + this.courseID +
                 ", courseName='" + this.courseName + '\'' +
+                ", picture='" + Arrays.toString(this.picture) + '\'' +
                 ", startDate=" + this.startDate +
                 ", endDate=" + this.endDate +
                 ", instructor=" + this.instructor.getEmail() +

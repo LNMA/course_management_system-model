@@ -9,6 +9,7 @@ import java.util.*;
 
 @Repository
 public class UserSignInRepository extends CommonDaoImpl<UserSignIn> implements UserSignInDao {
+
     private static final long serialVersionUID = -5571898535200015129L;
 
     @Override
@@ -38,9 +39,7 @@ public class UserSignInRepository extends CommonDaoImpl<UserSignIn> implements U
             @SuppressWarnings("unchecked")
             S entityFound = (S) getEntityManager().getReference(entityClass, s.getUserSignInId());
             getEntityManager().remove(entityFound);
-            getEntityManager().flush();
             result.add(s);
-            getEntityManager().clear();
         }
         return result;
     }
@@ -61,8 +60,6 @@ public class UserSignInRepository extends CommonDaoImpl<UserSignIn> implements U
             @SuppressWarnings("unchecked")
             S entityFound = (S) getEntityManager().find(entityClass, s.getUserSignInId());
             result.add(entityFound);
-            getEntityManager().flush();
-            getEntityManager().clear();
         }
         return result;
     }

@@ -37,9 +37,7 @@ public class CourseMemberRepository extends CommonDaoImpl<CourseMembers> impleme
             @SuppressWarnings("unchecked")
             S entityFound = (S) getEntityManager().getReference(entityClass, s.getMemberId());
             getEntityManager().remove(entityFound);
-            getEntityManager().flush();
             result.add(s);
-            getEntityManager().clear();
         }
         return result;
     }
@@ -60,8 +58,6 @@ public class CourseMemberRepository extends CommonDaoImpl<CourseMembers> impleme
             @SuppressWarnings("unchecked")
             S entityFound = (S) getEntityManager().find(entityClass, s.getMemberId());
             result.add(entityFound);
-            getEntityManager().flush();
-            getEntityManager().clear();
         }
         return result;
     }

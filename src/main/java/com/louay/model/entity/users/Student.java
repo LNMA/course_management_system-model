@@ -1,5 +1,6 @@
 package com.louay.model.entity.users;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.louay.model.entity.courses.members.CourseMembers;
 import com.louay.model.entity.users.constant.Role;
 
@@ -20,6 +21,7 @@ public class Student extends Users {
     @Column(name = "interests", length = 300, columnDefinition = "VARCHAR(300)")
     private String interests;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "student", fetch = FetchType.LAZY)
     private Set<CourseMembers> courseMembers = new HashSet<>();
 

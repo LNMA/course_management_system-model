@@ -9,6 +9,7 @@ import java.util.*;
 
 @Repository
 public class CourseFeedbackRepository extends CommonDaoImpl<CourseFeedback> implements CourseFeedbackDao {
+
     private static final long serialVersionUID = -910124764053502575L;
 
     @Override
@@ -18,7 +19,8 @@ public class CourseFeedbackRepository extends CommonDaoImpl<CourseFeedback> impl
                 .setParameter("feedbackID", entity.getFeedbackID())
                 .setMaxResults(1)
                 .getResultList()
-                .isEmpty();    }
+                .isEmpty();
+    }
 
     @Override
     public <S extends CourseFeedback> S delete(S entity) {
@@ -37,9 +39,7 @@ public class CourseFeedbackRepository extends CommonDaoImpl<CourseFeedback> impl
             @SuppressWarnings("unchecked")
             S entityFound = (S) getEntityManager().getReference(entityClass, s.getFeedbackID());
             getEntityManager().remove(entityFound);
-            getEntityManager().flush();
             result.add(s);
-            getEntityManager().clear();
         }
         return result;
     }
@@ -60,8 +60,6 @@ public class CourseFeedbackRepository extends CommonDaoImpl<CourseFeedback> impl
             @SuppressWarnings("unchecked")
             S entityFound = (S) getEntityManager().find(entityClass, s.getFeedbackID());
             result.add(entityFound);
-            getEntityManager().flush();
-            getEntityManager().clear();
         }
         return result;
     }

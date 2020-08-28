@@ -38,9 +38,7 @@ public class AccountRepository extends CommonDaoImpl<Accounts> implements Accoun
             @SuppressWarnings("unchecked")
             S entityFound = (S) getEntityManager().getReference(entityClass, s.getEmail());
             getEntityManager().remove(entityFound);
-            getEntityManager().flush();
             result.add(s);
-            getEntityManager().clear();
         }
         return result;
     }
@@ -61,8 +59,6 @@ public class AccountRepository extends CommonDaoImpl<Accounts> implements Accoun
             @SuppressWarnings("unchecked")
             S entityFound = (S) getEntityManager().find(entityClass, s.getEmail());
             result.add(entityFound);
-            getEntityManager().flush();
-            getEntityManager().clear();
         }
         return result;
     }
@@ -72,7 +68,6 @@ public class AccountRepository extends CommonDaoImpl<Accounts> implements Accoun
         return (Student) getEntityManager().createQuery("SELECT s From Student s INNER JOIN FETCH " +
                 "s.courseMembers cm WHERE s.email = :email")
                 .setParameter("email", student.getEmail())
-                .setMaxResults(1)
                 .getSingleResult();
     }
 }

@@ -13,7 +13,6 @@ import java.util.*;
 
 @Repository
 public class CourseRepository extends CommonDaoImpl<Courses> implements CourseDao {
-
     private static final long serialVersionUID = -5902468567656341815L;
 
     @Override
@@ -42,9 +41,7 @@ public class CourseRepository extends CommonDaoImpl<Courses> implements CourseDa
             @SuppressWarnings("unchecked")
             S entityFound = (S) getEntityManager().getReference(entityClass, s.getCourseID());
             getEntityManager().remove(entityFound);
-            getEntityManager().flush();
             result.add(s);
-            getEntityManager().clear();
         }
         return result;
     }
@@ -65,8 +62,6 @@ public class CourseRepository extends CommonDaoImpl<Courses> implements CourseDa
             @SuppressWarnings("unchecked")
             S entityFound = (S) getEntityManager().find(entityClass, s.getCourseID());
             result.add(entityFound);
-            getEntityManager().flush();
-            getEntityManager().clear();
         }
         return result;
     }
