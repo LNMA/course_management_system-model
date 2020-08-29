@@ -12,7 +12,7 @@ import java.io.Serializable;
 
 @Service
 public class CourseMemberCrudService implements CourseMemberService, Serializable {
-    private static final long serialVersionUID = 6321313230590810028L;
+    private static final long serialVersionUID = -2184174840391078705L;
     private final CourseMemberDao courseMemberDao;
 
     @Autowired
@@ -25,6 +25,12 @@ public class CourseMemberCrudService implements CourseMemberService, Serializabl
 
     private CourseMemberDao getCourseMemberDao() {
         return courseMemberDao;
+    }
+
+    @Transactional
+    @Override
+    public Boolean isStudentMemberAtAnyCourse(CourseMembers courseMembers) {
+        return getCourseMemberDao().isStudentMemberAtAnyCourse(courseMembers);
     }
 
     @Transactional

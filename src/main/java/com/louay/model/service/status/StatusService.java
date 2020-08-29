@@ -4,6 +4,8 @@ import com.louay.model.entity.status.UserAccountStatus;
 import com.louay.model.entity.status.UserAtCourse;
 import com.louay.model.entity.status.UserSignIn;
 
+import java.util.List;
+
 public interface StatusService {
     UserAtCourse createUserAtCourse(UserAtCourse userAtCourse);
 
@@ -28,4 +30,10 @@ public interface StatusService {
     UserSignIn updateUserSignIn(UserSignIn userSignIn);
 
     UserSignIn findUserSignInBySignInId(UserSignIn userSignIn);
+
+    List<UserSignIn> findUserSignInByUserId(UserSignIn userSignIn);
+
+    Boolean isUserSignInExist(UserSignIn userSignIn);
+
+    Boolean isUserAtCourseExist(UserAtCourse userAtCourse);
 }

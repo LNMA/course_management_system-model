@@ -3,16 +3,21 @@ package com.louay.model.dao.material;
 import com.louay.model.dao.CommonDao;
 import com.louay.model.dao.GenericDao;
 import com.louay.model.entity.material.CourseMaterials;
-import com.louay.model.entity.material.MaterialContent;
+import com.louay.model.entity.material.FileMaterials;
+import com.louay.model.entity.material.TextMaterials;
 
 import java.util.Set;
 
 public interface MaterialDao extends CommonDao<CourseMaterials>, GenericDao<CourseMaterials> {
-    Set<MaterialContent> findFileMaterialWithoutFileByCourseId(MaterialContent materialContent);
+    Set<FileMaterials> findFileMaterialWithoutFileByCourseId(FileMaterials fileMaterials);
 
-    Set<MaterialContent> findTextMaterialWithoutTextByCourseId(MaterialContent materialContent);
+    Set<TextMaterials> findTextMaterialWithoutTextByCourseId(TextMaterials textMaterials);
 
-    Set<MaterialContent> findFileMaterialByCourseId(MaterialContent materialContent);
+    Set<FileMaterials> findFileMaterialByCourseId(FileMaterials fileMaterials);
 
-    Set<MaterialContent> findTextMaterialByCourseId(MaterialContent materialContent);
+    Set<TextMaterials> findTextMaterialByCourseId(TextMaterials textMaterials);
+
+    Boolean isFileMaterialExistByCourseId(FileMaterials fileMaterials);
+
+    Boolean isTextMaterialExistByCourseId(TextMaterials textMaterials);
 }

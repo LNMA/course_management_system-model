@@ -9,12 +9,21 @@ import java.util.*;
 
 @Repository
 public class CourseMemberRepository extends CommonDaoImpl<CourseMembers> implements CourseMemberDao {
-    private static final long serialVersionUID = 1988966839713599110L;
+    private static final long serialVersionUID = -2255013710731594094L;
 
     @Override
     public <S extends CourseMembers> Boolean isExist(S entity) {
         return !getEntityManager().createQuery("SELECT c From CourseMembers c WHERE c.memberId = :memberId")
                 .setParameter("memberId", entity.getMemberId())
+                .setMaxResults(1)
+                .getResultList()
+                .isEmpty();
+    }
+
+    @Override
+    public Boolean isStudentMemberAtAnyCourse(CourseMembers courseMembers) {
+        return !getEntityManager().createQuery("SELECT c From CourseMembers c WHERE c.student.email = :email")
+                .setParameter("email", courseMembers.getStudent().getEmail())
                 .setMaxResults(1)
                 .getResultList()
                 .isEmpty();

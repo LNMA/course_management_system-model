@@ -3,12 +3,14 @@ package com.louay.model.entity.wrapper;
 import com.louay.model.entity.users.Student;
 
 import java.io.Serializable;
+import java.util.Calendar;
 import java.util.Objects;
 
 public class StudentHomeWrapper implements Serializable, Comparable<StudentHomeWrapper> {
-    private static final long serialVersionUID = -1969373294226748539L;
+    private static final long serialVersionUID = 2049495006244837572L;
     private Student student;
     private StringBuilder pictureBase64;
+    private Calendar lastSignInDate;
 
     public Student getStudent() {
         return student;
@@ -32,6 +34,14 @@ public class StudentHomeWrapper implements Serializable, Comparable<StudentHomeW
 
     public String getTimeJoinDate(){
         return this.student.getAdmin().getJoinDate().getTime().toString();
+    }
+
+    public String getLastSignInDate() {
+        return lastSignInDate.getTime().toString();
+    }
+
+    public void setLastSignInDate(Calendar lastSignInDate) {
+        this.lastSignInDate = lastSignInDate;
     }
 
     @Override

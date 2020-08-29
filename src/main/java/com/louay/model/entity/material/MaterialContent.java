@@ -12,7 +12,7 @@ import java.util.Calendar;
 @EntityListeners(AuditingEntityListener.class)
 @JsonIgnoreProperties(value = {"uploadDate"}, allowGetters = true)
 @PrimaryKeyJoinColumn(name = "material_id", referencedColumnName = "material_id", columnDefinition = "BIGINT(20)")
-public abstract class MaterialContent extends CourseMaterials {
+public abstract class MaterialContent extends CourseMaterials{
     private static final long serialVersionUID = 9192937073759975046L;
     @Temporal(TemporalType.TIMESTAMP)
     @LastModifiedDate

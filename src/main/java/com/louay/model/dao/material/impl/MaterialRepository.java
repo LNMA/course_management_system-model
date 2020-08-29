@@ -4,20 +4,37 @@ import com.louay.model.dao.CommonDaoImpl;
 import com.louay.model.dao.material.MaterialDao;
 import com.louay.model.entity.material.CourseMaterials;
 import com.louay.model.entity.material.FileMaterials;
-import com.louay.model.entity.material.MaterialContent;
+import com.louay.model.entity.material.TextMaterials;
 import org.springframework.stereotype.Repository;
 
 import java.util.*;
 
 @Repository
 public class MaterialRepository extends CommonDaoImpl<CourseMaterials> implements MaterialDao {
-
-    private static final long serialVersionUID = -676522882754416008L;
+    private static final long serialVersionUID = -1994356890188548931L;
 
     @Override
     public <S extends CourseMaterials> Boolean isExist(S entity) {
         return !getEntityManager().createQuery("SELECT c From CourseMaterials c WHERE c.materialID = :materialID")
                 .setParameter("materialID", entity.getMaterialID())
+                .setMaxResults(1)
+                .getResultList()
+                .isEmpty();
+    }
+
+    @Override
+    public Boolean isFileMaterialExistByCourseId(FileMaterials fileMaterials) {
+        return !getEntityManager().createQuery("SELECT fm From FileMaterials fm WHERE fm.course.courseID = :courseId")
+                .setParameter("courseId", fileMaterials.getCourse().getCourseID())
+                .setMaxResults(1)
+                .getResultList()
+                .isEmpty();
+    }
+
+    @Override
+    public Boolean isTextMaterialExistByCourseId(TextMaterials textMaterials) {
+        return !getEntityManager().createQuery("SELECT tm From TextMaterials tm WHERE tm.course.courseID = :courseId")
+                .setParameter("courseId", textMaterials.getCourse().getCourseID())
                 .setMaxResults(1)
                 .getResultList()
                 .isEmpty();
@@ -66,40 +83,40 @@ public class MaterialRepository extends CommonDaoImpl<CourseMaterials> implement
     }
 
     @Override
-    public Set<MaterialContent> findFileMaterialWithoutFileByCourseId(MaterialContent materialContent) {
+    public Set<FileMaterials> findFileMaterialWithoutFileByCourseId(FileMaterials fileMaterials) {
         List<FileMaterials> fileMaterialsList = getEntityManager().createQuery("SELECT fm.materialID, " +
                 "fm.fileType, fm.materialDate, fm.uploadDate, fm.user.email, fm.course.courseID, fm.materialName " +
                 "FROM FileMaterials fm WHERE fm.course.courseID = :courseId", FileMaterials.class)
-                .setParameter("courseId", materialContent.getCourse().getCourseID())
+                .setParameter("courseId", fileMaterials.getCourse().getCourseID())
                 .getResultList();
         return new HashSet<>(fileMaterialsList);
     }
 
     @Override
-    public Set<MaterialContent> findTextMaterialWithoutTextByCourseId(MaterialContent materialContent) {
-        List<FileMaterials> fileMaterialsList = getEntityManager().createQuery("SELECT tm.materialID, " +
+    public Set<TextMaterials> findTextMaterialWithoutTextByCourseId(TextMaterials textMaterials){
+        List<TextMaterials> textMaterialsList = getEntityManager().createQuery("SELECT tm.materialID, " +
                 "tm.materialDate, tm.uploadDate, tm.user.email, tm.course.courseID, tm.materialName " +
-                "FROM TextMaterials tm WHERE tm.course.courseID = :courseId", FileMaterials.class)
-                .setParameter("courseId", materialContent.getCourse().getCourseID())
+                "FROM TextMaterials tm WHERE tm.course.courseID = :courseId", TextMaterials.class)
+                .setParameter("courseId", textMaterials.getCourse().getCourseID())
                 .getResultList();
-        return new HashSet<>(fileMaterialsList);
+        return new HashSet<>(textMaterialsList);
     }
 
     @Override
-    public Set<MaterialContent> findFileMaterialByCourseId(MaterialContent materialContent) {
+    public Set<FileMaterials> findFileMaterialByCourseId(FileMaterials fileMaterials) {
         List<FileMaterials> fileMaterialsList = getEntityManager().createQuery("SELECT fm " +
                 "FROM FileMaterials fm WHERE fm.course.courseID = :courseId", FileMaterials.class)
-                .setParameter("courseId", materialContent.getCourse().getCourseID())
+                .setParameter("courseId", fileMaterials.getCourse().getCourseID())
                 .getResultList();
         return new HashSet<>(fileMaterialsList);
     }
 
     @Override
-    public Set<MaterialContent> findTextMaterialByCourseId(MaterialContent materialContent) {
-        List<FileMaterials> fileMaterialsList = getEntityManager().createQuery("SELECT tm FROM " +
-                "TextMaterials tm WHERE tm.course.courseID = :courseId", FileMaterials.class)
-                .setParameter("courseId", materialContent.getCourse().getCourseID())
+    public Set<TextMaterials> findTextMaterialByCourseId(TextMaterials textMaterials) {
+        List<TextMaterials> textMaterialsList = getEntityManager().createQuery("SELECT tm FROM " +
+                "TextMaterials tm WHERE tm.course.courseID = :courseId", TextMaterials.class)
+                .setParameter("courseId", textMaterials.getCourse().getCourseID())
                 .getResultList();
-        return new HashSet<>(fileMaterialsList);
+        return new HashSet<>(textMaterialsList);
     }
 }

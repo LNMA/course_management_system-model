@@ -10,15 +10,16 @@ import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.Serializable;
+import java.util.Set;
 
 @Service
 public class MaterialCrudService implements MaterialService, Serializable {
-    private static final long serialVersionUID = 571082965547024039L;
+    private static final long serialVersionUID = -6332850192751460069L;
     private final MaterialDao materialDao;
 
     @Autowired
     public MaterialCrudService(MaterialDao materialDao) {
-        if (materialDao == null){
+        if (materialDao == null) {
             throw new IllegalArgumentException("DAO cannot be null at MaterialCrudService.class");
         }
         this.materialDao = materialDao;
@@ -74,5 +75,41 @@ public class MaterialCrudService implements MaterialService, Serializable {
     @Override
     public FileMaterials findFileMaterialsByMaterialId(FileMaterials fileMaterials) {
         return getMaterialDao().findOneById(fileMaterials);
+    }
+
+    @Transactional
+    @Override
+    public Boolean isFileMaterialExistByCourseId(FileMaterials fileMaterials) {
+        return getMaterialDao().isFileMaterialExistByCourseId(fileMaterials);
+    }
+
+    @Transactional
+    @Override
+    public Boolean isTextMaterialExistByCourseId(TextMaterials textMaterials) {
+        return getMaterialDao().isTextMaterialExistByCourseId(textMaterials);
+    }
+
+    @Transactional(isolation = Isolation.READ_COMMITTED, readOnly = true)
+    @Override
+    public Set<FileMaterials> findFileMaterialWithoutFileByCourseId(FileMaterials fileMaterials) {
+        return getMaterialDao().findFileMaterialWithoutFileByCourseId(fileMaterials);
+    }
+
+    @Transactional(isolation = Isolation.READ_COMMITTED, readOnly = true)
+    @Override
+    public Set<TextMaterials> findTextMaterialWithoutTextByCourseId(TextMaterials textMaterials) {
+        return getMaterialDao().findTextMaterialWithoutTextByCourseId(textMaterials);
+    }
+
+    @Transactional(isolation = Isolation.READ_COMMITTED, readOnly = true)
+    @Override
+    public Set<FileMaterials> findFileMaterialByCourseId(FileMaterials fileMaterials) {
+        return getMaterialDao().findFileMaterialByCourseId(fileMaterials);
+    }
+
+    @Transactional(isolation = Isolation.READ_COMMITTED, readOnly = true)
+    @Override
+    public Set<TextMaterials> findTextMaterialByCourseId(TextMaterials textMaterials) {
+        return getMaterialDao().findTextMaterialByCourseId(textMaterials);
     }
 }
