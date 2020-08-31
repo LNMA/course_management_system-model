@@ -1,8 +1,9 @@
 package com.louay.model.entity.users;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.louay.model.entity.users.constant.Gender;
 import com.louay.model.entity.users.constant.Role;
+import com.louay.model.entity.users.picute.AccountPicture;
 import org.hibernate.annotations.Polymorphism;
 import org.hibernate.annotations.PolymorphismType;
 
@@ -16,10 +17,10 @@ import java.util.TimeZone;
 @Inheritance(strategy = InheritanceType.JOINED)
 @Polymorphism(type = PolymorphismType.EXPLICIT)
 @AttributeOverride(name = "email", column = @Column(name = "user_id", columnDefinition = "VARCHAR(200)", nullable = false))
-@Table( name = "users_details")
+@Table(name = "users_details")
 public class Users extends Accounts {
-    private static final long serialVersionUID = 4919354445622068411L;
-    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    private static final long serialVersionUID = -1561954418481338345L;
+    //@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @MapsId
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, targetEntity = Admin.class)
     @JoinColumn(name = "user_id", referencedColumnName = "email", columnDefinition = "VARCHAR(200)", foreignKey =
@@ -30,7 +31,7 @@ public class Users extends Accounts {
     @Column(name = "forename", length = 50, nullable = false, columnDefinition = "VARCHAR(50)")
     private String forename;
 
-    @Column(name = "surname", length = 50, nullable = false,columnDefinition = "VARCHAR(50)")
+    @Column(name = "surname", length = 50, nullable = false, columnDefinition = "VARCHAR(50)")
     private String surname;
 
     @Column(name = "gender", columnDefinition = "ENUM('MALE', 'FEMALE')")
@@ -40,7 +41,7 @@ public class Users extends Accounts {
     @Column(name = "phone", length = 20, columnDefinition = "VARCHAR(20)")
     private String phone;
 
-    @Column(name = "birthday",columnDefinition = "DATE")
+    @Column(name = "birthday", columnDefinition = "DATE")
     @Temporal(TemporalType.DATE)
     private Calendar birthday;
 
@@ -52,6 +53,10 @@ public class Users extends Accounts {
 
     @Column(name = "address", length = 200, columnDefinition = "VARCHAR(200)")
     private String address;
+
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    @OneToOne(fetch = FetchType.LAZY, mappedBy = "users")
+    private AccountPicture accountPicture;
 
     public Admin getAdmin() {
         return admin;
@@ -125,14 +130,20 @@ public class Users extends Accounts {
         this.address = address;
     }
 
-    @Transient
+    public AccountPicture getAccountPicture() {
+        return accountPicture;
+    }
+
+    public void setAccountPicture(AccountPicture accountPicture) {
+        this.accountPicture = accountPicture;
+    }
+
     @Override
     public Role getUserRole() {
         return Role.USER;
     }
 
-    @Transient
-    public String getAge(){
+    public String getAge() {
         TimeZone timeZone = this.birthday.getTimeZone();
         ZoneId zoneId = timeZone == null ? ZoneId.systemDefault() : timeZone.toZoneId();
         LocalDate birthday = LocalDate.ofInstant(this.birthday.toInstant(), zoneId);
@@ -140,7 +151,7 @@ public class Users extends Accounts {
         int year = birthday.until(now).getYears();
         int month = birthday.until(now).getMonths();
         int day = birthday.until(now).getDays();
-        return String.format("%d day, %d month, %d year",day, month, year);
+        return String.format("%d day, %d month, %d year", day, month, year);
     }
 
     @Transient
@@ -152,7 +163,7 @@ public class Users extends Accounts {
                 ", surname='" + surname + '\'' +
                 ", gender=" + gender +
                 ", phone=" + phone +
-                ", birthday=" + birthday +
+                ", birthday=" + birthday.getTime().toString() +
                 ", country='" + country + '\'' +
                 ", state='" + state + '\'' +
                 ", address='" + address + '\'' +

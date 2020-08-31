@@ -56,11 +56,13 @@ public class CookieLogin implements Serializable, Comparable<CookieLogin>{
         this.cookieGenerateDate = cookieGenerateDate;
     }
 
+    @Transient
     @Override
     public int compareTo(CookieLogin o) {
         return this.admin.compareTo(o.getAdmin());
     }
 
+    @Transient
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -69,11 +71,13 @@ public class CookieLogin implements Serializable, Comparable<CookieLogin>{
         return getAdmin().equals(that.getAdmin());
     }
 
+    @Transient
     @Override
     public int hashCode() {
         return Objects.hash(getAdmin());
     }
 
+    @Transient
     @Override
     public String toString() {
         return "CookieLogin{" +

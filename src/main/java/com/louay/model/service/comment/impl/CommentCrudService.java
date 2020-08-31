@@ -9,10 +9,11 @@ import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.Serializable;
+import java.util.Set;
 
 @Service
 public class CommentCrudService implements CommentService, Serializable {
-    private static final long serialVersionUID = 2407643217403173488L;
+    private static final long serialVersionUID = -6581959930717201076L;
     private final CommentDao commentDao;
 
     @Autowired
@@ -49,5 +50,11 @@ public class CommentCrudService implements CommentService, Serializable {
     @Override
     public Comment findCommentByCommentId(Comment comment) {
         return getCommentDao().findOneById(comment);
+    }
+
+    @Transactional(isolation = Isolation.READ_COMMITTED, readOnly = true)
+    @Override
+    public Set<Comment> findCommentByFeedbackId(Comment comment) {
+        return getCommentDao().findCommentByFeedbackId(comment);
     }
 }

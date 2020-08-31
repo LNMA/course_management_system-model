@@ -1,20 +1,15 @@
 package com.louay.model.entity.material;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.louay.model.entity.material.constant.FileType;
 import com.louay.model.entity.material.constant.MaterialType;
 import org.hibernate.annotations.LazyGroup;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
-import java.util.Arrays;
 import java.util.Base64;
 
 @Entity
 @Table(name = "materials_files")
-@EntityListeners(AuditingEntityListener.class)
-@JsonIgnoreProperties(value = {"materialDate"}, allowGetters = true)
 @PrimaryKeyJoinColumn(name = "material_id", columnDefinition = "BIGINT(20)", foreignKey =
 @ForeignKey(name = "fk_courses_materials_id_materials_file_id", foreignKeyDefinition = "FOREIGN KEY (material_id) " +
         "REFERENCES courses_materials (material_id) ON DELETE CASCADE ON UPDATE CASCADE"))
@@ -47,7 +42,6 @@ public class FileMaterials extends MaterialContent {
         this.fileType = fileType;
     }
 
-    @Transient
     public StringBuilder getBase64() {
         StringBuilder stringBase46 = new StringBuilder();
         stringBase46.append(Base64.getEncoder().encodeToString(this.file));
@@ -55,7 +49,6 @@ public class FileMaterials extends MaterialContent {
         return stringBase46;
     }
 
-    @Transient
     @Override
     public MaterialType getMaterialType() {
         return MaterialType.FILE;
@@ -64,8 +57,7 @@ public class FileMaterials extends MaterialContent {
     @Transient
     @Override
     public String toString() {
-        return "FileMaterials{" +
-                "file=" + Arrays.toString(file) +
+        return super.toString() + ", FileMaterials{" +
                 ", fileType=" + fileType +
                 '}';
     }

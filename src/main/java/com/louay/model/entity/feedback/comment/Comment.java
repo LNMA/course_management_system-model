@@ -1,6 +1,8 @@
 package com.louay.model.entity.feedback.comment;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.louay.model.entity.feedback.CourseFeedback;
 import com.louay.model.entity.users.Users;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -11,6 +13,7 @@ import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Objects;
 
+@JsonInclude(JsonInclude.Include.NON_NULL)
 @Entity
 @Table(name = "feedback_comments", indexes = {
         @Index(name = "feedback_comments_feedback_id_IX", columnList = "feedback_id"),
@@ -18,7 +21,7 @@ import java.util.Objects;
 @EntityListeners(AuditingEntityListener.class)
 @JsonIgnoreProperties(value = {"commentDate"}, allowGetters = true)
 public class Comment implements Comparable<Comment>, Serializable {
-    private static final long serialVersionUID = -8670691741166252251L;
+    private static final long serialVersionUID = 1789588317346462032L;
     @Id
     @Column(name = "comment_id", nullable = false, columnDefinition = "BIGINT(20)")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -76,8 +79,13 @@ public class Comment implements Comparable<Comment>, Serializable {
         this.commentMessage = commentMessage;
     }
 
+    @JsonIgnore
     public Calendar getCommentDate() {
         return commentDate;
+    }
+
+    public String getCommentDateString() {
+        return this.commentDate.getTime().toString();
     }
 
     public void setCommentDate(Calendar commentDate) {
@@ -87,7 +95,16 @@ public class Comment implements Comparable<Comment>, Serializable {
     @Transient
     @Override
     public int compareTo(Comment o) {
-        return this.commentID.compareTo(o.getCommentID());
+        if (this.commentDate == null || o.getCommentDate() == null){
+            return 0;
+        }
+        if (this.getCommentDate().after(o.commentDate)){
+            return 1;
+        }
+        if (this.getCommentDate().before(o.commentDate)){
+            return -1;
+        }
+        return 0;
     }
 
     @Transient
@@ -113,7 +130,7 @@ public class Comment implements Comparable<Comment>, Serializable {
                 ", courseFeedback=" + courseFeedback.getFeedbackID() +
                 ", user=" + user.getEmail() +
                 ", commentMessage='" + commentMessage + '\'' +
-                ", commentDate=" + commentDate +
+                ", commentDate=" + commentDate.getTime().toString() +
                 '}';
     }
 }

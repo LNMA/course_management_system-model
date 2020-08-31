@@ -67,11 +67,13 @@ public class UsersAuthentication implements Serializable, Comparable<UsersAuthen
         this.lastUpdateDate = lastUpdateDate;
     }
 
+    @Transient
     @Override
     public int compareTo(UsersAuthentication o) {
         return this.userId.compareTo(o.getUserId());
     }
 
+    @Transient
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -80,11 +82,13 @@ public class UsersAuthentication implements Serializable, Comparable<UsersAuthen
         return getUserId().equals(that.getUserId());
     }
 
+    @Transient
     @Override
     public int hashCode() {
         return Objects.hash(getUserId());
     }
 
+    @Transient
     @Override
     public String toString() {
         return "UsersAuthentication{" +

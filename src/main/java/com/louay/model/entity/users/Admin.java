@@ -39,7 +39,6 @@ public class Admin extends Accounts {
         this.joinDate = joinDate;
     }
 
-    @Transient
     @Override
     public Role getUserRole() {
         return Role.ADMIN;

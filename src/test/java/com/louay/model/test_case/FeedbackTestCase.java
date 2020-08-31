@@ -6,8 +6,10 @@ import com.louay.model.entity.feedback.CourseFeedback;
 import com.louay.model.entity.feedback.FileFeedback;
 import com.louay.model.entity.feedback.FileMessageFeedback;
 import com.louay.model.entity.feedback.MessageFeedback;
+import com.louay.model.entity.feedback.constant.FeedbackType;
 import com.louay.model.entity.users.Admin;
 import com.louay.model.entity.users.Instructor;
+import com.louay.model.entity.users.Student;
 import com.louay.model.entity.users.Users;
 import com.louay.model.entity.users.constant.Gender;
 import com.louay.model.entity.users.constant.InstructorProfileVisibility;
@@ -105,19 +107,20 @@ public class FeedbackTestCase {
         CourseService courseService = this.applicationContext.getBean(CourseService.class);
         courses = courseService.findCourseByCourseId(courses);
 
-        System.out.println(courses);
+       System.out.println(courses);
 
         CourseFeedback courseFeedback = new CourseFeedback();
         courseFeedback.setCourse(courses);
         courseFeedback.setUser(users);
-
-        System.out.println(courseFeedback);
+        courseFeedback.setFeedbackType(FeedbackType.MESSAGE);
 
         MessageFeedback messageFeedback = new MessageFeedback();
         messageFeedback.setCourseFeedback(courseFeedback);
         messageFeedback.setPostMessage("This feedback is for test only.");
 
-        this.feedbackService.createMessageFeedback(messageFeedback);
+        courseFeedback.setFeedbackContent(messageFeedback);
+
+        this.feedbackService.createCourseFeedback(courseFeedback);
         System.out.println(messageFeedback);
     }
 
@@ -144,14 +147,14 @@ public class FeedbackTestCase {
 
     @Test
     public void testCase05_create_feedbackFile(){
-        Users users = new Users();
+        Student users = new Student();
         users.setEmail("feedback@test.com");
         AccountService accountService = this.applicationContext.getBean(AccountService.class);
-        users = accountService.findUsersByUserID(users);
+        users = accountService.findStudentsDetailsByStudentID(users);
 
         System.out.println(users);
 
-        Courses courses = this.applicationContext.getBean(Courses.class);
+        Courses courses = new Courses();
         courses.setCourseID((long) 1);
         CourseService courseService = this.applicationContext.getBean(CourseService.class);
         courses = courseService.findCourseByCourseId(courses);
@@ -161,8 +164,7 @@ public class FeedbackTestCase {
         CourseFeedback courseFeedback = new CourseFeedback();
         courseFeedback.setCourse(courses);
         courseFeedback.setUser(users);
-
-        System.out.println(courseFeedback);
+        courseFeedback.setFeedbackType(FeedbackType.FILE);
 
         FileFeedback fileFeedback = new FileFeedback();
 
@@ -180,7 +182,9 @@ public class FeedbackTestCase {
         fileFeedback.setFileExtension("Louay Amr.png");
         fileFeedback.setCourseFeedback(courseFeedback);
 
-        this.feedbackService.createFileFeedback(fileFeedback);
+        courseFeedback.setFeedbackContent(fileFeedback);
+
+        this.feedbackService.createCourseFeedback(courseFeedback);
 
         System.out.println(fileFeedback);
     }
@@ -222,7 +226,7 @@ public class FeedbackTestCase {
         AccountService accountService = this.applicationContext.getBean(AccountService.class);
         users = accountService.findUsersByUserID(users);
 
-        Courses courses = this.applicationContext.getBean(Courses.class);
+        Courses courses = new Courses();
         courses.setCourseID((long) 1);
         CourseService courseService = this.applicationContext.getBean(CourseService.class);
         courses = courseService.findCourseByCourseId(courses);
@@ -230,8 +234,7 @@ public class FeedbackTestCase {
         CourseFeedback courseFeedback = new CourseFeedback();
         courseFeedback.setCourse(courses);
         courseFeedback.setUser(users);
-
-        System.out.println(courseFeedback);
+        courseFeedback.setFeedbackType(FeedbackType.ALL);
 
         FileMessageFeedback fileMessageFeedback = new FileMessageFeedback();
 
@@ -250,7 +253,9 @@ public class FeedbackTestCase {
         fileMessageFeedback.setCourseFeedback(courseFeedback);
         fileMessageFeedback.setPostMessage("messageFile Feedback");
 
-        this.feedbackService.createFileMessageFeedback(fileMessageFeedback);
+        courseFeedback.setFeedbackContent(fileMessageFeedback);
+
+        this.feedbackService.createCourseFeedback(courseFeedback);
 
         System.out.println(fileMessageFeedback);
     }

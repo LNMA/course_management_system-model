@@ -5,6 +5,8 @@ import com.louay.model.dao.material.MaterialDao;
 import com.louay.model.entity.material.CourseMaterials;
 import com.louay.model.entity.material.FileMaterials;
 import com.louay.model.entity.material.TextMaterials;
+import com.louay.model.entity.wrapper.FileMaterialWithOutFile;
+import com.louay.model.entity.wrapper.MaterialWithOutContent;
 import org.springframework.stereotype.Repository;
 
 import java.util.*;
@@ -83,20 +85,23 @@ public class MaterialRepository extends CommonDaoImpl<CourseMaterials> implement
     }
 
     @Override
-    public Set<FileMaterials> findFileMaterialWithoutFileByCourseId(FileMaterials fileMaterials) {
-        List<FileMaterials> fileMaterialsList = getEntityManager().createQuery("SELECT fm.materialID, " +
-                "fm.fileType, fm.materialDate, fm.uploadDate, fm.user.email, fm.course.courseID, fm.materialName " +
-                "FROM FileMaterials fm WHERE fm.course.courseID = :courseId", FileMaterials.class)
+    public Set<FileMaterialWithOutFile> findFileMaterialWithoutFileByCourseId(FileMaterials fileMaterials) {
+        List<FileMaterialWithOutFile> fileMaterialsList = getEntityManager().createQuery("SELECT NEW " +
+                "com.louay.model.entity.wrapper.FileMaterialWithOutFile(fm.materialID, " +
+                "fm.materialName, fm.materialDate, fm.uploadDate, fm.user.email, fm.course.courseID, fm.fileType) " +
+                "FROM FileMaterials fm WHERE fm.course.courseID = :courseId", FileMaterialWithOutFile.class)
                 .setParameter("courseId", fileMaterials.getCourse().getCourseID())
                 .getResultList();
+
         return new HashSet<>(fileMaterialsList);
     }
 
     @Override
-    public Set<TextMaterials> findTextMaterialWithoutTextByCourseId(TextMaterials textMaterials){
-        List<TextMaterials> textMaterialsList = getEntityManager().createQuery("SELECT tm.materialID, " +
-                "tm.materialDate, tm.uploadDate, tm.user.email, tm.course.courseID, tm.materialName " +
-                "FROM TextMaterials tm WHERE tm.course.courseID = :courseId", TextMaterials.class)
+    public Set<MaterialWithOutContent> findTextMaterialWithoutTextByCourseId(TextMaterials textMaterials) {
+        List<MaterialWithOutContent> textMaterialsList = getEntityManager().createQuery("SELECT NEW " +
+                "com.louay.model.entity.wrapper.MaterialWithOutContent(tm.materialID, " +
+                "tm.materialName , tm.materialDate, tm.uploadDate, tm.user.email, tm.course.courseID)" +
+                "FROM TextMaterials tm WHERE tm.course.courseID = :courseId", MaterialWithOutContent.class)
                 .setParameter("courseId", textMaterials.getCourse().getCourseID())
                 .getResultList();
         return new HashSet<>(textMaterialsList);

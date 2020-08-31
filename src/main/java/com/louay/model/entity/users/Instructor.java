@@ -8,7 +8,7 @@ import javax.persistence.*;
 @Entity
 @PrimaryKeyJoinColumn(name = "instructors_id", referencedColumnName = "user_id", columnDefinition = "VARCHAR(200)",
         foreignKey = @ForeignKey(name = "fk_users_details_id_instructors_details_id", foreignKeyDefinition =
-        "FOREIGN KEY (instructors_id) REFERENCES users_details (user_id) ON DELETE CASCADE ON UPDATE CASCADE"))
+                "FOREIGN KEY (instructors_id) REFERENCES users_details (user_id) ON DELETE CASCADE ON UPDATE CASCADE"))
 @Table(name = "instructors_details")
 public class Instructor extends Users {
     private static final long serialVersionUID = -4264593126792348357L;
@@ -24,7 +24,7 @@ public class Instructor extends Users {
     @Column(name = "portfolio", length = 300, columnDefinition = "VARCHAR(300)")
     private String portfolio;
 
-    @Column(name = "profile_visibility",nullable = false, columnDefinition = "ENUM('PUBLIC', 'PRIVATE') default 'PUBLIC'")
+    @Column(name = "profile_visibility", nullable = false, columnDefinition = "ENUM('PUBLIC', 'PRIVATE') default 'PUBLIC'")
     @Enumerated(EnumType.STRING)
     private InstructorProfileVisibility profileVisibility;
 
@@ -68,7 +68,6 @@ public class Instructor extends Users {
         this.profileVisibility = profileVisibility;
     }
 
-    @Transient
     @Override
     public Role getUserRole() {
         return Role.INSTRUCTOR;
@@ -77,7 +76,7 @@ public class Instructor extends Users {
     @Transient
     @Override
     public String toString() {
-        return super.toString()+", Instructor{" +
+        return super.toString() + ", Instructor{" +
                 "headline='" + headline + '\'' +
                 ", specialty='" + specialty + '\'' +
                 ", nickname='" + nickname + '\'' +

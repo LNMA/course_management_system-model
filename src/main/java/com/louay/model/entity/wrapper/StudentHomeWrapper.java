@@ -7,9 +7,8 @@ import java.util.Calendar;
 import java.util.Objects;
 
 public class StudentHomeWrapper implements Serializable, Comparable<StudentHomeWrapper> {
-    private static final long serialVersionUID = 2049495006244837572L;
+    private static final long serialVersionUID = 8259893314019291774L;
     private Student student;
-    private StringBuilder pictureBase64;
     private Calendar lastSignInDate;
 
     public Student getStudent() {
@@ -18,14 +17,6 @@ public class StudentHomeWrapper implements Serializable, Comparable<StudentHomeW
 
     public void setStudent(Student student) {
         this.student = student;
-    }
-
-    public StringBuilder getPictureBase64() {
-        return pictureBase64;
-    }
-
-    public void setPictureBase64(StringBuilder pictureBase64) {
-        this.pictureBase64 = pictureBase64;
     }
 
     public String getTimeBirthday(){
@@ -66,7 +57,7 @@ public class StudentHomeWrapper implements Serializable, Comparable<StudentHomeW
     public String toString() {
         return "StudentHomeWrapper{" +
                 "student=" + student +
-                ", pictureBase64=" + pictureBase64 +
+                ", lastSignInDate=" + lastSignInDate +
                 '}';
     }
 }

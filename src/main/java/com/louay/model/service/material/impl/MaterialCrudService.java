@@ -3,6 +3,8 @@ package com.louay.model.service.material.impl;
 import com.louay.model.dao.material.MaterialDao;
 import com.louay.model.entity.material.FileMaterials;
 import com.louay.model.entity.material.TextMaterials;
+import com.louay.model.entity.wrapper.FileMaterialWithOutFile;
+import com.louay.model.entity.wrapper.MaterialWithOutContent;
 import com.louay.model.service.material.MaterialService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -91,13 +93,13 @@ public class MaterialCrudService implements MaterialService, Serializable {
 
     @Transactional(isolation = Isolation.READ_COMMITTED, readOnly = true)
     @Override
-    public Set<FileMaterials> findFileMaterialWithoutFileByCourseId(FileMaterials fileMaterials) {
+    public Set<FileMaterialWithOutFile> findFileMaterialWithoutFileByCourseId(FileMaterials fileMaterials) {
         return getMaterialDao().findFileMaterialWithoutFileByCourseId(fileMaterials);
     }
 
     @Transactional(isolation = Isolation.READ_COMMITTED, readOnly = true)
     @Override
-    public Set<TextMaterials> findTextMaterialWithoutTextByCourseId(TextMaterials textMaterials) {
+    public Set<MaterialWithOutContent> findTextMaterialWithoutTextByCourseId(TextMaterials textMaterials) {
         return getMaterialDao().findTextMaterialWithoutTextByCourseId(textMaterials);
     }
 

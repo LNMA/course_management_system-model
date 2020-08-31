@@ -10,7 +10,7 @@ import java.util.*;
 @Repository
 public class CourseFeedbackRepository extends CommonDaoImpl<CourseFeedback> implements CourseFeedbackDao {
 
-    private static final long serialVersionUID = -910124764053502575L;
+    private static final long serialVersionUID = -6571398163783124319L;
 
     @Override
     public <S extends CourseFeedback> Boolean isExist(S entity) {
@@ -62,5 +62,24 @@ public class CourseFeedbackRepository extends CommonDaoImpl<CourseFeedback> impl
             result.add(entityFound);
         }
         return result;
+    }
+
+    @Override
+    public Set<CourseFeedback> findCourseFeedbackByCourseId(CourseFeedback courseFeedback) {
+        List<CourseFeedback> courseFeedbackList = getEntityManager().createQuery("SELECT cf FROM " +
+                "CourseFeedback cf WHERE cf.course.courseID = :CourseId", CourseFeedback.class)
+                .setParameter("CourseId", courseFeedback.getCourse().getCourseID())
+                .getResultList();
+        return new HashSet<>(courseFeedbackList);
+    }
+
+    @Override
+    public Set<CourseFeedback> findCourseFeedbackAndCommentByCourseId(CourseFeedback courseFeedback) {
+        List<CourseFeedback> courseFeedbackList = getEntityManager().createQuery("SELECT cf FROM " +
+                "CourseFeedback cf INNER JOIN FETCH cf.comment c WHERE " +
+                "cf.course.courseID = :CourseId", CourseFeedback.class)
+                .setParameter("CourseId", courseFeedback.getCourse().getCourseID())
+                .getResultList();
+        return new HashSet<>(courseFeedbackList);
     }
 }

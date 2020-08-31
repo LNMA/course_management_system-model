@@ -12,11 +12,10 @@ import java.util.Base64;
 import java.util.Calendar;
 import java.util.Objects;
 
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @Entity
 @Table(name = "courses", indexes = {@Index(name = "courses_instructor_id_IX", columnList = "instructor_id")})
 public class Courses implements Serializable, Comparable<Courses> {
-    private static final long serialVersionUID = 2701871078712916431L;
+    private static final long serialVersionUID = -8014117428964625972L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "course_id", nullable = false, columnDefinition = "BIGINT(20)")
@@ -40,7 +39,6 @@ public class Courses implements Serializable, Comparable<Courses> {
     @Temporal(TemporalType.TIMESTAMP)
     private Calendar endDate;
 
-    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @ManyToOne(targetEntity = Instructor.class, fetch = FetchType.LAZY)
     @JoinColumn(name = "instructor_id", referencedColumnName = "instructors_id", nullable = false, foreignKey =
     @ForeignKey(name = "fk_instructors_details_id_courses_instructor_id", foreignKeyDefinition = "FOREIGN KEY " +
@@ -76,12 +74,20 @@ public class Courses implements Serializable, Comparable<Courses> {
         return this.startDate;
     }
 
+    public String getStartDateString() {
+        return this.startDate.getTime().toString();
+    }
+
     public void setStartDate(Calendar startDate) {
         this.startDate = startDate;
     }
 
     public Calendar getEndDate() {
         return this.endDate;
+    }
+
+    public String getEndDateString() {
+        return this.endDate.getTime().toString();
     }
 
     public void setEndDate(Calendar endDate) {
@@ -96,7 +102,6 @@ public class Courses implements Serializable, Comparable<Courses> {
         this.instructor = instructor;
     }
 
-    @Transient
     public StringBuilder getCoursePictureBase64() {
         StringBuilder stringBase46 = new StringBuilder();
         stringBase46.append(Base64.getEncoder().encodeToString(this.picture));

@@ -1,5 +1,6 @@
 package com.louay.model.entity.material;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.louay.model.entity.material.constant.MaterialType;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -12,8 +13,8 @@ import java.util.Calendar;
 @EntityListeners(AuditingEntityListener.class)
 @JsonIgnoreProperties(value = {"uploadDate"}, allowGetters = true)
 @PrimaryKeyJoinColumn(name = "material_id", referencedColumnName = "material_id", columnDefinition = "BIGINT(20)")
-public abstract class MaterialContent extends CourseMaterials{
-    private static final long serialVersionUID = 9192937073759975046L;
+public abstract class MaterialContent extends CourseMaterials {
+    private static final long serialVersionUID = -6132765251961707477L;
     @Temporal(TemporalType.TIMESTAMP)
     @LastModifiedDate
     @Column(name = "upload_date", columnDefinition = "TIMESTAMP(0)")
@@ -38,7 +39,10 @@ public abstract class MaterialContent extends CourseMaterials{
         this.materialName = materialName;
     }
 
-    @Transient
+    public String getUploadDateString() {
+        return this.uploadDate.getTime().toString();
+    }
+
     abstract public MaterialType getMaterialType();
 
     @Transient

@@ -1,6 +1,6 @@
 package com.louay.model.entity.users;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.louay.model.entity.courses.members.CourseMembers;
 import com.louay.model.entity.users.constant.Role;
 
@@ -9,8 +9,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@PrimaryKeyJoinColumn(name = "student_id", referencedColumnName = "user_id", columnDefinition = "VARCHAR(200)",
-        foreignKey = @ForeignKey(name = "fk_users_details_id_students_details_student_id", foreignKeyDefinition =
+@PrimaryKeyJoinColumn(name = "student_id", referencedColumnName = "user_id", columnDefinition = "VARCHAR(200)", foreignKey =
+@ForeignKey(name = "fk_users_details_id_students_details_student_id", foreignKeyDefinition =
         "FOREIGN KEY (student_id) REFERENCES users_details (user_id) ON UPDATE DELETE ON UPDATE CASCADE"))
 @Table(name = "students_details")
 public class Student extends Users {
@@ -21,7 +21,7 @@ public class Student extends Users {
     @Column(name = "interests", length = 300, columnDefinition = "VARCHAR(300)")
     private String interests;
 
-    @JsonIgnore
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     @OneToMany(mappedBy = "student", fetch = FetchType.LAZY)
     private Set<CourseMembers> courseMembers = new HashSet<>();
 
@@ -49,7 +49,6 @@ public class Student extends Users {
         this.courseMembers = courseMembers;
     }
 
-    @Transient
     @Override
     public Role getUserRole() {
         return Role.STUDENT;
@@ -58,7 +57,7 @@ public class Student extends Users {
     @Transient
     @Override
     public String toString() {
-        return super.toString()+", Student{" +
+        return super.toString() + ", Student{" +
                 "headline='" + headline + '\'' +
                 ", interests='" + interests + '\'' +
                 '}';

@@ -27,9 +27,9 @@ public abstract class Accounts implements Comparable<Accounts>, Serializable {
         this.email = email;
     }
 
-    @Transient
     abstract public Role getUserRole();
 
+    @Transient
     @Override
     public int compareTo(Accounts o) {
         return this.email.compareTo(o.getEmail());

@@ -1,5 +1,6 @@
 package com.louay.model.entity.feedback;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.louay.model.entity.feedback.constant.FeedbackType;
 import org.hibernate.annotations.Polymorphism;
@@ -25,8 +26,9 @@ public abstract class FeedbackContent implements Comparable<FeedbackContent>, Se
     @Column(name = "feedback_id", columnDefinition = "BIGINT(20)", nullable = false)
     private Long feedbackId;
 
+    @JsonIgnore
     @MapsId
-    @OneToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY, targetEntity = CourseFeedback.class)
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, targetEntity = CourseFeedback.class)
     @JoinColumn(name = "feedback_id", referencedColumnName = "feedback_id", columnDefinition = "BIGINT(20)", foreignKey =
     @ForeignKey(name = "fk_course_feedback_id_feedback_file_id", foreignKeyDefinition = "FOREIGN KEY (feedback_id) " +
             "REFERENCES course_feedback (feedback_id) ON DELETE CASCADE ON UPDATE CASCADE"), nullable = false)
@@ -61,7 +63,6 @@ public abstract class FeedbackContent implements Comparable<FeedbackContent>, Se
         this.contentDate = contentDate;
     }
 
-    @Transient
     abstract public FeedbackType getFeedbackType();
 
     @Transient
@@ -91,7 +92,7 @@ public abstract class FeedbackContent implements Comparable<FeedbackContent>, Se
         return "FeedbackContent{" +
                 "feedbackId=" + feedbackId +
                 ", courseFeedback=" + courseFeedback.getFeedbackID() +
-                ", contentDate=" + contentDate +
+                ", contentDate=" + contentDate.getTime().toString() +
                 '}';
     }
 }

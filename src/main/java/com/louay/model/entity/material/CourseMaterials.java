@@ -1,5 +1,6 @@
 package com.louay.model.entity.material;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.louay.model.entity.courses.Courses;
 import com.louay.model.entity.users.Users;
@@ -22,7 +23,7 @@ import java.util.Objects;
 @Inheritance(strategy = InheritanceType.JOINED)
 @Polymorphism(type = PolymorphismType.EXPLICIT)
 public abstract class CourseMaterials implements Comparable<CourseMaterials>, Serializable {
-    private static final long serialVersionUID = 7329951003167505380L;
+    private static final long serialVersionUID = 897054448594628024L;
     @Id
     @Column(name = "material_id", unique = true, nullable = false, columnDefinition = "BIGINT(20)")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -79,20 +80,14 @@ public abstract class CourseMaterials implements Comparable<CourseMaterials>, Se
         this.materialDate = materialDate;
     }
 
+    public String getMaterialDateString() {
+        return this.materialDate.getTime().toString();
+    }
+
     @Transient
     @Override
     public int compareTo(CourseMaterials o) {
-        if (this.materialDate == null || o.getMaterialDate() == null) {
-            return 0;
-        }
-        if (this.materialDate.after(o.getMaterialDate())) {
-            return -1;
-        }
-        if (this.materialDate.before(o.getMaterialDate())) {
-            return 1;
-        } else {
-            return 0;
-        }
+        return this.materialID.compareTo(o.materialID);
     }
 
     @Transient

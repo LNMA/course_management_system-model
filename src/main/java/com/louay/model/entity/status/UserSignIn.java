@@ -56,11 +56,13 @@ public class UserSignIn implements Comparable<UserSignIn>, Serializable {
         this.signInDate = signInDate;
     }
 
+    @Transient
     @Override
     public int compareTo(UserSignIn o) {
         return this.userSignInId.compareTo(o.getUserSignInId());
     }
 
+    @Transient
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -69,11 +71,13 @@ public class UserSignIn implements Comparable<UserSignIn>, Serializable {
         return getUserSignInId().equals(that.getUserSignInId());
     }
 
+    @Transient
     @Override
     public int hashCode() {
         return Objects.hash(getUserSignInId());
     }
 
+    @Transient
     @Override
     public String toString() {
         return "UserSignIn{" +

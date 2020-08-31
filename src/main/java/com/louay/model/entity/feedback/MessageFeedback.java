@@ -19,7 +19,6 @@ public class MessageFeedback extends FeedbackContent {
         this.postMessage = postMessage;
     }
 
-    @Transient
     @Override
     public FeedbackType getFeedbackType() {
         return FeedbackType.MESSAGE;
