@@ -76,7 +76,7 @@ public class CourseFeedbackRepository extends CommonDaoImpl<CourseFeedback> impl
     @Override
     public Set<CourseFeedback> findCourseFeedbackAndCommentByCourseId(CourseFeedback courseFeedback) {
         List<CourseFeedback> courseFeedbackList = getEntityManager().createQuery("SELECT cf FROM " +
-                "CourseFeedback cf INNER JOIN FETCH cf.comment c WHERE " +
+                "CourseFeedback cf LEFT JOIN FETCH cf.comment c WHERE " +
                 "cf.course.courseID = :CourseId", CourseFeedback.class)
                 .setParameter("CourseId", courseFeedback.getCourse().getCourseID())
                 .getResultList();

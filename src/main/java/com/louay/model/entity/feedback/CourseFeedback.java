@@ -20,7 +20,7 @@ import java.util.*;
         @Index(name = "course_feedback_user_id_IX", columnList = "user_id")})
 @EntityListeners(AuditingEntityListener.class)
 @JsonIgnoreProperties(value = {"feedbackDate"}, allowGetters = true)
-public class CourseFeedback implements Comparable<CourseFeedback>, Serializable {
+public class CourseFeedback implements Serializable, Comparable<CourseFeedback> {
     private static final long serialVersionUID = -3521746267041570751L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,7 +33,7 @@ public class CourseFeedback implements Comparable<CourseFeedback>, Serializable 
             "(course_id) REFERENCES courses (course_id) ON DELETE CASCADE ON UPDATE CASCADE"), nullable = false)
     private Courses course;
 
-    @ManyToOne(fetch = FetchType.LAZY, targetEntity = Users.class)
+    @ManyToOne(targetEntity = Users.class)
     @JoinColumn(name = "user_id", referencedColumnName = "user_id", columnDefinition = "VARCHAR(200)", foreignKey =
     @ForeignKey(name = "fk_users_details_id_course_feedback_user_id", foreignKeyDefinition = "FOREIGN KEY (user_id) " +
             "REFERENCES users_details (user_id) ON DELETE CASCADE ON UPDATE CASCADE"), nullable = false)
@@ -48,7 +48,6 @@ public class CourseFeedback implements Comparable<CourseFeedback>, Serializable 
     @Enumerated(EnumType.STRING)
     private FeedbackType feedbackType;
 
-    @JsonIgnore
     @OneToOne(fetch = FetchType.LAZY, mappedBy = "courseFeedback", cascade = CascadeType.ALL, orphanRemoval = true)
     private FeedbackContent feedbackContent;
 
@@ -146,13 +145,13 @@ public class CourseFeedback implements Comparable<CourseFeedback>, Serializable 
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         CourseFeedback that = (CourseFeedback) o;
-        return getFeedbackID().equals(that.getFeedbackID());
+        return this.feedbackID.equals(that.getFeedbackID());
     }
 
     @Transient
     @Override
     public int hashCode() {
-        return Objects.hash(getFeedbackID());
+        return Objects.hash(this.feedbackID);
     }
 
     @Transient

@@ -1,7 +1,6 @@
 package com.louay.model.entity.courses;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.louay.model.entity.users.Instructor;
 import org.hibernate.annotations.LazyGroup;
 

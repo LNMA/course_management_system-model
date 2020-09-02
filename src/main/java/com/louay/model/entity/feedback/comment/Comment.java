@@ -27,6 +27,7 @@ public class Comment implements Comparable<Comment>, Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long commentID;
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY, targetEntity = CourseFeedback.class)
     @JoinColumn(name = "feedback_id", referencedColumnName = "feedback_id", columnDefinition = "BIGINT(20)", foreignKey =
     @ForeignKey(name = "fk_course_feedback_id_feedback_comments_id", foreignKeyDefinition = "FOREIGN KEY (feedback_id) " +
@@ -79,7 +80,6 @@ public class Comment implements Comparable<Comment>, Serializable {
         this.commentMessage = commentMessage;
     }
 
-    @JsonIgnore
     public Calendar getCommentDate() {
         return commentDate;
     }
