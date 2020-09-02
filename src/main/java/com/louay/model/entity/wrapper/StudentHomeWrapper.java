@@ -1,19 +1,15 @@
 package com.louay.model.entity.wrapper;
 
 import com.louay.model.entity.users.Student;
-import org.springframework.beans.factory.config.ConfigurableBeanFactory;
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
 
 import java.io.Serializable;
+import java.util.Calendar;
 import java.util.Objects;
 
-@Component
-@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 public class StudentHomeWrapper implements Serializable, Comparable<StudentHomeWrapper> {
-    private static final long serialVersionUID = -1969373294226748539L;
+    private static final long serialVersionUID = 8259893314019291774L;
     private Student student;
-    private StringBuilder pictureBase64;
+    private Calendar lastSignInDate;
 
     public Student getStudent() {
         return student;
@@ -23,20 +19,20 @@ public class StudentHomeWrapper implements Serializable, Comparable<StudentHomeW
         this.student = student;
     }
 
-    public StringBuilder getPictureBase64() {
-        return pictureBase64;
-    }
-
-    public void setPictureBase64(StringBuilder pictureBase64) {
-        this.pictureBase64 = pictureBase64;
-    }
-
     public String getTimeBirthday(){
         return this.student.getBirthday().getTime().toString();
     }
 
     public String getTimeJoinDate(){
         return this.student.getAdmin().getJoinDate().getTime().toString();
+    }
+
+    public String getLastSignInDate() {
+        return lastSignInDate.getTime().toString();
+    }
+
+    public void setLastSignInDate(Calendar lastSignInDate) {
+        this.lastSignInDate = lastSignInDate;
     }
 
     @Override
@@ -61,7 +57,7 @@ public class StudentHomeWrapper implements Serializable, Comparable<StudentHomeW
     public String toString() {
         return "StudentHomeWrapper{" +
                 "student=" + student +
-                ", pictureBase64=" + pictureBase64 +
+                ", lastSignInDate=" + lastSignInDate +
                 '}';
     }
 }

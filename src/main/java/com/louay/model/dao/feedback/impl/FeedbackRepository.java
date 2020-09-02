@@ -38,9 +38,7 @@ public class FeedbackRepository extends CommonDaoImpl<FeedbackContent> implement
             @SuppressWarnings("unchecked")
             S entityFound = (S) getEntityManager().getReference(entityClass, s.getCourseFeedback().getFeedbackID());
             getEntityManager().remove(entityFound);
-            getEntityManager().flush();
             result.add(s);
-            getEntityManager().clear();
         }
         return result;
     }
@@ -61,8 +59,6 @@ public class FeedbackRepository extends CommonDaoImpl<FeedbackContent> implement
             @SuppressWarnings("unchecked")
             S entityFound = (S) getEntityManager().find(entityClass, s.getCourseFeedback().getFeedbackID());
             result.add(entityFound);
-            getEntityManager().flush();
-            getEntityManager().clear();
         }
         return result;
     }

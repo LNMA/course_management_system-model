@@ -16,6 +16,7 @@ import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.MethodSorters;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -27,27 +28,23 @@ import java.util.Calendar;
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class CourseMemberTestCase {
     private AnnotationConfigApplicationContext applicationContext;
+    @Autowired
     private CourseMemberService courseMemberService;
 
     @Before
-    public void initialize02_ApplicationContext() {
+    public void initialize01_ApplicationContext() {
         this.applicationContext = new AnnotationConfigApplicationContext();
         this.applicationContext.scan("com.louay.model");
         this.applicationContext.refresh();
     }
 
-    @Before
-    public void initialize01_CourseMemberService() {
-        this.courseMemberService = this.applicationContext.getBean(CourseMemberService.class);
-    }
-
     @Test
     public void testCase01_create_instructor() {
-        Admin admin = this.applicationContext.getBean(Admin.class);
+        Admin admin = new Admin();
         admin.setEmail("courseMemberInstructor@test.com");
         admin.setPassword("1234");
 
-        Instructor instructor = this.applicationContext.getBean("instructor", Instructor.class);
+        Instructor instructor = new Instructor();
         instructor.setAdmin(admin);
         instructor.setForename("Course Member");
         instructor.setSurname("Test");
@@ -71,11 +68,11 @@ public class CourseMemberTestCase {
 
     @Test
     public void testCase02_create_student() {
-        Admin admin = this.applicationContext.getBean(Admin.class);
+        Admin admin = new Admin();
         admin.setEmail("courseMemberStudent@test.com");
         admin.setPassword("1234");
 
-        Student student = this.applicationContext.getBean("student", Student.class);
+        Student student = new Student();
         student.setAdmin(admin);
         student.setForename("Course Member");
         student.setSurname("Test");
@@ -96,12 +93,12 @@ public class CourseMemberTestCase {
 
     @Test
     public void testCase03_create_course() {
-        Instructor instructor = this.applicationContext.getBean("instructor", Instructor.class);
+        Instructor instructor = new Instructor();
         instructor.setEmail("courseMemberInstructor@test.com");
         AccountService accountService = this.applicationContext.getBean(AccountService.class);
         instructor = accountService.findInstructorsDetailsByInstructorID(instructor);
 
-        Courses courses = this.applicationContext.getBean(Courses.class);
+        Courses courses = new Courses();
         courses.setCourseName("math");
         Calendar calendar = Calendar.getInstance();
         calendar.set(2020, Calendar.JULY,26);
@@ -116,17 +113,17 @@ public class CourseMemberTestCase {
 
     @Test
     public void testCase04_create_courseMember() {
-        Student student = this.applicationContext.getBean(Student.class);
+        Student student = new Student();
         student.setEmail("courseMemberStudent@test.com");
         AccountService accountService = this.applicationContext.getBean(AccountService.class);
         student = accountService.findStudentsDetailsByStudentID(student);
 
-        Courses courses = this.applicationContext.getBean(Courses.class);
+        Courses courses = new Courses();
         courses.setCourseID((long) 1);
         CourseService courseService = this.applicationContext.getBean(CourseService.class);
         courses = courseService.findCourseByCourseId(courses);
 
-        CourseMembers courseMembers = this.applicationContext.getBean(CourseMembers.class);
+        CourseMembers courseMembers = new CourseMembers();
         courseMembers.setStudent(student);
         courseMembers.setCourse(courses);
 
@@ -135,7 +132,7 @@ public class CourseMemberTestCase {
 
     @Test
     public void testCase05_find_courseMember() {
-        CourseMembers courseMembers = this.applicationContext.getBean(CourseMembers.class);
+        CourseMembers courseMembers = new CourseMembers();
         courseMembers.setMemberId((long) 1);
 
         courseMembers = this.courseMemberService.findMemberByMemberId(courseMembers);
@@ -143,8 +140,18 @@ public class CourseMemberTestCase {
     }
 
     @Test
-    public void testCase06_find_and_delete_courseMember() {
-        CourseMembers courseMembers = this.applicationContext.getBean(CourseMembers.class);
+    public void testCase06_find_courseMember_join_student() {
+        Student student = new Student();
+        student.setEmail("courseMemberStudent@test.com");
+        AccountService accountService = this.applicationContext.getBean(AccountService.class);
+        student = accountService.findStudentJoinCourseMemberByStudentId(student);
+        student.getCourseMembers().forEach(System.out::println);
+
+    }
+
+    @Test
+    public void testCase07_find_and_delete_courseMember() {
+        CourseMembers courseMembers = new CourseMembers();
         courseMembers.setMemberId((long) 1);
 
         courseMembers = this.courseMemberService.findMemberByMemberId(courseMembers);
@@ -154,8 +161,8 @@ public class CourseMemberTestCase {
     }
 
     @Test
-    public void testCase07_find_and_delete_account1() {
-        Instructor instructor = this.applicationContext.getBean("instructor", Instructor.class);
+    public void testCase08_find_and_delete_account1() {
+        Instructor instructor = new Instructor();
         instructor.setEmail("courseMemberInstructor@test.com");
 
         AccountService accountService = this.applicationContext.getBean(AccountService.class);
@@ -167,8 +174,8 @@ public class CourseMemberTestCase {
     }
 
     @Test
-    public void testCase08_find_and_delete_account2() {
-        Student student = this.applicationContext.getBean("student", Student.class);
+    public void testCase09_find_and_delete_account2() {
+        Student student = new Student();
         student.setEmail("courseMemberStudent@test.com");
 
         AccountService accountService = this.applicationContext.getBean(AccountService.class);

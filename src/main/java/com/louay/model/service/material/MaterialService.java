@@ -2,6 +2,10 @@ package com.louay.model.service.material;
 
 import com.louay.model.entity.material.FileMaterials;
 import com.louay.model.entity.material.TextMaterials;
+import com.louay.model.entity.wrapper.FileMaterialWithOutFile;
+import com.louay.model.entity.wrapper.MaterialWithOutContent;
+
+import java.util.Set;
 
 public interface MaterialService {
     TextMaterials createTextMaterials(TextMaterials textMaterials);
@@ -19,4 +23,16 @@ public interface MaterialService {
     FileMaterials updateFileMaterials(FileMaterials fileMaterials);
 
     FileMaterials findFileMaterialsByMaterialId(FileMaterials fileMaterials);
+
+    Boolean isFileMaterialExistByCourseId(FileMaterials fileMaterials);
+
+    Boolean isTextMaterialExistByCourseId(TextMaterials textMaterials);
+
+    Set<FileMaterialWithOutFile> findFileMaterialWithoutFileByCourseId(FileMaterials fileMaterials);
+
+    Set<MaterialWithOutContent> findTextMaterialWithoutTextByCourseId(TextMaterials textMaterials);
+
+    Set<FileMaterials> findFileMaterialByCourseId(FileMaterials fileMaterials);
+
+    Set<TextMaterials> findTextMaterialByCourseId(TextMaterials textMaterials);
 }

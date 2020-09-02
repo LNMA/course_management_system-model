@@ -13,10 +13,11 @@ import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.Serializable;
+import java.util.Set;
 
 @Service
 public class FeedbackCrudService implements FeedbackService, Serializable {
-    private static final long serialVersionUID = 5174310038229708383L;
+    private static final long serialVersionUID = 7310712164898290131L;
     private final FeedbackDao feedbackDao;
     private final CourseFeedbackDao courseFeedbackDao;
 
@@ -131,5 +132,17 @@ public class FeedbackCrudService implements FeedbackService, Serializable {
     @Override
     public FileMessageFeedback findFileMessageFeedbackByFeedbackId(FileMessageFeedback fileMessageFeedback) {
         return getFeedbackDao().findOneById(fileMessageFeedback);
+    }
+
+    @Transactional(isolation = Isolation.READ_COMMITTED, readOnly = true)
+    @Override
+    public Set<CourseFeedback> findCourseFeedbackByCourseId(CourseFeedback courseFeedback) {
+        return getCourseFeedbackDao().findCourseFeedbackByCourseId(courseFeedback);
+    }
+
+    @Transactional(isolation = Isolation.READ_COMMITTED, readOnly = true)
+    @Override
+    public Set<CourseFeedback> findCourseFeedbackAndCommentByCourseId(CourseFeedback courseFeedback) {
+        return getCourseFeedbackDao().findCourseFeedbackAndCommentByCourseId(courseFeedback);
     }
 }

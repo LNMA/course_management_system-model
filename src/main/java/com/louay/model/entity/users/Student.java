@@ -1,28 +1,29 @@
 package com.louay.model.entity.users;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.louay.model.entity.courses.members.CourseMembers;
 import com.louay.model.entity.users.constant.Role;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.beans.factory.config.ConfigurableBeanFactory;
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
-@Component
-@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-@Qualifier("student")
 @Entity
-@PrimaryKeyJoinColumn(name = "student_id", referencedColumnName = "user_id", columnDefinition = "VARCHAR(200)",
-        foreignKey = @ForeignKey(name = "fk_users_details_id_students_details_student_id", foreignKeyDefinition =
+@PrimaryKeyJoinColumn(name = "student_id", referencedColumnName = "user_id", columnDefinition = "VARCHAR(200)", foreignKey =
+@ForeignKey(name = "fk_users_details_id_students_details_student_id", foreignKeyDefinition =
         "FOREIGN KEY (student_id) REFERENCES users_details (user_id) ON UPDATE DELETE ON UPDATE CASCADE"))
 @Table(name = "students_details")
 public class Student extends Users {
-    private static final long serialVersionUID = -1215112575265896280L;
+    private static final long serialVersionUID = -5662209324737271011L;
     @Column(name = "headline", length = 300, columnDefinition = "VARCHAR(300)")
     private String headline;
 
     @Column(name = "interests", length = 300, columnDefinition = "VARCHAR(300)")
     private String interests;
+
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
+    @OneToMany(mappedBy = "student", fetch = FetchType.LAZY)
+    private Set<CourseMembers> courseMembers = new HashSet<>();
 
     public String getHeadline() {
         return headline;
@@ -40,7 +41,14 @@ public class Student extends Users {
         this.interests = interests;
     }
 
-    @Transient
+    public Set<CourseMembers> getCourseMembers() {
+        return courseMembers;
+    }
+
+    public void setCourseMembers(Set<CourseMembers> courseMembers) {
+        this.courseMembers = courseMembers;
+    }
+
     @Override
     public Role getUserRole() {
         return Role.STUDENT;
@@ -49,7 +57,7 @@ public class Student extends Users {
     @Transient
     @Override
     public String toString() {
-        return super.toString()+", Student{" +
+        return super.toString() + ", Student{" +
                 "headline='" + headline + '\'' +
                 ", interests='" + interests + '\'' +
                 '}';

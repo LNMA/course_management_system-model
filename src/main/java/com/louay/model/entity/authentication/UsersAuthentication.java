@@ -2,19 +2,14 @@ package com.louay.model.entity.authentication;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.louay.model.entity.users.Users;
-import org.springframework.beans.factory.config.ConfigurableBeanFactory;
-import org.springframework.context.annotation.Scope;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Objects;
 
-@Component
-@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 @Entity
 @Table(name = "users_authentication")
 @EntityListeners(AuditingEntityListener.class)
@@ -72,11 +67,13 @@ public class UsersAuthentication implements Serializable, Comparable<UsersAuthen
         this.lastUpdateDate = lastUpdateDate;
     }
 
+    @Transient
     @Override
     public int compareTo(UsersAuthentication o) {
         return this.userId.compareTo(o.getUserId());
     }
 
+    @Transient
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -85,11 +82,13 @@ public class UsersAuthentication implements Serializable, Comparable<UsersAuthen
         return getUserId().equals(that.getUserId());
     }
 
+    @Transient
     @Override
     public int hashCode() {
         return Objects.hash(getUserId());
     }
 
+    @Transient
     @Override
     public String toString() {
         return "UsersAuthentication{" +

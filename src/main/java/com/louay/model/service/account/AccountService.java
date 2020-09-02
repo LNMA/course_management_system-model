@@ -42,4 +42,5 @@ public interface AccountService {
 
     Instructor findInstructorsDetailsByInstructorID(Instructor instructor);
 
+    Student findStudentJoinCourseMemberByStudentId(Student student);
 }

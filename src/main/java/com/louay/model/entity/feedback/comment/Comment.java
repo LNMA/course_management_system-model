@@ -1,21 +1,19 @@
 package com.louay.model.entity.feedback.comment;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.louay.model.entity.feedback.CourseFeedback;
 import com.louay.model.entity.users.Users;
-import org.springframework.beans.factory.config.ConfigurableBeanFactory;
-import org.springframework.context.annotation.Scope;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Objects;
 
-@Component
-@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
+@JsonInclude(JsonInclude.Include.NON_NULL)
 @Entity
 @Table(name = "feedback_comments", indexes = {
         @Index(name = "feedback_comments_feedback_id_IX", columnList = "feedback_id"),
@@ -23,12 +21,13 @@ import java.util.Objects;
 @EntityListeners(AuditingEntityListener.class)
 @JsonIgnoreProperties(value = {"commentDate"}, allowGetters = true)
 public class Comment implements Comparable<Comment>, Serializable {
-    private static final long serialVersionUID = -8670691741166252251L;
+    private static final long serialVersionUID = 1789588317346462032L;
     @Id
     @Column(name = "comment_id", nullable = false, columnDefinition = "BIGINT(20)")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long commentID;
 
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @ManyToOne(fetch = FetchType.LAZY, targetEntity = CourseFeedback.class)
     @JoinColumn(name = "feedback_id", referencedColumnName = "feedback_id", columnDefinition = "BIGINT(20)", foreignKey =
     @ForeignKey(name = "fk_course_feedback_id_feedback_comments_id", foreignKeyDefinition = "FOREIGN KEY (feedback_id) " +
@@ -85,6 +84,10 @@ public class Comment implements Comparable<Comment>, Serializable {
         return commentDate;
     }
 
+    public String getCommentDateString() {
+        return this.commentDate.getTime().toString();
+    }
+
     public void setCommentDate(Calendar commentDate) {
         this.commentDate = commentDate;
     }
@@ -92,7 +95,16 @@ public class Comment implements Comparable<Comment>, Serializable {
     @Transient
     @Override
     public int compareTo(Comment o) {
-        return this.commentID.compareTo(o.getCommentID());
+        if (this.commentDate == null || o.getCommentDate() == null){
+            return 0;
+        }
+        if (this.getCommentDate().after(o.commentDate)){
+            return 1;
+        }
+        if (this.getCommentDate().before(o.commentDate)){
+            return -1;
+        }
+        return 0;
     }
 
     @Transient
@@ -118,7 +130,7 @@ public class Comment implements Comparable<Comment>, Serializable {
                 ", courseFeedback=" + courseFeedback.getFeedbackID() +
                 ", user=" + user.getEmail() +
                 ", commentMessage='" + commentMessage + '\'' +
-                ", commentDate=" + commentDate +
+                ", commentDate=" + commentDate.getTime().toString() +
                 '}';
     }
 }

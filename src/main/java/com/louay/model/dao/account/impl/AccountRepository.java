@@ -3,13 +3,14 @@ package com.louay.model.dao.account.impl;
 import com.louay.model.dao.CommonDaoImpl;
 import com.louay.model.dao.account.AccountDao;
 import com.louay.model.entity.users.Accounts;
+import com.louay.model.entity.users.Student;
 import org.springframework.stereotype.Repository;
 
 import java.util.*;
 
 @Repository
 public class AccountRepository extends CommonDaoImpl<Accounts> implements AccountDao {
-    private static final long serialVersionUID = -4047258463169659635L;
+    private static final long serialVersionUID = 3168986062909770278L;
 
     @Override
     public <S extends Accounts> Boolean isExist(S entity) {
@@ -37,9 +38,7 @@ public class AccountRepository extends CommonDaoImpl<Accounts> implements Accoun
             @SuppressWarnings("unchecked")
             S entityFound = (S) getEntityManager().getReference(entityClass, s.getEmail());
             getEntityManager().remove(entityFound);
-            getEntityManager().flush();
             result.add(s);
-            getEntityManager().clear();
         }
         return result;
     }
@@ -60,9 +59,15 @@ public class AccountRepository extends CommonDaoImpl<Accounts> implements Accoun
             @SuppressWarnings("unchecked")
             S entityFound = (S) getEntityManager().find(entityClass, s.getEmail());
             result.add(entityFound);
-            getEntityManager().flush();
-            getEntityManager().clear();
         }
         return result;
+    }
+
+    @Override
+    public Student findStudentJoinCourseMemberByStudentId(Student student) {
+        return (Student) getEntityManager().createQuery("SELECT s From Student s INNER JOIN FETCH " +
+                "s.courseMembers cm WHERE s.email = :email")
+                .setParameter("email", student.getEmail())
+                .getSingleResult();
     }
 }

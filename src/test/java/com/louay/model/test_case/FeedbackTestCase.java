@@ -6,8 +6,10 @@ import com.louay.model.entity.feedback.CourseFeedback;
 import com.louay.model.entity.feedback.FileFeedback;
 import com.louay.model.entity.feedback.FileMessageFeedback;
 import com.louay.model.entity.feedback.MessageFeedback;
+import com.louay.model.entity.feedback.constant.FeedbackType;
 import com.louay.model.entity.users.Admin;
 import com.louay.model.entity.users.Instructor;
+import com.louay.model.entity.users.Student;
 import com.louay.model.entity.users.Users;
 import com.louay.model.entity.users.constant.Gender;
 import com.louay.model.entity.users.constant.InstructorProfileVisibility;
@@ -20,6 +22,7 @@ import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.MethodSorters;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -32,27 +35,23 @@ import java.util.Calendar;
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class FeedbackTestCase {
     private AnnotationConfigApplicationContext applicationContext;
+    @Autowired
     private FeedbackService feedbackService;
 
     @Before
-    public void initialize02_ApplicationContext() {
+    public void initialize01_ApplicationContext() {
         this.applicationContext = new AnnotationConfigApplicationContext();
         this.applicationContext.scan("com.louay.model");
         this.applicationContext.refresh();
     }
 
-    @Before
-    public void initialize01_feedbackService() {
-        this.feedbackService = this.applicationContext.getBean(FeedbackService.class);
-    }
-
     @Test
     public void testCase01_create_instructor() {
-        Admin admin = this.applicationContext.getBean(Admin.class);
+        Admin admin = new Admin();
         admin.setEmail("feedback@test.com");
         admin.setPassword("1234");
 
-        Instructor instructor = this.applicationContext.getBean("instructor", Instructor.class);
+        Instructor instructor = new Instructor();
         instructor.setAdmin(admin);
         instructor.setForename("Feedback");
         instructor.setSurname("Test");
@@ -76,12 +75,12 @@ public class FeedbackTestCase {
 
     @Test
     public void testCase02_create_course() {
-        Instructor instructor = this.applicationContext.getBean("instructor", Instructor.class);
+        Instructor instructor = new Instructor();
         instructor.setEmail("feedback@test.com");
         AccountService accountService = this.applicationContext.getBean(AccountService.class);
         instructor = accountService.findInstructorsDetailsByInstructorID(instructor);
 
-        Courses courses = this.applicationContext.getBean(Courses.class);
+        Courses courses = new Courses();
         courses.setCourseName("math");
         Calendar calendar = Calendar.getInstance();
         calendar.set(2020, Calendar.JULY,26);
@@ -96,43 +95,44 @@ public class FeedbackTestCase {
 
     @Test
     public void testCase03_create_feedbackMessage() {
-        Users users = this.applicationContext.getBean("users", Users.class);
+        Users users = new Users();
         users.setEmail("feedback@test.com");
         AccountService accountService = this.applicationContext.getBean(AccountService.class);
         users = accountService.findUsersByUserID(users);
 
         System.out.println(users);
 
-        Courses courses = this.applicationContext.getBean(Courses.class);
+        Courses courses = new Courses();
         courses.setCourseID((long) 1);
         CourseService courseService = this.applicationContext.getBean(CourseService.class);
         courses = courseService.findCourseByCourseId(courses);
 
-        System.out.println(courses);
+       System.out.println(courses);
 
-        CourseFeedback courseFeedback = this.applicationContext.getBean(CourseFeedback.class);
+        CourseFeedback courseFeedback = new CourseFeedback();
         courseFeedback.setCourse(courses);
         courseFeedback.setUser(users);
+        courseFeedback.setFeedbackType(FeedbackType.MESSAGE);
 
-        System.out.println(courseFeedback);
-
-        MessageFeedback messageFeedback = this.applicationContext.getBean(MessageFeedback.class);
+        MessageFeedback messageFeedback = new MessageFeedback();
         messageFeedback.setCourseFeedback(courseFeedback);
         messageFeedback.setPostMessage("This feedback is for test only.");
 
-        this.feedbackService.createMessageFeedback(messageFeedback);
+        courseFeedback.setFeedbackContent(messageFeedback);
+
+        this.feedbackService.createCourseFeedback(courseFeedback);
         System.out.println(messageFeedback);
     }
 
     @Test
     public void testCase04_update_feedbackMessage(){
-        CourseFeedback courseFeedback = this.applicationContext.getBean(CourseFeedback.class);
+        CourseFeedback courseFeedback = new CourseFeedback();
         courseFeedback.setFeedbackID((long) 1);
         courseFeedback = this.feedbackService.findCourseFeedbackByFeedbackId(courseFeedback);
 
         System.out.println(courseFeedback);
 
-        MessageFeedback messageFeedback = this.applicationContext.getBean(MessageFeedback.class);
+        MessageFeedback messageFeedback = new MessageFeedback();
         messageFeedback.setCourseFeedback(courseFeedback);
         messageFeedback = this.feedbackService.findMessageFeedbackByFeedbackId(messageFeedback);
         messageFeedback.setPostMessage("new update feedback");
@@ -147,27 +147,26 @@ public class FeedbackTestCase {
 
     @Test
     public void testCase05_create_feedbackFile(){
-        Users users = this.applicationContext.getBean("users", Users.class);
+        Student users = new Student();
         users.setEmail("feedback@test.com");
         AccountService accountService = this.applicationContext.getBean(AccountService.class);
-        users = accountService.findUsersByUserID(users);
+        users = accountService.findStudentsDetailsByStudentID(users);
 
         System.out.println(users);
 
-        Courses courses = this.applicationContext.getBean(Courses.class);
+        Courses courses = new Courses();
         courses.setCourseID((long) 1);
         CourseService courseService = this.applicationContext.getBean(CourseService.class);
         courses = courseService.findCourseByCourseId(courses);
 
         System.out.println(courses);
 
-        CourseFeedback courseFeedback = this.applicationContext.getBean(CourseFeedback.class);
+        CourseFeedback courseFeedback = new CourseFeedback();
         courseFeedback.setCourse(courses);
         courseFeedback.setUser(users);
+        courseFeedback.setFeedbackType(FeedbackType.FILE);
 
-        System.out.println(courseFeedback);
-
-        FileFeedback fileFeedback = this.applicationContext.getBean(FileFeedback.class);
+        FileFeedback fileFeedback = new FileFeedback();
 
         FileProcess fileProcess = this.applicationContext.getBean(FileProcess.class);
         byte [] bytes = null;
@@ -183,20 +182,22 @@ public class FeedbackTestCase {
         fileFeedback.setFileExtension("Louay Amr.png");
         fileFeedback.setCourseFeedback(courseFeedback);
 
-        this.feedbackService.createFileFeedback(fileFeedback);
+        courseFeedback.setFeedbackContent(fileFeedback);
+
+        this.feedbackService.createCourseFeedback(courseFeedback);
 
         System.out.println(fileFeedback);
     }
 
     @Test
     public void testCase06_update_feedbackFile(){
-        CourseFeedback courseFeedback = this.applicationContext.getBean(CourseFeedback.class);
+        CourseFeedback courseFeedback = new CourseFeedback();
         courseFeedback.setFeedbackID((long) 2);
         courseFeedback = this.feedbackService.findCourseFeedbackByFeedbackId(courseFeedback);
 
         System.out.println(courseFeedback);
 
-        FileFeedback fileFeedback = this.applicationContext.getBean(FileFeedback.class);
+        FileFeedback fileFeedback = new FileFeedback();
         fileFeedback.setCourseFeedback(courseFeedback);
         fileFeedback = this.feedbackService.findFileFeedbackByFeedbackId(fileFeedback);
 
@@ -220,23 +221,22 @@ public class FeedbackTestCase {
 
     @Test
     public void testCase07_create_feedbackFileMessage(){
-        Users users = this.applicationContext.getBean("users", Users.class);
+        Users users = new Users();
         users.setEmail("feedback@test.com");
         AccountService accountService = this.applicationContext.getBean(AccountService.class);
         users = accountService.findUsersByUserID(users);
 
-        Courses courses = this.applicationContext.getBean(Courses.class);
+        Courses courses = new Courses();
         courses.setCourseID((long) 1);
         CourseService courseService = this.applicationContext.getBean(CourseService.class);
         courses = courseService.findCourseByCourseId(courses);
 
-        CourseFeedback courseFeedback = this.applicationContext.getBean(CourseFeedback.class);
+        CourseFeedback courseFeedback = new CourseFeedback();
         courseFeedback.setCourse(courses);
         courseFeedback.setUser(users);
+        courseFeedback.setFeedbackType(FeedbackType.ALL);
 
-        System.out.println(courseFeedback);
-
-        FileMessageFeedback fileMessageFeedback = this.applicationContext.getBean(FileMessageFeedback.class);
+        FileMessageFeedback fileMessageFeedback = new FileMessageFeedback();
 
         FileProcess fileProcess = this.applicationContext.getBean(FileProcess.class);
         byte [] bytes = null;
@@ -253,20 +253,22 @@ public class FeedbackTestCase {
         fileMessageFeedback.setCourseFeedback(courseFeedback);
         fileMessageFeedback.setPostMessage("messageFile Feedback");
 
-        this.feedbackService.createFileMessageFeedback(fileMessageFeedback);
+        courseFeedback.setFeedbackContent(fileMessageFeedback);
+
+        this.feedbackService.createCourseFeedback(courseFeedback);
 
         System.out.println(fileMessageFeedback);
     }
 
     @Test
     public void testCase08_update_feedbackFileMessage(){
-        CourseFeedback courseFeedback = this.applicationContext.getBean(CourseFeedback.class);
+        CourseFeedback courseFeedback = new CourseFeedback();
         courseFeedback.setFeedbackID((long) 3);
         courseFeedback = this.feedbackService.findCourseFeedbackByFeedbackId(courseFeedback);
 
         System.out.println(courseFeedback);
 
-        FileMessageFeedback fileMessageFeedback = this.applicationContext.getBean(FileMessageFeedback.class);
+        FileMessageFeedback fileMessageFeedback = new FileMessageFeedback();
         fileMessageFeedback.setCourseFeedback(courseFeedback);
         fileMessageFeedback = this.feedbackService.findFileMessageFeedbackByFeedbackId(fileMessageFeedback);
 
@@ -291,19 +293,19 @@ public class FeedbackTestCase {
 
     @Test
     public void testCase09_delete_feedbackContent_and_courseFeedback(){
-        CourseFeedback courseFeedback1 = this.applicationContext.getBean(CourseFeedback.class);
+        CourseFeedback courseFeedback1 = new CourseFeedback();
         courseFeedback1.setFeedbackID((long) 1);
         courseFeedback1 = this.feedbackService.findCourseFeedbackByFeedbackId(courseFeedback1);
 
         System.out.println(courseFeedback1);
 
-        CourseFeedback courseFeedback2 = this.applicationContext.getBean(CourseFeedback.class);
+        CourseFeedback courseFeedback2 = new CourseFeedback();
         courseFeedback2.setFeedbackID((long) 2);
         courseFeedback2 = this.feedbackService.findCourseFeedbackByFeedbackId(courseFeedback2);
 
         System.out.println(courseFeedback2);
 
-        CourseFeedback courseFeedback3 = this.applicationContext.getBean(CourseFeedback.class);
+        CourseFeedback courseFeedback3 = new CourseFeedback();
         courseFeedback3.setFeedbackID((long) 3);
         courseFeedback3 = this.feedbackService.findCourseFeedbackByFeedbackId(courseFeedback3);
 
@@ -316,7 +318,7 @@ public class FeedbackTestCase {
 
     @Test
     public void testCase10_find_and_delete_course() {
-        Courses courses = this.applicationContext.getBean(Courses.class);
+        Courses courses = new Courses();
         courses.setCourseID((long)1);
 
         CourseService courseService = this.applicationContext.getBean(CourseService.class);
@@ -329,7 +331,7 @@ public class FeedbackTestCase {
 
     @Test
     public void testCase11_find_and_delete_account() {
-        Instructor instructor = this.applicationContext.getBean("instructor", Instructor.class);
+        Instructor instructor = new Instructor();
         instructor.setEmail("feedback@test.com");
 
         AccountService accountService = this.applicationContext.getBean(AccountService.class);

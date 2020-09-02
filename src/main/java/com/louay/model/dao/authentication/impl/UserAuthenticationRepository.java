@@ -37,9 +37,7 @@ public class UserAuthenticationRepository extends CommonDaoImpl<UsersAuthenticat
             @SuppressWarnings("unchecked")
             S entityFound = (S) getEntityManager().getReference(entityClass, s.getUserId());
             getEntityManager().remove(entityFound);
-            getEntityManager().flush();
             result.add(s);
-            getEntityManager().clear();
         }
         return result;
     }
@@ -60,8 +58,6 @@ public class UserAuthenticationRepository extends CommonDaoImpl<UsersAuthenticat
             @SuppressWarnings("unchecked")
             S entityFound = (S) getEntityManager().find(entityClass, s.getUserId());
             result.add(entityFound);
-            getEntityManager().flush();
-            getEntityManager().clear();
         }
         return result;
     }

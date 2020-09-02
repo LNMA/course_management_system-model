@@ -9,7 +9,8 @@ import java.util.*;
 
 @Repository
 public class CourseFeedbackRepository extends CommonDaoImpl<CourseFeedback> implements CourseFeedbackDao {
-    private static final long serialVersionUID = -910124764053502575L;
+
+    private static final long serialVersionUID = -6571398163783124319L;
 
     @Override
     public <S extends CourseFeedback> Boolean isExist(S entity) {
@@ -18,7 +19,8 @@ public class CourseFeedbackRepository extends CommonDaoImpl<CourseFeedback> impl
                 .setParameter("feedbackID", entity.getFeedbackID())
                 .setMaxResults(1)
                 .getResultList()
-                .isEmpty();    }
+                .isEmpty();
+    }
 
     @Override
     public <S extends CourseFeedback> S delete(S entity) {
@@ -37,9 +39,7 @@ public class CourseFeedbackRepository extends CommonDaoImpl<CourseFeedback> impl
             @SuppressWarnings("unchecked")
             S entityFound = (S) getEntityManager().getReference(entityClass, s.getFeedbackID());
             getEntityManager().remove(entityFound);
-            getEntityManager().flush();
             result.add(s);
-            getEntityManager().clear();
         }
         return result;
     }
@@ -60,9 +60,26 @@ public class CourseFeedbackRepository extends CommonDaoImpl<CourseFeedback> impl
             @SuppressWarnings("unchecked")
             S entityFound = (S) getEntityManager().find(entityClass, s.getFeedbackID());
             result.add(entityFound);
-            getEntityManager().flush();
-            getEntityManager().clear();
         }
         return result;
+    }
+
+    @Override
+    public Set<CourseFeedback> findCourseFeedbackByCourseId(CourseFeedback courseFeedback) {
+        List<CourseFeedback> courseFeedbackList = getEntityManager().createQuery("SELECT cf FROM " +
+                "CourseFeedback cf WHERE cf.course.courseID = :CourseId", CourseFeedback.class)
+                .setParameter("CourseId", courseFeedback.getCourse().getCourseID())
+                .getResultList();
+        return new HashSet<>(courseFeedbackList);
+    }
+
+    @Override
+    public Set<CourseFeedback> findCourseFeedbackAndCommentByCourseId(CourseFeedback courseFeedback) {
+        List<CourseFeedback> courseFeedbackList = getEntityManager().createQuery("SELECT cf FROM " +
+                "CourseFeedback cf LEFT JOIN FETCH cf.comment c WHERE " +
+                "cf.course.courseID = :CourseId", CourseFeedback.class)
+                .setParameter("CourseId", courseFeedback.getCourse().getCourseID())
+                .getResultList();
+        return new HashSet<>(courseFeedbackList);
     }
 }

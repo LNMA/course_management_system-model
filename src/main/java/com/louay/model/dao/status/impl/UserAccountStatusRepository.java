@@ -9,6 +9,7 @@ import java.util.*;
 
 @Repository
 public class UserAccountStatusRepository extends CommonDaoImpl<UserAccountStatus> implements UserAccountStatusDao {
+
     private static final long serialVersionUID = -7163964762588653278L;
 
     @Override
@@ -38,9 +39,7 @@ public class UserAccountStatusRepository extends CommonDaoImpl<UserAccountStatus
             @SuppressWarnings("unchecked")
             S entityFound = (S) getEntityManager().getReference(entityClass, s.getUsers().getEmail());
             getEntityManager().remove(entityFound);
-            getEntityManager().flush();
             result.add(s);
-            getEntityManager().clear();
         }
         return result;
     }
@@ -61,8 +60,6 @@ public class UserAccountStatusRepository extends CommonDaoImpl<UserAccountStatus
             @SuppressWarnings("unchecked")
             S entityFound = (S) getEntityManager().find(entityClass, s.getUsers().getEmail());
             result.add(entityFound);
-            getEntityManager().flush();
-            getEntityManager().clear();
         }
         return result;
     }

@@ -2,17 +2,12 @@ package com.louay.model.entity.users;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.louay.model.entity.users.constant.Role;
-import org.springframework.beans.factory.config.ConfigurableBeanFactory;
-import org.springframework.context.annotation.Scope;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
 import java.util.Calendar;
 
-@Component
-@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 @Entity
 @Table(name = "users")
 @EntityListeners(AuditingEntityListener.class)
@@ -44,7 +39,6 @@ public class Admin extends Accounts {
         this.joinDate = joinDate;
     }
 
-    @Transient
     @Override
     public Role getUserRole() {
         return Role.ADMIN;

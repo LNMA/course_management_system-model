@@ -9,7 +9,7 @@ import java.util.*;
 
 @Repository
 public class CommentRepository extends CommonDaoImpl<Comment> implements CommentDao {
-    private static final long serialVersionUID = -629581236354129053L;
+    private static final long serialVersionUID = 6697761201933412695L;
 
     @Override
     public <S extends Comment> Boolean isExist(S entity) {
@@ -37,9 +37,7 @@ public class CommentRepository extends CommonDaoImpl<Comment> implements Comment
             @SuppressWarnings("unchecked")
             S entityFound = (S) getEntityManager().getReference(entityClass, s.getCommentID());
             getEntityManager().remove(entityFound);
-            getEntityManager().flush();
             result.add(s);
-            getEntityManager().clear();
         }
         return result;
     }
@@ -60,9 +58,16 @@ public class CommentRepository extends CommonDaoImpl<Comment> implements Comment
             @SuppressWarnings("unchecked")
             S entityFound = (S) getEntityManager().find(entityClass, s.getCommentID());
             result.add(entityFound);
-            getEntityManager().flush();
-            getEntityManager().clear();
         }
         return result;
+    }
+
+    @Override
+    public Set<Comment> findCommentByFeedbackId(Comment comment) {
+        List<Comment> commentList = getEntityManager().createQuery("SELECT c FROM Comment c WHERE " +
+                "c.courseFeedback.feedbackID = :feedbackID", Comment.class)
+                .setParameter("feedbackID", comment.getCourseFeedback().getFeedbackID())
+                .getResultList();
+        return new HashSet<>(commentList);
     }
 }

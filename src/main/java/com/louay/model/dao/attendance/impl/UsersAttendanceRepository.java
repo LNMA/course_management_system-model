@@ -37,9 +37,7 @@ public class UsersAttendanceRepository extends CommonDaoImpl<UsersAttendance> im
             @SuppressWarnings("unchecked")
             S entityFound = (S) getEntityManager().getReference(entityClass, s.getAttendancesId());
             getEntityManager().remove(entityFound);
-            getEntityManager().flush();
             result.add(s);
-            getEntityManager().clear();
         }
         return result;
     }
@@ -60,8 +58,6 @@ public class UsersAttendanceRepository extends CommonDaoImpl<UsersAttendance> im
             @SuppressWarnings("unchecked")
             S entityFound = (S) getEntityManager().find(entityClass, s.getAttendancesId());
             result.add(entityFound);
-            getEntityManager().flush();
-            getEntityManager().clear();
         }
         return result;
     }

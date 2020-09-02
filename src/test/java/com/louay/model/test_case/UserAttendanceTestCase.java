@@ -16,6 +16,7 @@ import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.MethodSorters;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -27,27 +28,23 @@ import java.util.Calendar;
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class UserAttendanceTestCase {
     private AnnotationConfigApplicationContext applicationContext;
+    @Autowired
     private UsersAttendanceService attendanceService;
 
     @Before
-    public void initialize02_ApplicationContext() {
+    public void initialize01_ApplicationContext() {
         this.applicationContext = new AnnotationConfigApplicationContext();
         this.applicationContext.scan("com.louay.model");
         this.applicationContext.refresh();
     }
 
-    @Before
-    public void initialize01_UsersAttendanceService() {
-        this.attendanceService = this.applicationContext.getBean(UsersAttendanceService.class);
-    }
-
     @Test
     public void testCase01_create_instructor() {
-        Admin admin = this.applicationContext.getBean(Admin.class);
+        Admin admin = new Admin();
         admin.setEmail("userAttendaceInstructor@test.com");
         admin.setPassword("1234");
 
-        Instructor instructor = this.applicationContext.getBean("instructor",Instructor.class);
+        Instructor instructor = new Instructor();
         instructor.setAdmin(admin);
         instructor.setForename("user attendance");
         instructor.setSurname("Test");
@@ -71,11 +68,11 @@ public class UserAttendanceTestCase {
 
     @Test
     public void testCase02_create_student() {
-        Admin admin = this.applicationContext.getBean(Admin.class);
+        Admin admin = new Admin();
         admin.setEmail("userAttendaceStudent@test.com");
         admin.setPassword("1234");
 
-        Student student = this.applicationContext.getBean("student",Student.class);
+        Student student = new Student();
         student.setAdmin(admin);
         student.setForename("user attendance");
         student.setSurname("Test");
@@ -96,12 +93,12 @@ public class UserAttendanceTestCase {
 
     @Test
     public void testCase03_create_course() {
-        Instructor instructor = this.applicationContext.getBean("instructor",Instructor.class);
+        Instructor instructor = new Instructor();
         instructor.setEmail("userAttendaceInstructor@test.com");
         AccountService accountService = this.applicationContext.getBean(AccountService.class);
         instructor = accountService.findInstructorsDetailsByInstructorID(instructor);
 
-        Courses courses = this.applicationContext.getBean(Courses.class);
+        Courses courses = new Courses();
         courses.setCourseName("math");
         Calendar calendar = Calendar.getInstance();
         calendar.set(2020, Calendar.JULY,26);
@@ -116,7 +113,7 @@ public class UserAttendanceTestCase {
 
     @Test
     public void testCase04_create_userAttendance() {
-        Student student = this.applicationContext.getBean(Student.class);
+        Student student = new Student();
         student.setEmail("userAttendaceStudent@test.com");
         AccountService accountService = this.applicationContext.getBean(AccountService.class);
         student = accountService.findStudentsDetailsByStudentID(student);
@@ -126,7 +123,7 @@ public class UserAttendanceTestCase {
         CourseService courseService = this.applicationContext.getBean(CourseService.class);
         courses = courseService.findCourseByCourseId(courses);
 
-        UsersAttendance usersAttendance = this.applicationContext.getBean(UsersAttendance.class);
+        UsersAttendance usersAttendance = new UsersAttendance();
         usersAttendance.setStudent(student);
         usersAttendance.setCourse(courses);
 
@@ -135,7 +132,7 @@ public class UserAttendanceTestCase {
 
     @Test
     public void testCase05_find_and_update_userAttendance() {
-        UsersAttendance usersAttendance = this.applicationContext.getBean(UsersAttendance.class);
+        UsersAttendance usersAttendance = new UsersAttendance();
         usersAttendance.setAttendancesId((long)1);
 
         usersAttendance = this.attendanceService.findUsersAttendanceByAttendanceId(usersAttendance);
@@ -146,7 +143,7 @@ public class UserAttendanceTestCase {
 
     @Test
     public void testCase06_find_and_delete_userAttendance() {
-        UsersAttendance usersAttendance = this.applicationContext.getBean(UsersAttendance.class);
+        UsersAttendance usersAttendance = new UsersAttendance();
         usersAttendance.setAttendancesId((long)1);
 
         usersAttendance = this.attendanceService.findUsersAttendanceByAttendanceId(usersAttendance);
@@ -157,7 +154,7 @@ public class UserAttendanceTestCase {
 
     @Test
     public void testCase07_find_and_delete_account1() {
-        Instructor instructor = this.applicationContext.getBean("instructor", Instructor.class);
+        Instructor instructor = new Instructor();
         instructor.setEmail("userAttendaceInstructor@test.com");
 
         AccountService accountService = this.applicationContext.getBean(AccountService.class);
@@ -170,7 +167,7 @@ public class UserAttendanceTestCase {
 
     @Test
     public void testCase08_find_and_delete_account2() {
-        Student student = this.applicationContext.getBean("student", Student.class);
+        Student student = new Student();
         student.setEmail("userAttendaceStudent@test.com");
 
         AccountService accountService = this.applicationContext.getBean(AccountService.class);

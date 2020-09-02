@@ -22,18 +22,20 @@ import java.util.Objects;
 @Inheritance(strategy = InheritanceType.JOINED)
 @Polymorphism(type = PolymorphismType.EXPLICIT)
 public abstract class CourseMaterials implements Comparable<CourseMaterials>, Serializable {
-    private static final long serialVersionUID = 7329951003167505380L;
+    private static final long serialVersionUID = 897054448594628024L;
     @Id
     @Column(name = "material_id", unique = true, nullable = false, columnDefinition = "BIGINT(20)")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long materialID;
 
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "course_id", referencedColumnName = "course_id", columnDefinition = "BIGINT(20)", foreignKey =
     @ForeignKey(name = "fk_courses_course_id_courses_materials_course_id", foreignKeyDefinition = "FOREIGN KEY " +
             "(course_id) REFERENCES courses (course_id) ON DELETE CASCADE ON UPDATE CASCADE"), nullable = false)
     private Courses course;
 
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", referencedColumnName = "user_id", columnDefinition = "VARCHAR(200)", foreignKey =
     @ForeignKey(name = "fk_users_details_id_courses_materials_user_id", foreignKeyDefinition = "FOREIGN KEY (user_id)" +
@@ -75,6 +77,10 @@ public abstract class CourseMaterials implements Comparable<CourseMaterials>, Se
 
     public void setMaterialDate(Calendar materialDate) {
         this.materialDate = materialDate;
+    }
+
+    public String getMaterialDateString() {
+        return this.materialDate.getTime().toString();
     }
 
     @Transient

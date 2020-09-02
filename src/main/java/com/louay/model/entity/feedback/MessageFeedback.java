@@ -1,14 +1,9 @@
 package com.louay.model.entity.feedback;
 
 import com.louay.model.entity.feedback.constant.FeedbackType;
-import org.springframework.beans.factory.config.ConfigurableBeanFactory;
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
 
-@Component
-@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 @Entity
 @DiscriminatorValue("1")
 public class MessageFeedback extends FeedbackContent {
@@ -24,7 +19,6 @@ public class MessageFeedback extends FeedbackContent {
         this.postMessage = postMessage;
     }
 
-    @Transient
     @Override
     public FeedbackType getFeedbackType() {
         return FeedbackType.MESSAGE;

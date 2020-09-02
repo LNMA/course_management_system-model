@@ -1,32 +1,30 @@
 package com.louay.model.entity.material;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.louay.model.entity.material.constant.FileType;
 import com.louay.model.entity.material.constant.MaterialType;
 import org.hibernate.annotations.LazyGroup;
-import org.springframework.beans.factory.config.ConfigurableBeanFactory;
-import org.springframework.context.annotation.Scope;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
-import java.util.Arrays;
+import java.util.Base64;
 
-@Component
-@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 @Entity
 @Table(name = "materials_files")
-@EntityListeners(AuditingEntityListener.class)
-@JsonIgnoreProperties(value = {"materialDate"}, allowGetters = true)
-@PrimaryKeyJoinColumn(name = "material_id",columnDefinition = "BIGINT(20)", foreignKey =
+@PrimaryKeyJoinColumn(name = "material_id", columnDefinition = "BIGINT(20)", foreignKey =
 @ForeignKey(name = "fk_courses_materials_id_materials_file_id", foreignKeyDefinition = "FOREIGN KEY (material_id) " +
         "REFERENCES courses_materials (material_id) ON DELETE CASCADE ON UPDATE CASCADE"))
 public class FileMaterials extends MaterialContent {
-    private static final long serialVersionUID = 9063425071236162493L;
+    private static final long serialVersionUID = 5339798688205574320L;
+    @JsonIgnore
     @Lob
     @Basic(fetch = FetchType.LAZY)
     @Column(name = "material_file", columnDefinition = "LONGBLOB")
     @LazyGroup("lobs")
     private byte[] file;
+
+    @Column(name = "file_type", columnDefinition = "ENUM('PDF', 'IMAGE')")
+    @Enumerated(EnumType.STRING)
+    private FileType fileType;
 
     public byte[] getFile() {
         return file;
@@ -36,7 +34,21 @@ public class FileMaterials extends MaterialContent {
         this.file = file;
     }
 
-    @Transient
+    public FileType getFileType() {
+        return fileType;
+    }
+
+    public void setFileType(FileType fileType) {
+        this.fileType = fileType;
+    }
+
+    public StringBuilder getBase64() {
+        StringBuilder stringBase46 = new StringBuilder();
+        stringBase46.append(Base64.getEncoder().encodeToString(this.file));
+
+        return stringBase46;
+    }
+
     @Override
     public MaterialType getMaterialType() {
         return MaterialType.FILE;
@@ -45,8 +57,8 @@ public class FileMaterials extends MaterialContent {
     @Transient
     @Override
     public String toString() {
-        return super.toString() + ", FileCourseMaterials{" +
-                "file=" + Arrays.toString(file) +
+        return super.toString() + ", FileMaterials{" +
+                ", fileType=" + fileType +
                 '}';
     }
 }

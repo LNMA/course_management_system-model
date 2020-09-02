@@ -18,6 +18,7 @@ import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.MethodSorters;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -30,27 +31,23 @@ import java.util.Calendar;
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class MaterialCaseTest {
     private AnnotationConfigApplicationContext applicationContext;
+    @Autowired
     private MaterialService materialService;
 
     @Before
-    public void initialize02_ApplicationContext() {
+    public void initialize01_ApplicationContext() {
         this.applicationContext = new AnnotationConfigApplicationContext();
         this.applicationContext.scan("com.louay.model");
         this.applicationContext.refresh();
     }
 
-    @Before
-    public void initialize01_MaterialService() {
-        this.materialService = this.applicationContext.getBean(MaterialService.class);
-    }
-
     @Test
     public void testCase01_create_instructor() {
-        Admin admin = this.applicationContext.getBean(Admin.class);
+        Admin admin = new Admin();
         admin.setEmail("material@test.com");
         admin.setPassword("12345");
 
-        Instructor instructor = this.applicationContext.getBean("instructor", Instructor.class);
+        Instructor instructor = new Instructor();
         instructor.setAdmin(admin);
         instructor.setEmail("material@test.com");
         instructor.setForename("Material");
@@ -75,12 +72,12 @@ public class MaterialCaseTest {
 
     @Test
     public void testCase02_create_course() {
-        Instructor instructor = this.applicationContext.getBean("instructor", Instructor.class);
+        Instructor instructor = new Instructor();
         instructor.setEmail("material@test.com");
         AccountService accountService = this.applicationContext.getBean(AccountService.class);
         instructor = accountService.findInstructorsDetailsByInstructorID(instructor);
 
-        Courses courses = this.applicationContext.getBean(Courses.class);
+        Courses courses = new Courses();
         courses.setCourseName("math");
         Calendar calendar = Calendar.getInstance();
         calendar.set(2020, Calendar.JULY,26);
@@ -95,7 +92,7 @@ public class MaterialCaseTest {
 
     @Test
     public void testCase03_create_textMaterial() {
-        Users users = this.applicationContext.getBean("users", Users.class);
+        Users users = new Users();
         users.setEmail("material@test.com");
         AccountService accountService = this.applicationContext.getBean(AccountService.class);
         users = accountService.findUsersByUserID(users);
@@ -105,7 +102,7 @@ public class MaterialCaseTest {
         CourseService courseService = this.applicationContext.getBean(CourseService.class);
         courses = courseService.findCourseByCourseId(courses);
 
-        TextMaterials textMaterials = this.applicationContext.getBean(TextMaterials.class);
+        TextMaterials textMaterials = new TextMaterials();
         textMaterials.setCourse(courses);
         textMaterials.setUser(users);
         textMaterials.setText("this is text material for test only.");
@@ -118,7 +115,7 @@ public class MaterialCaseTest {
 
     @Test
     public void testCase04_update_textMaterial() {
-        TextMaterials textMaterials = this.applicationContext.getBean(TextMaterials.class);
+        TextMaterials textMaterials = new TextMaterials();
         textMaterials.setMaterialID((long) 1);
         textMaterials = this.materialService.findTextMaterialsByMaterialId(textMaterials);
 
@@ -131,7 +128,7 @@ public class MaterialCaseTest {
 
     @Test
     public void testCase05_create_fileMaterial() {
-        Users users = this.applicationContext.getBean("users", Users.class);
+        Users users = new Users();
         users.setEmail("material@test.com");
         AccountService accountService = this.applicationContext.getBean(AccountService.class);
         users = accountService.findUsersByUserID(users);
@@ -141,7 +138,7 @@ public class MaterialCaseTest {
         CourseService courseService = this.applicationContext.getBean(CourseService.class);
         courses = courseService.findCourseByCourseId(courses);
 
-        FileMaterials fileMaterials = this.applicationContext.getBean(FileMaterials.class);
+        FileMaterials fileMaterials = new FileMaterials();
         fileMaterials.setCourse(courses);
         fileMaterials.setUser(users);
         fileMaterials.setMaterialName("Louay Amr.png");
@@ -165,7 +162,7 @@ public class MaterialCaseTest {
 
     @Test
     public void testCase06_update_fileMaterial() {
-        FileMaterials fileMaterials = this.applicationContext.getBean(FileMaterials.class);
+        FileMaterials fileMaterials = new FileMaterials();
         fileMaterials.setMaterialID((long) 2);
         fileMaterials = this.materialService.findFileMaterialsByMaterialId(fileMaterials);
 
@@ -178,13 +175,13 @@ public class MaterialCaseTest {
 
     @Test
     public void testCase07_delete_material() {
-        FileMaterials fileMaterials = this.applicationContext.getBean(FileMaterials.class);
+        FileMaterials fileMaterials = new FileMaterials();
         fileMaterials.setMaterialID((long) 2);
         fileMaterials = this.materialService.findFileMaterialsByMaterialId(fileMaterials);
 
         System.out.println(fileMaterials);
 
-        TextMaterials textMaterials = this.applicationContext.getBean(TextMaterials.class);
+        TextMaterials textMaterials = new TextMaterials();
         textMaterials.setMaterialID((long) 1);
         textMaterials = this.materialService.findTextMaterialsByMaterialId(textMaterials);
 
@@ -197,7 +194,7 @@ public class MaterialCaseTest {
 
     @Test
     public void testCase08_find_and_delete_course() {
-        Courses courses = this.applicationContext.getBean(Courses.class);
+        Courses courses = new Courses();
         courses.setCourseID((long)1);
 
         CourseService courseService = this.applicationContext.getBean(CourseService.class);
@@ -210,7 +207,7 @@ public class MaterialCaseTest {
 
     @Test
     public void testCase09_find_and_delete_account() {
-        Instructor instructor = this.applicationContext.getBean("instructor", Instructor.class);
+        Instructor instructor = new Instructor();
         instructor.setEmail("material@test.com");
 
         AccountService accountService = this.applicationContext.getBean(AccountService.class);

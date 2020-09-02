@@ -13,13 +13,13 @@ import java.util.Calendar;
 @JsonIgnoreProperties(value = {"uploadDate"}, allowGetters = true)
 @PrimaryKeyJoinColumn(name = "material_id", referencedColumnName = "material_id", columnDefinition = "BIGINT(20)")
 public abstract class MaterialContent extends CourseMaterials {
-    private static final long serialVersionUID = 9192937073759975046L;
+    private static final long serialVersionUID = -6132765251961707477L;
     @Temporal(TemporalType.TIMESTAMP)
     @LastModifiedDate
-    @Column(columnDefinition = "TIMESTAMP(0)")
+    @Column(name = "upload_date", columnDefinition = "TIMESTAMP(0)")
     private Calendar uploadDate;
 
-    @Column(columnDefinition = "VARCHAR(200)")
+    @Column(name = "material_name", columnDefinition = "VARCHAR(200)")
     private String materialName;
 
     public Calendar getUploadDate() {
@@ -38,7 +38,10 @@ public abstract class MaterialContent extends CourseMaterials {
         this.materialName = materialName;
     }
 
-    @Transient
+    public String getUploadDateString() {
+        return this.uploadDate.getTime().toString();
+    }
+
     abstract public MaterialType getMaterialType();
 
     @Transient

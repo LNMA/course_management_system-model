@@ -5,6 +5,8 @@ import com.louay.model.entity.feedback.FileFeedback;
 import com.louay.model.entity.feedback.FileMessageFeedback;
 import com.louay.model.entity.feedback.MessageFeedback;
 
+import java.util.Set;
+
 public interface FeedbackService {
     CourseFeedback createCourseFeedback(CourseFeedback courseFeedback);
 
@@ -37,4 +39,8 @@ public interface FeedbackService {
     FileMessageFeedback updateFileMessageFeedback(FileMessageFeedback fileMessageFeedback);
 
     FileMessageFeedback findFileMessageFeedbackByFeedbackId(FileMessageFeedback fileMessageFeedback);
+
+    Set<CourseFeedback> findCourseFeedbackByCourseId(CourseFeedback courseFeedback);
+
+    Set<CourseFeedback> findCourseFeedbackAndCommentByCourseId(CourseFeedback courseFeedback);
 }

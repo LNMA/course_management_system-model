@@ -3,19 +3,14 @@ package com.louay.model.entity.courses.members;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.louay.model.entity.courses.Courses;
 import com.louay.model.entity.users.Student;
-import org.springframework.beans.factory.config.ConfigurableBeanFactory;
-import org.springframework.context.annotation.Scope;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Objects;
 
-@Component
-@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 @Entity
 @Table(name = "students_attendances", indexes = {
         @Index(name = "students_attendances_student_id_IX", columnList = "student_id"),

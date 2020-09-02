@@ -1,21 +1,20 @@
 package com.louay.model.entity.courses;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.louay.model.entity.users.Instructor;
-import org.springframework.beans.factory.config.ConfigurableBeanFactory;
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
+import org.hibernate.annotations.LazyGroup;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Arrays;
+import java.util.Base64;
 import java.util.Calendar;
 import java.util.Objects;
 
-@Component
-@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 @Entity
 @Table(name = "courses", indexes = {@Index(name = "courses_instructor_id_IX", columnList = "instructor_id")})
-public class Courses implements Comparable<Courses>, Serializable {
-    private static final long serialVersionUID = 6029154954933918718L;
+public class Courses implements Serializable, Comparable<Courses> {
+    private static final long serialVersionUID = -8014117428964625972L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "course_id", nullable = false, columnDefinition = "BIGINT(20)")
@@ -23,6 +22,13 @@ public class Courses implements Comparable<Courses>, Serializable {
 
     @Column(name = "course_name", length = 150, nullable = false, columnDefinition = "VARCHAR(150)")
     private String courseName;
+
+    @JsonIgnore
+    @Lob
+    @Column(name = "course_picture", columnDefinition = "LONGBLOB", nullable = false)
+    @Basic(fetch = FetchType.LAZY)
+    @LazyGroup("lobs")
+    private byte[] picture;
 
     @Column(name = "start_date", nullable = false, columnDefinition = "TIMESTAMP(0)")
     @Temporal(TemporalType.TIMESTAMP)
@@ -55,8 +61,20 @@ public class Courses implements Comparable<Courses>, Serializable {
         this.courseName = courseName;
     }
 
+    public byte[] getPicture() {
+        return picture;
+    }
+
+    public void setPicture(byte[] picture) {
+        this.picture = picture;
+    }
+
     public Calendar getStartDate() {
         return this.startDate;
+    }
+
+    public String getStartDateString() {
+        return this.startDate.getTime().toString();
     }
 
     public void setStartDate(Calendar startDate) {
@@ -65,6 +83,10 @@ public class Courses implements Comparable<Courses>, Serializable {
 
     public Calendar getEndDate() {
         return this.endDate;
+    }
+
+    public String getEndDateString() {
+        return this.endDate.getTime().toString();
     }
 
     public void setEndDate(Calendar endDate) {
@@ -77,6 +99,13 @@ public class Courses implements Comparable<Courses>, Serializable {
 
     public void setInstructor(Instructor instructor) {
         this.instructor = instructor;
+    }
+
+    public StringBuilder getCoursePictureBase64() {
+        StringBuilder stringBase46 = new StringBuilder();
+        stringBase46.append(Base64.getEncoder().encodeToString(this.picture));
+
+        return stringBase46;
     }
 
     @Transient
@@ -106,6 +135,7 @@ public class Courses implements Comparable<Courses>, Serializable {
         return "Courses{" +
                 "courseID=" + this.courseID +
                 ", courseName='" + this.courseName + '\'' +
+                ", picture='" + Arrays.toString(this.picture) + '\'' +
                 ", startDate=" + this.startDate +
                 ", endDate=" + this.endDate +
                 ", instructor=" + this.instructor.getEmail() +

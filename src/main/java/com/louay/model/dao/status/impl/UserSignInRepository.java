@@ -9,13 +9,24 @@ import java.util.*;
 
 @Repository
 public class UserSignInRepository extends CommonDaoImpl<UserSignIn> implements UserSignInDao {
-    private static final long serialVersionUID = -5571898535200015129L;
+
+    private static final long serialVersionUID = 315827691625357600L;
 
     @Override
     public <S extends UserSignIn> Boolean isExist(S entity) {
         return !getEntityManager().createQuery("SELECT u From UserSignIn u WHERE u.userSignInId = " +
                 ":userSignInId")
                 .setParameter("userSignInId", entity.getUserSignInId())
+                .setMaxResults(1)
+                .getResultList()
+                .isEmpty();
+    }
+
+    @Override
+    public Boolean isUserSignIn(UserSignIn userSignIn) {
+        return !getEntityManager().createQuery("SELECT u From UserSignIn u WHERE u.users.email = " +
+                ":email")
+                .setParameter("email", userSignIn.getUsers().getEmail())
                 .setMaxResults(1)
                 .getResultList()
                 .isEmpty();
@@ -38,9 +49,7 @@ public class UserSignInRepository extends CommonDaoImpl<UserSignIn> implements U
             @SuppressWarnings("unchecked")
             S entityFound = (S) getEntityManager().getReference(entityClass, s.getUserSignInId());
             getEntityManager().remove(entityFound);
-            getEntityManager().flush();
             result.add(s);
-            getEntityManager().clear();
         }
         return result;
     }
@@ -61,9 +70,15 @@ public class UserSignInRepository extends CommonDaoImpl<UserSignIn> implements U
             @SuppressWarnings("unchecked")
             S entityFound = (S) getEntityManager().find(entityClass, s.getUserSignInId());
             result.add(entityFound);
-            getEntityManager().flush();
-            getEntityManager().clear();
         }
         return result;
+    }
+
+    @Override
+    public List<UserSignIn> findUserSignInByUserId(UserSignIn userSignIn) {
+        return getEntityManager().createQuery("SELECT usi From UserSignIn usi WHERE usi.users.email = :email",
+                UserSignIn.class)
+                .setParameter("email", userSignIn.getUsers().getEmail())
+                .getResultList();
     }
 }

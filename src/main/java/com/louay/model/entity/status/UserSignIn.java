@@ -2,19 +2,14 @@ package com.louay.model.entity.status;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.louay.model.entity.users.Users;
-import org.springframework.beans.factory.config.ConfigurableBeanFactory;
-import org.springframework.context.annotation.Scope;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Objects;
 
-@Component
-@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 @Entity
 @EntityListeners(AuditingEntityListener.class)
 @JsonIgnoreProperties(value = {"signInDate"}, allowGetters = true)
@@ -61,11 +56,13 @@ public class UserSignIn implements Comparable<UserSignIn>, Serializable {
         this.signInDate = signInDate;
     }
 
+    @Transient
     @Override
     public int compareTo(UserSignIn o) {
         return this.userSignInId.compareTo(o.getUserSignInId());
     }
 
+    @Transient
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -74,11 +71,13 @@ public class UserSignIn implements Comparable<UserSignIn>, Serializable {
         return getUserSignInId().equals(that.getUserSignInId());
     }
 
+    @Transient
     @Override
     public int hashCode() {
         return Objects.hash(getUserSignInId());
     }
 
+    @Transient
     @Override
     public String toString() {
         return "UserSignIn{" +

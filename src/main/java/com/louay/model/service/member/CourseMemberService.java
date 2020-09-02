@@ -10,4 +10,6 @@ public interface CourseMemberService {
     CourseMembers updateMember(CourseMembers courseMembers);
 
     CourseMembers findMemberByMemberId(CourseMembers courseMembers);
+
+    Boolean isStudentMemberAtAnyCourse(CourseMembers courseMembers);
 }

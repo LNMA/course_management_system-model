@@ -1,23 +1,21 @@
 package com.louay.model.entity.feedback;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.louay.model.entity.feedback.constant.FeedbackType;
 import org.hibernate.annotations.LazyGroup;
-import org.springframework.beans.factory.config.ConfigurableBeanFactory;
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
 import java.util.Arrays;
+import java.util.Base64;
 
-@Component
-@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 @Entity
 @DiscriminatorValue("3")
 public class FileMessageFeedback extends FeedbackContent {
-    private static final long serialVersionUID = 200244160784858021L;
+    private static final long serialVersionUID = 3317661533358191538L;
     @Column(name = "post_message", length = 1000, columnDefinition = "VARCHAR(1000)")
     private String postMessage;
 
+    @JsonIgnore
     @Lob
     @Column(name = "file", columnDefinition = "LONGBLOB")
     @Basic(fetch = FetchType.LAZY)
@@ -51,7 +49,13 @@ public class FileMessageFeedback extends FeedbackContent {
         this.fileExtension = fileExtension;
     }
 
-    @Transient
+    public StringBuilder getFeedbackFileBase64() {
+        StringBuilder stringBase46 = new StringBuilder();
+        stringBase46.append(Base64.getEncoder().encodeToString(this.file));
+
+        return stringBase46;
+    }
+
     @Override
     public FeedbackType getFeedbackType() {
         return FeedbackType.ALL;

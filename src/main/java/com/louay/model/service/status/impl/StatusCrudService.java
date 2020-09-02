@@ -13,10 +13,11 @@ import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.Serializable;
+import java.util.List;
 
 @Service
 public class StatusCrudService implements StatusService, Serializable {
-    private static final long serialVersionUID = -8963067237499038425L;
+    private static final long serialVersionUID = -4490719058899304388L;
     private final UserAtCourseDao userAtCourseDao;
     private final UserAccountStatusDao userAccountStatusDao;
     private final UserSignInDao userSignInDao;
@@ -113,5 +114,23 @@ public class StatusCrudService implements StatusService, Serializable {
     @Override
     public UserSignIn findUserSignInBySignInId(UserSignIn userSignIn) {
         return getUserSignInDao().findOneById(userSignIn);
+    }
+
+    @Transactional(isolation = Isolation.READ_COMMITTED, readOnly = true)
+    @Override
+    public List<UserSignIn> findUserSignInByUserId(UserSignIn userSignIn) {
+        return getUserSignInDao().findUserSignInByUserId(userSignIn);
+    }
+
+    @Transactional
+    @Override
+    public Boolean isUserSignInExist(UserSignIn userSignIn) {
+        return getUserSignInDao().isUserSignIn(userSignIn);
+    }
+
+    @Transactional
+    @Override
+    public Boolean isUserAtCourseExist(UserAtCourse userAtCourse) {
+        return getUserAtCourseDao().isExist(userAtCourse);
     }
 }

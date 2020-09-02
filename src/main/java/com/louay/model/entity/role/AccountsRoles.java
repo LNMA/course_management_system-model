@@ -1,16 +1,11 @@
 package com.louay.model.entity.role;
 
 import com.louay.model.entity.users.constant.Role;
-import org.springframework.beans.factory.config.ConfigurableBeanFactory;
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Objects;
 
-@Component
-@Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 @Entity
 @Table(name = "roles")
 public class AccountsRoles implements Comparable<AccountsRoles>, Serializable {

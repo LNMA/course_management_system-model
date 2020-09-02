@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 import java.util.*;
 
 @Repository
-public class AccountRolesRepository extends CommonDaoImpl<AccountsRoles> implements AccountRolesDao  {
+public class AccountRolesRepository extends CommonDaoImpl<AccountsRoles> implements AccountRolesDao {
     private static final long serialVersionUID = 3647710673075206869L;
 
     @Override
@@ -37,9 +37,7 @@ public class AccountRolesRepository extends CommonDaoImpl<AccountsRoles> impleme
             @SuppressWarnings("unchecked")
             S entityFound = (S) getEntityManager().getReference(entityClass, s.getRoleID());
             getEntityManager().remove(entityFound);
-            getEntityManager().flush();
             result.add(s);
-            getEntityManager().clear();
         }
         return result;
     }
@@ -60,8 +58,6 @@ public class AccountRolesRepository extends CommonDaoImpl<AccountsRoles> impleme
             @SuppressWarnings("unchecked")
             S entityFound = (S) getEntityManager().find(entityClass, s.getRoleID());
             result.add(entityFound);
-            getEntityManager().flush();
-            getEntityManager().clear();
         }
         return result;
     }
