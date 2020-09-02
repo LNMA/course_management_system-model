@@ -1,8 +1,8 @@
 package com.louay.model.entity.feedback.comment;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.louay.model.entity.feedback.CourseFeedback;
 import com.louay.model.entity.users.Users;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -27,7 +27,7 @@ public class Comment implements Comparable<Comment>, Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long commentID;
 
-    @JsonIgnore
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @ManyToOne(fetch = FetchType.LAZY, targetEntity = CourseFeedback.class)
     @JoinColumn(name = "feedback_id", referencedColumnName = "feedback_id", columnDefinition = "BIGINT(20)", foreignKey =
     @ForeignKey(name = "fk_course_feedback_id_feedback_comments_id", foreignKeyDefinition = "FOREIGN KEY (feedback_id) " +

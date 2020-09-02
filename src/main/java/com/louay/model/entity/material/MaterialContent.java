@@ -1,6 +1,5 @@
 package com.louay.model.entity.material;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.louay.model.entity.material.constant.MaterialType;
 import org.springframework.data.annotation.LastModifiedDate;

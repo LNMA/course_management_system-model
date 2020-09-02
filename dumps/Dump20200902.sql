@@ -1,10 +1,10 @@
 CREATE DATABASE  IF NOT EXISTS `course_management_system` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
 USE `course_management_system`;
--- MySQL dump 10.13  Distrib 8.0.20, for Win64 (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.21, for Win64 (x86_64)
 --
 -- Host: localhost    Database: course_management_system
 -- ------------------------------------------------------
--- Server version	8.0.20
+-- Server version	8.0.21
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -18,6 +18,31 @@ USE `course_management_system`;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
+-- Table structure for table `cookie_login`
+--
+
+DROP TABLE IF EXISTS `cookie_login`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `cookie_login` (
+  `email` varchar(200) NOT NULL,
+  `cookie_secure_number` int NOT NULL,
+  `cookie_create_date` timestamp NOT NULL,
+  PRIMARY KEY (`email`),
+  CONSTRAINT `fk_users_email_cookie_login_id` FOREIGN KEY (`email`) REFERENCES `users` (`email`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `cookie_login`
+--
+
+LOCK TABLES `cookie_login` WRITE;
+/*!40000 ALTER TABLE `cookie_login` DISABLE KEYS */;
+/*!40000 ALTER TABLE `cookie_login` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `course_feedback`
 --
 
@@ -29,6 +54,7 @@ CREATE TABLE `course_feedback` (
   `course_id` bigint NOT NULL,
   `user_id` varchar(200) NOT NULL,
   `feedback_date` timestamp NOT NULL,
+  `feedback_content` enum('MESSAGE','FILE','ALL') NOT NULL,
   PRIMARY KEY (`feedback_id`),
   KEY `course_file_feedback_course_id_IX` (`course_id`),
   KEY `course_feedback_user_id_IX` (`user_id`),
@@ -55,8 +81,8 @@ DROP TABLE IF EXISTS `course_members`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `course_members` (
   `member_id` bigint NOT NULL AUTO_INCREMENT,
-  `student_id` varchar(200) NOT NULL,
   `course_id` bigint NOT NULL,
+  `student_id` varchar(200) NOT NULL,
   `register_date` timestamp NOT NULL,
   PRIMARY KEY (`member_id`),
   KEY `course_members_course_id_IX` (`course_id`),
@@ -87,6 +113,7 @@ CREATE TABLE `courses` (
   `course_name` varchar(150) NOT NULL,
   `start_date` timestamp NOT NULL,
   `end_date` timestamp NOT NULL,
+  `course_picture` longblob NOT NULL,
   `instructor_id` varchar(200) NOT NULL,
   PRIMARY KEY (`course_id`),
   KEY `courses_instructor_id_IX` (`instructor_id`),
@@ -119,7 +146,7 @@ CREATE TABLE `courses_materials` (
   KEY `courses_materials_course_id_IX` (`course_id`),
   KEY `courses_materials_user_id_IX` (`user_id`),
   CONSTRAINT `fk_courses_course_id_courses_materials_course_id` FOREIGN KEY (`course_id`) REFERENCES `courses` (`course_id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `fk_users_details_id_materials_files_user_id` FOREIGN KEY (`user_id`) REFERENCES `users_details` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE
+  CONSTRAINT `fk_users_details_id_courses_materials_user_id` FOREIGN KEY (`user_id`) REFERENCES `users_details` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -171,11 +198,11 @@ DROP TABLE IF EXISTS `feedback_content`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `feedback_content` (
   `feedback_id` bigint NOT NULL,
+  `feedback_type` tinyint(1) NOT NULL,
+  `content_date` timestamp NULL DEFAULT NULL,
   `file` longblob,
   `file_extension` varchar(200) DEFAULT NULL,
   `post_message` varchar(1000) DEFAULT NULL,
-  `content_date` timestamp NULL DEFAULT NULL,
-  `feedback_type` tinyint(1) NOT NULL,
   PRIMARY KEY (`feedback_id`),
   CONSTRAINT `fk_course_feedback_id_feedback_file_id` FOREIGN KEY (`feedback_id`) REFERENCES `course_feedback` (`feedback_id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
@@ -199,11 +226,11 @@ DROP TABLE IF EXISTS `instructors_details`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `instructors_details` (
   `instructors_id` varchar(200) NOT NULL,
+  `nickname` varchar(50) DEFAULT NULL,
   `headline` varchar(300) DEFAULT NULL,
   `specialty` varchar(300) DEFAULT NULL,
-  `nickname` varchar(50) DEFAULT NULL,
   `portfolio` varchar(300) DEFAULT NULL,
-  `profile_visibility` enum('PUBLIC','PRIVATE') NOT NULL,
+  `profile_visibility` enum('PUBLIC','PRIVATE') NOT NULL DEFAULT 'PUBLIC',
   PRIMARY KEY (`instructors_id`),
   CONSTRAINT `fk_users_details_id_instructors_details_id` FOREIGN KEY (`instructors_id`) REFERENCES `users_details` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
@@ -230,8 +257,9 @@ CREATE TABLE `materials_files` (
   `material_name` varchar(200) DEFAULT NULL,
   `material_file` longblob,
   `upload_date` timestamp NULL DEFAULT NULL,
+  `file_type` enum('PDF','IMAGE') DEFAULT NULL,
   PRIMARY KEY (`material_id`),
-  CONSTRAINT `fk_courses_materials_id_materials_files_id` FOREIGN KEY (`material_id`) REFERENCES `courses_materials` (`material_id`) ON DELETE CASCADE ON UPDATE CASCADE
+  CONSTRAINT `fk_courses_materials_id_materials_file_id` FOREIGN KEY (`material_id`) REFERENCES `courses_materials` (`material_id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -304,7 +332,7 @@ CREATE TABLE `students_attendances` (
   `attendance_id` bigint NOT NULL AUTO_INCREMENT,
   `student_id` varchar(200) NOT NULL,
   `course_id` bigint NOT NULL,
-  `attendance_date` timestamp NOT NULL,
+  `attendance_date` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`attendance_id`),
   KEY `students_attendances_student_id_IX` (`student_id`),
   KEY `students_attendances_course_id_IX` (`course_id`),
@@ -356,8 +384,8 @@ DROP TABLE IF EXISTS `users`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `users` (
   `email` varchar(200) NOT NULL,
+  `join_date` timestamp NOT NULL,
   `password` varchar(100) NOT NULL,
-  `join_date` datetime NOT NULL,
   PRIMARY KEY (`email`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -380,8 +408,8 @@ DROP TABLE IF EXISTS `users_authentication`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `users_authentication` (
   `user_id` varchar(200) NOT NULL,
-  `verification_number` int DEFAULT NULL,
   `last_update_date` timestamp NULL DEFAULT NULL,
+  `verification_number` int DEFAULT NULL,
   PRIMARY KEY (`user_id`),
   CONSTRAINT `fk_user_details_id_users_authentication_id` FOREIGN KEY (`user_id`) REFERENCES `users_details` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
@@ -432,9 +460,9 @@ CREATE TABLE `users_details` (
   `user_id` varchar(200) NOT NULL,
   `forename` varchar(50) NOT NULL,
   `surname` varchar(50) NOT NULL,
+  `birthday` date DEFAULT NULL,
   `gender` enum('MALE','FEMALE') DEFAULT NULL,
   `phone` varchar(20) DEFAULT NULL,
-  `birthday` date DEFAULT NULL,
   `country` varchar(60) DEFAULT NULL,
   `state` varchar(60) DEFAULT NULL,
   `address` varchar(200) DEFAULT NULL,
@@ -461,8 +489,8 @@ DROP TABLE IF EXISTS `users_profile_picture`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `users_profile_picture` (
   `user_id` varchar(200) NOT NULL,
-  `upload_date` timestamp NOT NULL,
   `picture` longblob NOT NULL,
+  `upload_date` timestamp NOT NULL,
   PRIMARY KEY (`user_id`),
   CONSTRAINT `fk_users_details_id_profile_picture_user_id` FOREIGN KEY (`user_id`) REFERENCES `users_details` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
@@ -487,7 +515,8 @@ DROP TABLE IF EXISTS `users_roles`;
 CREATE TABLE `users_roles` (
   `user_id` varchar(200) NOT NULL,
   `role_id` bigint NOT NULL,
-  UNIQUE KEY `users_roles_user_id_UNIQUE` (`user_id`),
+  PRIMARY KEY (`user_id`),
+  UNIQUE KEY `UK_k2mq1ee4ob6uw649wgaus1ate` (`role_id`),
   UNIQUE KEY `users_roles_role_id_UNIQUE` (`role_id`),
   CONSTRAINT `fk_roles_role_id_users_roles_role_id` FOREIGN KEY (`role_id`) REFERENCES `roles` (`role_id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `fk_users_email_users_roles_user_id` FOREIGN KEY (`user_id`) REFERENCES `users` (`email`) ON DELETE CASCADE ON UPDATE CASCADE
@@ -538,8 +567,8 @@ DROP TABLE IF EXISTS `users_status`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `users_status` (
   `user_id` varchar(200) NOT NULL,
-  `is_online` tinyint(1) NOT NULL,
-  `is_valid` tinyint(1) NOT NULL,
+  `is_online` tinyint(1) NOT NULL DEFAULT '0',
+  `is_valid` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`user_id`),
   CONSTRAINT `fk_users_details_id_users_status_user_id` FOREIGN KEY (`user_id`) REFERENCES `users_details` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
@@ -563,4 +592,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-08-15 15:30:52
+-- Dump completed on 2020-09-02 11:24:07
