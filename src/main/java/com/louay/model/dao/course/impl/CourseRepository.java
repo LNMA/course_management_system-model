@@ -13,7 +13,7 @@ import java.util.*;
 
 @Repository
 public class CourseRepository extends CommonDaoImpl<Courses> implements CourseDao {
-    private static final long serialVersionUID = -5902468567656341815L;
+    private static final long serialVersionUID = -8297092976480516498L;
 
     @Override
     public <S extends Courses> Boolean isExist(S entity) {
@@ -70,21 +70,25 @@ public class CourseRepository extends CommonDaoImpl<Courses> implements CourseDa
     public List<Courses> findAllCourse(int pageNumber, int pageSize) {
         CriteriaBuilder criteriaBuilder = getEntityManager().getCriteriaBuilder();
 
-        CriteriaQuery<Long> countQuery = criteriaBuilder.createQuery(Long.class);
-        countQuery.select(criteriaBuilder.count(countQuery.from(Courses.class)));
-        Long count = getEntityManager().createQuery(countQuery).getSingleResult();
-
         CriteriaQuery<Courses> criteriaQuery = criteriaBuilder.createQuery(Courses.class);
         Root<Courses> from = criteriaQuery.from(Courses.class);
         CriteriaQuery<Courses> select = criteriaQuery.select(from);
 
         TypedQuery<Courses> typedQuery = getEntityManager().createQuery(select);
-        while (pageNumber < count.intValue()) {
-            typedQuery.setFirstResult(pageNumber - 1);
-            typedQuery.setMaxResults(pageSize);
-            pageNumber += pageSize;
-        }
+        int firstResultValue = (pageNumber - 1) * pageSize;
+        typedQuery.setFirstResult(firstResultValue);
+        typedQuery.setMaxResults(pageSize);
 
         return typedQuery.getResultList();
+    }
+
+    @Override
+    public Long getCountRow() {
+        CriteriaBuilder criteriaBuilder = getEntityManager().getCriteriaBuilder();
+
+        CriteriaQuery<Long> countQuery = criteriaBuilder.createQuery(Long.class);
+        countQuery.select(criteriaBuilder.count(countQuery.from(Courses.class)));
+
+        return getEntityManager().createQuery(countQuery).getSingleResult();
     }
 }

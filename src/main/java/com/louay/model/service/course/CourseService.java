@@ -17,4 +17,6 @@ public interface CourseService {
     Collection<Courses> findAllCourseByCourseId(Iterable<Courses> courses);
 
     List<Courses> findAllCoursePagination(int pageNumber, int pageSize);
+
+    Long getCoursesCountRow();
 }

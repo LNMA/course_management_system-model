@@ -14,7 +14,7 @@ import java.util.List;
 
 @Service
 public class CourseCrudService implements CourseService, Serializable {
-    private static final long serialVersionUID = 2955704602381762318L;
+    private static final long serialVersionUID = -1643494765546534712L;
     private final CourseDao courseDao;
 
     @Autowired
@@ -63,5 +63,11 @@ public class CourseCrudService implements CourseService, Serializable {
     @Override
     public List<Courses> findAllCoursePagination(int pageNumber, int pageSize) {
         return getCourseDao().findAllCourse(pageNumber, pageSize);
+    }
+
+    @Transactional
+    @Override
+    public Long getCoursesCountRow() {
+        return getCourseDao().getCountRow();
     }
 }

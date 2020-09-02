@@ -8,4 +8,6 @@ import java.util.List;
 
 public interface CourseDao extends CommonDao<Courses>, GenericDao<Courses> {
     List<Courses> findAllCourse(int pageNumber, int pageSize);
+
+    Long getCountRow();
 }
