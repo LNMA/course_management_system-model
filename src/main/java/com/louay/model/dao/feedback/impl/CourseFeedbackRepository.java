@@ -3,14 +3,14 @@ package com.louay.model.dao.feedback.impl;
 import com.louay.model.dao.CommonDaoImpl;
 import com.louay.model.dao.feedback.CourseFeedbackDao;
 import com.louay.model.entity.feedback.CourseFeedback;
+import com.louay.model.entity.wrapper.GeneralSearch;
 import org.springframework.stereotype.Repository;
 
 import java.util.*;
 
 @Repository
 public class CourseFeedbackRepository extends CommonDaoImpl<CourseFeedback> implements CourseFeedbackDao {
-
-    private static final long serialVersionUID = -6571398163783124319L;
+    private static final long serialVersionUID = 7489676737444211990L;
 
     @Override
     public <S extends CourseFeedback> Boolean isExist(S entity) {
@@ -81,5 +81,30 @@ public class CourseFeedbackRepository extends CommonDaoImpl<CourseFeedback> impl
                 .setParameter("CourseId", courseFeedback.getCourse().getCourseID())
                 .getResultList();
         return new HashSet<>(courseFeedbackList);
+    }
+
+    @Override
+    public Set<CourseFeedback> findCourseFeedbackLikePagination(GeneralSearch generalSearch) {
+        String key = generalSearch.getKey()+"%";
+        int firstResultValue = (generalSearch.getPageNumber() - 1) * generalSearch.getPageSize();
+        List<CourseFeedback> courseFeedbackList = getEntityManager().createQuery("SELECT cf FROM CourseFeedback cf WHERE " +
+                "cf.user.email LIKE :email", CourseFeedback.class)
+                .setParameter("email", key)
+                .setFirstResult(firstResultValue)
+                .setMaxResults(generalSearch.getPageSize())
+                .getResultList();
+
+        return new HashSet<>(courseFeedbackList);
+    }
+
+    @Override
+    public Long getCountCourseFeedbackLikePagination(GeneralSearch generalSearch) {
+        String key = generalSearch.getKey()+"%";
+        return getEntityManager().createQuery("SELECT COUNT(cf) FROM CourseFeedback cf WHERE " +
+                "cf.user.email LIKE :email", Long.class)
+                .setParameter("email", key)
+                .setMaxResults(1)
+                .getResultList()
+                .get(0);
     }
 }

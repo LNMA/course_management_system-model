@@ -4,6 +4,9 @@ import com.louay.model.entity.users.Admin;
 import com.louay.model.entity.users.Instructor;
 import com.louay.model.entity.users.Student;
 import com.louay.model.entity.users.Users;
+import com.louay.model.entity.wrapper.GeneralSearch;
+
+import java.util.Set;
 
 public interface AccountService {
     Boolean isExistAccount(Admin admin);
@@ -43,4 +46,8 @@ public interface AccountService {
     Instructor findInstructorsDetailsByInstructorID(Instructor instructor);
 
     Student findStudentJoinCourseMemberByStudentId(Student student);
+
+    Set<Users> findUserLikeForSearch(GeneralSearch generalSearch);
+
+    Long getCountUserLikeForSearch(GeneralSearch generalSearch);
 }

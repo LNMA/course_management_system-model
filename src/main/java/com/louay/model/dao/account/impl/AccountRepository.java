@@ -4,13 +4,15 @@ import com.louay.model.dao.CommonDaoImpl;
 import com.louay.model.dao.account.AccountDao;
 import com.louay.model.entity.users.Accounts;
 import com.louay.model.entity.users.Student;
+import com.louay.model.entity.users.Users;
+import com.louay.model.entity.wrapper.GeneralSearch;
 import org.springframework.stereotype.Repository;
 
 import java.util.*;
 
 @Repository
 public class AccountRepository extends CommonDaoImpl<Accounts> implements AccountDao {
-    private static final long serialVersionUID = 3168986062909770278L;
+    private static final long serialVersionUID = 1041973583206522237L;
 
     @Override
     public <S extends Accounts> Boolean isExist(S entity) {
@@ -69,5 +71,34 @@ public class AccountRepository extends CommonDaoImpl<Accounts> implements Accoun
                 "s.courseMembers cm WHERE s.email = :email")
                 .setParameter("email", student.getEmail())
                 .getSingleResult();
+    }
+
+    @Override
+    public Set<Users> findUserLikePagination(GeneralSearch generalSearch) {
+        String key = generalSearch.getKey()+"%";
+        int firstResultValue = (generalSearch.getPageNumber() - 1) * generalSearch.getPageSize();
+        List<Users> usersList =  getEntityManager().createQuery("SELECT u FROM Users u WHERE " +
+                "u.email LIKE :email OR u.forename LIKE :forename OR u.surname LIKE :surname", Users.class)
+                .setParameter("email", key)
+                .setParameter("forename", key)
+                .setParameter("surname", key)
+                .setFirstResult(firstResultValue)
+                .setMaxResults(generalSearch.getPageSize())
+                .getResultList();
+
+        return new HashSet<>(usersList);
+    }
+
+    @Override
+    public Long getCountUserLikePagination(GeneralSearch generalSearch) {
+        String key = generalSearch.getKey()+"%";
+        return getEntityManager().createQuery("SELECT COUNT(u) FROM Users u WHERE " +
+                "u.email LIKE :email OR u.forename LIKE :forename OR u.surname LIKE :surname", Long.class)
+                .setParameter("email", key)
+                .setParameter("forename", key)
+                .setParameter("surname", key)
+                .setMaxResults(1)
+                .getResultList()
+                .get(0);
     }
 }

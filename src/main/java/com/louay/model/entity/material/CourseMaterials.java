@@ -3,6 +3,7 @@ package com.louay.model.entity.material;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.louay.model.entity.courses.Courses;
 import com.louay.model.entity.users.Users;
+import com.louay.model.util.constant.ClassName;
 import org.hibernate.annotations.Polymorphism;
 import org.hibernate.annotations.PolymorphismType;
 import org.springframework.data.annotation.CreatedDate;
@@ -22,7 +23,7 @@ import java.util.Objects;
 @Inheritance(strategy = InheritanceType.JOINED)
 @Polymorphism(type = PolymorphismType.EXPLICIT)
 public abstract class CourseMaterials implements Comparable<CourseMaterials>, Serializable {
-    private static final long serialVersionUID = 897054448594628024L;
+    private static final long serialVersionUID = -7030593225883391169L;
     @Id
     @Column(name = "material_id", unique = true, nullable = false, columnDefinition = "BIGINT(20)")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -81,6 +82,10 @@ public abstract class CourseMaterials implements Comparable<CourseMaterials>, Se
 
     public String getMaterialDateString() {
         return this.materialDate.getTime().toString();
+    }
+
+    public ClassName getClassName(){
+        return ClassName.COURSE_MATERIAL;
     }
 
     @Transient

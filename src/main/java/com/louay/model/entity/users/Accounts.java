@@ -1,6 +1,7 @@
 package com.louay.model.entity.users;
 
 import com.louay.model.entity.users.constant.Role;
+import com.louay.model.util.constant.ClassName;
 import org.hibernate.annotations.Polymorphism;
 import org.hibernate.annotations.PolymorphismType;
 
@@ -14,7 +15,7 @@ import java.util.Objects;
 @MappedSuperclass
 @Polymorphism(type = PolymorphismType.EXPLICIT)
 public abstract class Accounts implements Comparable<Accounts>, Serializable {
-    private static final long serialVersionUID = 5064878654696864127L;
+    private static final long serialVersionUID = 6845236050917144691L;
     @Id
     @Column(columnDefinition = "VARCHAR(200)", nullable = false)
     private String email;
@@ -25,6 +26,10 @@ public abstract class Accounts implements Comparable<Accounts>, Serializable {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public ClassName getClassName(){
+        return ClassName.ACCOUNTS;
     }
 
     abstract public Role getUserRole();

@@ -6,6 +6,7 @@ import com.louay.model.entity.material.CourseMaterials;
 import com.louay.model.entity.material.FileMaterials;
 import com.louay.model.entity.material.TextMaterials;
 import com.louay.model.entity.wrapper.FileMaterialWithOutFile;
+import com.louay.model.entity.wrapper.GeneralSearch;
 import com.louay.model.entity.wrapper.MaterialWithOutContent;
 
 import java.util.Set;
@@ -22,4 +23,8 @@ public interface MaterialDao extends CommonDao<CourseMaterials>, GenericDao<Cour
     Boolean isFileMaterialExistByCourseId(FileMaterials fileMaterials);
 
     Boolean isTextMaterialExistByCourseId(TextMaterials textMaterials);
+
+    Set<CourseMaterials> findCourseMaterialsLikePagination(GeneralSearch generalSearch);
+
+    Long getCountCourseMaterialsLikePagination(GeneralSearch generalSearch);
 }

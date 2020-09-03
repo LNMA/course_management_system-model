@@ -2,6 +2,7 @@ package com.louay.model.service.course.impl;
 
 import com.louay.model.dao.course.CourseDao;
 import com.louay.model.entity.courses.Courses;
+import com.louay.model.entity.wrapper.GeneralSearch;
 import com.louay.model.service.course.CourseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,15 +12,16 @@ import org.springframework.transaction.annotation.Transactional;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class CourseCrudService implements CourseService, Serializable {
-    private static final long serialVersionUID = -1643494765546534712L;
+    private static final long serialVersionUID = -7957437871132923146L;
     private final CourseDao courseDao;
 
     @Autowired
     public CourseCrudService(CourseDao courseDao) {
-        if (courseDao == null){
+        if (courseDao == null) {
             throw new IllegalArgumentException("DAO cannot be null at CourseCrudService.class");
         }
         this.courseDao = courseDao;
@@ -69,5 +71,17 @@ public class CourseCrudService implements CourseService, Serializable {
     @Override
     public Long getCoursesCountRow() {
         return getCourseDao().getCountRow();
+    }
+
+    @Transactional(isolation = Isolation.READ_COMMITTED, readOnly = true)
+    @Override
+    public Set<Courses> findCourseLikeForSearch(GeneralSearch generalSearch) {
+        return getCourseDao().findCourseLikePagination(generalSearch);
+    }
+
+    @Transactional
+    @Override
+    public Long getCountCourseLikeForSearch(GeneralSearch generalSearch) {
+        return getCourseDao().getCountCourseLikePagination(generalSearch);
     }
 }

@@ -3,6 +3,7 @@ package com.louay.model.dao.course.impl;
 import com.louay.model.dao.CommonDaoImpl;
 import com.louay.model.dao.course.CourseDao;
 import com.louay.model.entity.courses.Courses;
+import com.louay.model.entity.wrapper.GeneralSearch;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.TypedQuery;
@@ -13,7 +14,7 @@ import java.util.*;
 
 @Repository
 public class CourseRepository extends CommonDaoImpl<Courses> implements CourseDao {
-    private static final long serialVersionUID = -8297092976480516498L;
+    private static final long serialVersionUID = 9029899314924270671L;
 
     @Override
     public <S extends Courses> Boolean isExist(S entity) {
@@ -90,5 +91,32 @@ public class CourseRepository extends CommonDaoImpl<Courses> implements CourseDa
         countQuery.select(criteriaBuilder.count(countQuery.from(Courses.class)));
 
         return getEntityManager().createQuery(countQuery).getSingleResult();
+    }
+
+    @Override
+    public Set<Courses> findCourseLikePagination(GeneralSearch generalSearch) {
+        String key = generalSearch.getKey() + "%";
+        int firstResultValue = (generalSearch.getPageNumber() - 1) * generalSearch.getPageSize();
+        List<Courses> coursesList = getEntityManager().createQuery("SELECT c FROM Courses c WHERE " +
+                "c.courseName LIKE :courseName OR c.instructor.email LIKE :email", Courses.class)
+                .setParameter("courseName", key)
+                .setParameter("email", key)
+                .setFirstResult(firstResultValue)
+                .setMaxResults(generalSearch.getPageSize())
+                .getResultList();
+
+        return new HashSet<>(coursesList);
+    }
+
+    @Override
+    public Long getCountCourseLikePagination(GeneralSearch generalSearch) {
+        String key = generalSearch.getKey()+"%";
+        return getEntityManager().createQuery("SELECT COUNT(c) FROM Courses c WHERE " +
+                "c.courseName LIKE :courseName OR c.instructor.email LIKE :email", Long.class)
+                .setParameter("courseName", key)
+                .setParameter("email", key)
+                .setMaxResults(1)
+                .getResultList()
+                .get(0);
     }
 }
