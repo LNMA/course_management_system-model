@@ -6,6 +6,7 @@ import com.louay.model.entity.material.CourseMaterials;
 import com.louay.model.entity.material.FileMaterials;
 import com.louay.model.entity.material.TextMaterials;
 import com.louay.model.entity.wrapper.FileMaterialWithOutFile;
+import com.louay.model.entity.wrapper.GeneralSearch;
 import com.louay.model.entity.wrapper.MaterialWithOutContent;
 import org.springframework.stereotype.Repository;
 
@@ -13,7 +14,7 @@ import java.util.*;
 
 @Repository
 public class MaterialRepository extends CommonDaoImpl<CourseMaterials> implements MaterialDao {
-    private static final long serialVersionUID = -1994356890188548931L;
+    private static final long serialVersionUID = 2468261093806351312L;
 
     @Override
     public <S extends CourseMaterials> Boolean isExist(S entity) {
@@ -123,5 +124,30 @@ public class MaterialRepository extends CommonDaoImpl<CourseMaterials> implement
                 .setParameter("courseId", textMaterials.getCourse().getCourseID())
                 .getResultList();
         return new HashSet<>(textMaterialsList);
+    }
+
+    @Override
+    public Set<CourseMaterials> findCourseMaterialsLikePagination(GeneralSearch generalSearch) {
+        String key = generalSearch.getKey() + "%";
+        int firstResultValue = (generalSearch.getPageNumber() - 1) * generalSearch.getPageSize();
+        List<CourseMaterials> courseMaterialsList = getEntityManager().createQuery("SELECT cm FROM " +
+                "CourseMaterials cm WHERE cm.user.email LIKE :email", CourseMaterials.class)
+                .setParameter("email", key)
+                .setFirstResult(firstResultValue)
+                .setMaxResults(generalSearch.getPageSize())
+                .getResultList();
+
+        return new HashSet<>(courseMaterialsList);
+    }
+
+    @Override
+    public Long getCountCourseMaterialsLikePagination(GeneralSearch generalSearch) {
+        String key = generalSearch.getKey()+"%";
+        return getEntityManager().createQuery("SELECT COUNT(cm) FROM " +
+                "CourseMaterials cm WHERE cm.user.email LIKE :email", Long.class)
+                .setParameter("email", key)
+                .setMaxResults(1)
+                .getResultList()
+                .get(0);
     }
 }

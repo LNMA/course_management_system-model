@@ -7,6 +7,7 @@ import com.louay.model.entity.courses.Courses;
 import com.louay.model.entity.feedback.comment.Comment;
 import com.louay.model.entity.feedback.constant.FeedbackType;
 import com.louay.model.entity.users.Users;
+import com.louay.model.util.constant.ClassName;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -21,7 +22,7 @@ import java.util.*;
 @EntityListeners(AuditingEntityListener.class)
 @JsonIgnoreProperties(value = {"feedbackDate"}, allowGetters = true)
 public class CourseFeedback implements Serializable, Comparable<CourseFeedback> {
-    private static final long serialVersionUID = -3521746267041570751L;
+    private static final long serialVersionUID = -3814856173811544411L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "feedback_id", nullable = false, columnDefinition = "BIGINT(20)")
@@ -122,6 +123,10 @@ public class CourseFeedback implements Serializable, Comparable<CourseFeedback> 
             commentTreeSet.addAll(this.comment);
         }
         return commentTreeSet;
+    }
+
+    public ClassName getClassName(){
+        return ClassName.COURSE_FEEDBACK;
     }
 
     @Transient

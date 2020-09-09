@@ -6,6 +6,7 @@ import com.louay.model.entity.feedback.CourseFeedback;
 import com.louay.model.entity.feedback.FileFeedback;
 import com.louay.model.entity.feedback.FileMessageFeedback;
 import com.louay.model.entity.feedback.MessageFeedback;
+import com.louay.model.entity.wrapper.GeneralSearch;
 import com.louay.model.service.feedback.FeedbackService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,13 +18,13 @@ import java.util.Set;
 
 @Service
 public class FeedbackCrudService implements FeedbackService, Serializable {
-    private static final long serialVersionUID = 7310712164898290131L;
+    private static final long serialVersionUID = 8904792140268539111L;
     private final FeedbackDao feedbackDao;
     private final CourseFeedbackDao courseFeedbackDao;
 
     @Autowired
     public FeedbackCrudService(FeedbackDao feedbackDao, CourseFeedbackDao courseFeedbackDao) {
-        if (courseFeedbackDao == null || feedbackDao == null){
+        if (courseFeedbackDao == null || feedbackDao == null) {
             throw new IllegalArgumentException("DAO cannot be null at FeedbackCrudService.class");
         }
         this.feedbackDao = feedbackDao;
@@ -144,5 +145,17 @@ public class FeedbackCrudService implements FeedbackService, Serializable {
     @Override
     public Set<CourseFeedback> findCourseFeedbackAndCommentByCourseId(CourseFeedback courseFeedback) {
         return getCourseFeedbackDao().findCourseFeedbackAndCommentByCourseId(courseFeedback);
+    }
+
+    @Transactional(isolation = Isolation.READ_COMMITTED, readOnly = true)
+    @Override
+    public Set<CourseFeedback> findCourseFeedbackLikeForSearch(GeneralSearch generalSearch) {
+        return getCourseFeedbackDao().findCourseFeedbackLikePagination(generalSearch);
+    }
+
+    @Transactional
+    @Override
+    public Long getCountCourseFeedbackLikeForSearch(GeneralSearch generalSearch) {
+        return getCourseFeedbackDao().getCountCourseFeedbackLikePagination(generalSearch);
     }
 }

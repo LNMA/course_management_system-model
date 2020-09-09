@@ -4,6 +4,7 @@ import com.louay.model.entity.feedback.CourseFeedback;
 import com.louay.model.entity.feedback.FileFeedback;
 import com.louay.model.entity.feedback.FileMessageFeedback;
 import com.louay.model.entity.feedback.MessageFeedback;
+import com.louay.model.entity.wrapper.GeneralSearch;
 
 import java.util.Set;
 
@@ -43,4 +44,8 @@ public interface FeedbackService {
     Set<CourseFeedback> findCourseFeedbackByCourseId(CourseFeedback courseFeedback);
 
     Set<CourseFeedback> findCourseFeedbackAndCommentByCourseId(CourseFeedback courseFeedback);
+
+    Set<CourseFeedback> findCourseFeedbackLikeForSearch(GeneralSearch generalSearch);
+
+    Long getCountCourseFeedbackLikeForSearch(GeneralSearch generalSearch);
 }

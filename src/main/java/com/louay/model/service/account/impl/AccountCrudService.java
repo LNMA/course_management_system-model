@@ -5,6 +5,7 @@ import com.louay.model.entity.users.Admin;
 import com.louay.model.entity.users.Instructor;
 import com.louay.model.entity.users.Student;
 import com.louay.model.entity.users.Users;
+import com.louay.model.entity.wrapper.GeneralSearch;
 import com.louay.model.service.account.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,10 +13,11 @@ import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.Serializable;
+import java.util.Set;
 
 @Service
 public class AccountCrudService implements AccountService, Serializable {
-    private static final long serialVersionUID = 2831027935225486098L;
+    private static final long serialVersionUID = -2078259726188515048L;
     private final AccountDao accountDao;
 
     @Autowired
@@ -142,5 +144,17 @@ public class AccountCrudService implements AccountService, Serializable {
     @Override
     public Boolean isExistUsers(Users users) {
         return getAccountDao().isExist(users);
+    }
+
+    @Transactional(isolation = Isolation.READ_COMMITTED, readOnly = true)
+    @Override
+    public Set<Users> findUserLikeForSearch(GeneralSearch generalSearch) {
+        return getAccountDao().findUserLikePagination(generalSearch);
+    }
+
+    @Transactional
+    @Override
+    public Long getCountUserLikeForSearch(GeneralSearch generalSearch) {
+        return getAccountDao().getCountUserLikePagination(generalSearch);
     }
 }

@@ -1,8 +1,10 @@
 package com.louay.model.service.material;
 
+import com.louay.model.entity.material.CourseMaterials;
 import com.louay.model.entity.material.FileMaterials;
 import com.louay.model.entity.material.TextMaterials;
 import com.louay.model.entity.wrapper.FileMaterialWithOutFile;
+import com.louay.model.entity.wrapper.GeneralSearch;
 import com.louay.model.entity.wrapper.MaterialWithOutContent;
 
 import java.util.Set;
@@ -35,4 +37,8 @@ public interface MaterialService {
     Set<FileMaterials> findFileMaterialByCourseId(FileMaterials fileMaterials);
 
     Set<TextMaterials> findTextMaterialByCourseId(TextMaterials textMaterials);
+
+    Set<CourseMaterials> findCourseMaterialsLikeForSearch(GeneralSearch generalSearch);
+
+    Long getCountCourseMaterialsLikeForSearch(GeneralSearch generalSearch);
 }

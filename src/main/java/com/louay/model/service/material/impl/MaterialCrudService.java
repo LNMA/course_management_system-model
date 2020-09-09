@@ -1,9 +1,11 @@
 package com.louay.model.service.material.impl;
 
 import com.louay.model.dao.material.MaterialDao;
+import com.louay.model.entity.material.CourseMaterials;
 import com.louay.model.entity.material.FileMaterials;
 import com.louay.model.entity.material.TextMaterials;
 import com.louay.model.entity.wrapper.FileMaterialWithOutFile;
+import com.louay.model.entity.wrapper.GeneralSearch;
 import com.louay.model.entity.wrapper.MaterialWithOutContent;
 import com.louay.model.service.material.MaterialService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +18,7 @@ import java.util.Set;
 
 @Service
 public class MaterialCrudService implements MaterialService, Serializable {
-    private static final long serialVersionUID = -6332850192751460069L;
+    private static final long serialVersionUID = -8614865631095286957L;
     private final MaterialDao materialDao;
 
     @Autowired
@@ -113,5 +115,17 @@ public class MaterialCrudService implements MaterialService, Serializable {
     @Override
     public Set<TextMaterials> findTextMaterialByCourseId(TextMaterials textMaterials) {
         return getMaterialDao().findTextMaterialByCourseId(textMaterials);
+    }
+
+    @Transactional(isolation = Isolation.READ_COMMITTED, readOnly = true)
+    @Override
+    public Set<CourseMaterials> findCourseMaterialsLikeForSearch(GeneralSearch generalSearch) {
+        return getMaterialDao().findCourseMaterialsLikePagination(generalSearch);
+    }
+
+    @Transactional
+    @Override
+    public Long getCountCourseMaterialsLikeForSearch(GeneralSearch generalSearch) {
+        return getMaterialDao().getCountCourseMaterialsLikePagination(generalSearch);
     }
 }

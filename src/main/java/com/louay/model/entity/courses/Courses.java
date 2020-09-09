@@ -2,6 +2,7 @@ package com.louay.model.entity.courses;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.louay.model.entity.users.Instructor;
+import com.louay.model.util.constant.ClassName;
 import org.hibernate.annotations.LazyGroup;
 
 import javax.persistence.*;
@@ -14,7 +15,7 @@ import java.util.Objects;
 @Entity
 @Table(name = "courses", indexes = {@Index(name = "courses_instructor_id_IX", columnList = "instructor_id")})
 public class Courses implements Serializable, Comparable<Courses> {
-    private static final long serialVersionUID = -8014117428964625972L;
+    private static final long serialVersionUID = 4556701717293072848L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "course_id", nullable = false, columnDefinition = "BIGINT(20)")
@@ -106,6 +107,10 @@ public class Courses implements Serializable, Comparable<Courses> {
         stringBase46.append(Base64.getEncoder().encodeToString(this.picture));
 
         return stringBase46;
+    }
+
+    public ClassName getClassName(){
+        return ClassName.COURSES;
     }
 
     @Transient
