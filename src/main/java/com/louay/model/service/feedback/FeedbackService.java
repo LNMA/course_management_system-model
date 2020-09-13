@@ -17,6 +17,8 @@ public interface FeedbackService {
 
     CourseFeedback findCourseFeedbackByFeedbackId(CourseFeedback courseFeedback);
 
+    Set<CourseFeedback> findCourseFeedbackByFeedbackId(Iterable<CourseFeedback> courseFeedbackIterable);
+
     FileFeedback createFileFeedback(FileFeedback fileFeedback);
 
     FileFeedback deleteFileFeedbackByFeedbackId(FileFeedback fileFeedback);

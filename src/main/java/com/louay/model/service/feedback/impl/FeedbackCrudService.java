@@ -18,7 +18,7 @@ import java.util.Set;
 
 @Service
 public class FeedbackCrudService implements FeedbackService, Serializable {
-    private static final long serialVersionUID = 8904792140268539111L;
+    private static final long serialVersionUID = 6300324930847586809L;
     private final FeedbackDao feedbackDao;
     private final CourseFeedbackDao courseFeedbackDao;
 
@@ -57,10 +57,16 @@ public class FeedbackCrudService implements FeedbackService, Serializable {
         return getCourseFeedbackDao().update(courseFeedback);
     }
 
-    @Transactional
+    @Transactional(isolation = Isolation.READ_COMMITTED, readOnly = true)
     @Override
     public CourseFeedback findCourseFeedbackByFeedbackId(CourseFeedback courseFeedback) {
         return getCourseFeedbackDao().findOneById(courseFeedback);
+    }
+
+    @Transactional(isolation = Isolation.READ_COMMITTED, readOnly = true)
+    @Override
+    public Set<CourseFeedback> findCourseFeedbackByFeedbackId(Iterable<CourseFeedback> courseFeedbackIterable) {
+        return (Set<CourseFeedback>) getCourseFeedbackDao().findAllById(courseFeedbackIterable);
     }
 
     @Transactional

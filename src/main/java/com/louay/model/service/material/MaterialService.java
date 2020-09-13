@@ -41,4 +41,6 @@ public interface MaterialService {
     Set<CourseMaterials> findCourseMaterialsLikeForSearch(GeneralSearch generalSearch);
 
     Long getCountCourseMaterialsLikeForSearch(GeneralSearch generalSearch);
+
+    Set<CourseMaterials> findCourseMaterialsByMaterialId(Iterable<CourseMaterials> materialsIterable);
 }

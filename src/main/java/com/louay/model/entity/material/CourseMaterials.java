@@ -22,8 +22,8 @@ import java.util.Objects;
 @JsonIgnoreProperties(value = {"materialDate"}, allowGetters = true)
 @Inheritance(strategy = InheritanceType.JOINED)
 @Polymorphism(type = PolymorphismType.EXPLICIT)
-public abstract class CourseMaterials implements Comparable<CourseMaterials>, Serializable {
-    private static final long serialVersionUID = -7030593225883391169L;
+public class CourseMaterials implements Comparable<CourseMaterials>, Serializable {
+    private static final long serialVersionUID = -3651014107458022606L;
     @Id
     @Column(name = "material_id", unique = true, nullable = false, columnDefinition = "BIGINT(20)")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -84,7 +84,7 @@ public abstract class CourseMaterials implements Comparable<CourseMaterials>, Se
         return this.materialDate.getTime().toString();
     }
 
-    public ClassName getClassName(){
+    public ClassName getClassName() {
         return ClassName.COURSE_MATERIAL;
     }
 

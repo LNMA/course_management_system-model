@@ -18,7 +18,7 @@ import java.util.Set;
 
 @Service
 public class MaterialCrudService implements MaterialService, Serializable {
-    private static final long serialVersionUID = -8614865631095286957L;
+    private static final long serialVersionUID = 2922383450659806682L;
     private final MaterialDao materialDao;
 
     @Autowired
@@ -127,5 +127,11 @@ public class MaterialCrudService implements MaterialService, Serializable {
     @Override
     public Long getCountCourseMaterialsLikeForSearch(GeneralSearch generalSearch) {
         return getMaterialDao().getCountCourseMaterialsLikePagination(generalSearch);
+    }
+
+    @Transactional(isolation = Isolation.READ_COMMITTED, readOnly = true)
+    @Override
+    public Set<CourseMaterials> findCourseMaterialsByMaterialId(Iterable<CourseMaterials> materialsIterable) {
+        return (Set<CourseMaterials>) getMaterialDao().findAllById(materialsIterable);
     }
 }
