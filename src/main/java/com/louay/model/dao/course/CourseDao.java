@@ -16,4 +16,6 @@ public interface CourseDao extends CommonDao<Courses>, GenericDao<Courses> {
     Set<Courses> findCourseLikePagination(GeneralSearch generalSearch);
 
     Long getCountCourseLikePagination(GeneralSearch generalSearch);
+
+    Set<Courses> findCourseByInstructorId(Courses courses);
 }

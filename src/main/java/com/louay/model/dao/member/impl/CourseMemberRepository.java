@@ -9,7 +9,7 @@ import java.util.*;
 
 @Repository
 public class CourseMemberRepository extends CommonDaoImpl<CourseMembers> implements CourseMemberDao {
-    private static final long serialVersionUID = -2255013710731594094L;
+    private static final long serialVersionUID = -6750504724957748410L;
 
     @Override
     public <S extends CourseMembers> Boolean isExist(S entity) {
@@ -23,6 +23,17 @@ public class CourseMemberRepository extends CommonDaoImpl<CourseMembers> impleme
     @Override
     public Boolean isStudentMemberAtAnyCourse(CourseMembers courseMembers) {
         return !getEntityManager().createQuery("SELECT c From CourseMembers c WHERE c.student.email = :email")
+                .setParameter("email", courseMembers.getStudent().getEmail())
+                .setMaxResults(1)
+                .getResultList()
+                .isEmpty();
+    }
+
+    @Override
+    public Boolean isStudentMemberAtThisCourse(CourseMembers courseMembers) {
+        return !getEntityManager().createQuery("SELECT c From CourseMembers c WHERE " +
+                "c.course.courseID = :courseId AND c.student.email = :email")
+                .setParameter("courseId", courseMembers.getCourse().getCourseID())
                 .setParameter("email", courseMembers.getStudent().getEmail())
                 .setMaxResults(1)
                 .getResultList()
@@ -69,5 +80,15 @@ public class CourseMemberRepository extends CommonDaoImpl<CourseMembers> impleme
             result.add(entityFound);
         }
         return result;
+    }
+
+    @Override
+    public Set<CourseMembers> findCourseMemberByCourseId(CourseMembers courseMembers) {
+        List<CourseMembers> courseMembersList = getEntityManager().createQuery("SELECT cm FROM " +
+                "CourseMembers cm JOIN FETCH cm.student WHERE cm.course.courseID = " +
+                ":courseId", CourseMembers.class)
+                .setParameter("courseId", courseMembers.getCourse().getCourseID())
+                .getResultList();
+        return new HashSet<>(courseMembersList);
     }
 }
