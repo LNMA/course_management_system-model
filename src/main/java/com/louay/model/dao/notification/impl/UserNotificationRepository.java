@@ -12,7 +12,7 @@ import java.util.*;
 
 @Repository
 public class UserNotificationRepository extends CommonDaoImpl<UserNotification> implements UserNotificationDao {
-    private static final long serialVersionUID = -973125830710423732L;
+    private static final long serialVersionUID = -4670673171379886963L;
 
     @Override
     public <S extends UserNotification> Boolean isExist(S entity) {
@@ -67,9 +67,9 @@ public class UserNotificationRepository extends CommonDaoImpl<UserNotification> 
     }
 
     @Override
-    public Integer getCountNotSeenUserNotificationByUserId(UserNotification userNotification) {
+    public Long getCountNotSeenUserNotificationByUserId(UserNotification userNotification) {
         return getEntityManager().createQuery("SELECT COUNT(un) FROM UserNotification un " +
-                "WHERE un.users.email = :email AND un.isSeen = :isSeen", Integer.class)
+                "WHERE un.users.email = :email AND un.isSeen = :isSeen", Long.class)
                 .setParameter("email", userNotification.getUsers().getEmail())
                 .setParameter("isSeen", false)
                 .setMaxResults(1)
@@ -77,10 +77,10 @@ public class UserNotificationRepository extends CommonDaoImpl<UserNotification> 
     }
 
     @Override
-    public Integer getCountNotSeenFeedbackNotificationByUserId(FeedbackNotification feedbackNotification) {
+    public Long getCountNotSeenFeedbackNotificationByUserId(FeedbackNotification feedbackNotification) {
         return getEntityManager().createQuery("SELECT COUNT(fn) FROM FeedbackNotification fn " +
                 "WHERE fn.users.email = :email AND fn.isSeen = :isSeen " +
-                "AND fn.notificationType = :notificationType", Integer.class)
+                "AND fn.notificationType = :notificationType", Long.class)
                 .setParameter("email", feedbackNotification.getUsers().getEmail())
                 .setParameter("isSeen", false)
                 .setParameter("notificationType", NotificationType.FEEDBACK)
@@ -89,10 +89,10 @@ public class UserNotificationRepository extends CommonDaoImpl<UserNotification> 
     }
 
     @Override
-    public Integer getCountNotSeenMaterialNotificationByUserId(MaterialNotification materialNotification) {
+    public Long getCountNotSeenMaterialNotificationByUserId(MaterialNotification materialNotification) {
         return getEntityManager().createQuery("SELECT COUNT(mn) FROM MaterialNotification mn " +
                 "WHERE mn.users.email = :email AND mn.isSeen = :isSeen AND " +
-                "mn.notificationType = :notificationType", Integer.class)
+                "mn.notificationType = :notificationType", Long.class)
                 .setParameter("email", materialNotification.getUsers().getEmail())
                 .setParameter("isSeen", false)
                 .setParameter("notificationType", NotificationType.MATERIAL)

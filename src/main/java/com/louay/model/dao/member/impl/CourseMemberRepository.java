@@ -9,7 +9,7 @@ import java.util.*;
 
 @Repository
 public class CourseMemberRepository extends CommonDaoImpl<CourseMembers> implements CourseMemberDao {
-    private static final long serialVersionUID = -6750504724957748410L;
+    private static final long serialVersionUID = -512106875905605310L;
 
     @Override
     public <S extends CourseMembers> Boolean isExist(S entity) {
@@ -83,10 +83,19 @@ public class CourseMemberRepository extends CommonDaoImpl<CourseMembers> impleme
     }
 
     @Override
-    public Set<CourseMembers> findCourseMemberByCourseId(CourseMembers courseMembers) {
+    public Set<CourseMembers> findCourseMemberEagerStudentByCourseId(CourseMembers courseMembers) {
         List<CourseMembers> courseMembersList = getEntityManager().createQuery("SELECT cm FROM " +
                 "CourseMembers cm JOIN FETCH cm.student WHERE cm.course.courseID = " +
                 ":courseId", CourseMembers.class)
+                .setParameter("courseId", courseMembers.getCourse().getCourseID())
+                .getResultList();
+        return new HashSet<>(courseMembersList);
+    }
+
+    @Override
+    public Set<CourseMembers> findLazyCourseMemberByCourseId(CourseMembers courseMembers) {
+        List<CourseMembers> courseMembersList = getEntityManager().createQuery("SELECT cm FROM " +
+                "CourseMembers cm WHERE cm.course.courseID = :courseId", CourseMembers.class)
                 .setParameter("courseId", courseMembers.getCourse().getCourseID())
                 .getResultList();
         return new HashSet<>(courseMembersList);

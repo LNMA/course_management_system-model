@@ -4,10 +4,13 @@ import com.louay.model.entity.notification.FeedbackNotification;
 import com.louay.model.entity.notification.MaterialNotification;
 import com.louay.model.entity.notification.UserNotification;
 
+import java.util.List;
 import java.util.Set;
 
 public interface NotificationService {
     UserNotification createUserNotification(UserNotification userNotification);
+
+    List<UserNotification> createUserNotificationFromIterable(Iterable<UserNotification> notificationIterable);
 
     UserNotification deleteUserNotificationByNotificationId(UserNotification userNotification);
 
@@ -17,6 +20,8 @@ public interface NotificationService {
 
     FeedbackNotification createFeedbackNotification(FeedbackNotification feedbackNotification);
 
+    List<FeedbackNotification> createFeedbackNotificationFromIterable(Iterable<FeedbackNotification> notificationIterable);
+
     FeedbackNotification deleteFeedbackNotificationByNotificationId(FeedbackNotification feedbackNotification);
 
     FeedbackNotification updateFeedbackNotification(FeedbackNotification feedbackNotification);
@@ -25,17 +30,19 @@ public interface NotificationService {
 
     MaterialNotification createMaterialNotification(MaterialNotification materialNotification);
 
+    List<MaterialNotification> createMaterialNotificationFromIterable(Iterable<MaterialNotification> notificationIterable);
+
     MaterialNotification deleteMaterialNotificationByNotificationId(MaterialNotification materialNotification);
 
     MaterialNotification updateMaterialNotification(MaterialNotification materialNotification);
 
     MaterialNotification findMaterialNotificationByNotificationId(MaterialNotification materialNotification);
 
-    Integer getCountNotSeenUserNotificationByUserId(UserNotification userNotification);
+    Long getCountNotSeenUserNotificationByUserId(UserNotification userNotification);
 
-    Integer getCountNotSeenFeedbackNotificationByUserId(FeedbackNotification feedbackNotification);
+    Long getCountNotSeenFeedbackNotificationByUserId(FeedbackNotification feedbackNotification);
 
-    Integer getCountNotSeenMaterialNotificationByUserId(MaterialNotification materialNotification);
+    Long getCountNotSeenMaterialNotificationByUserId(MaterialNotification materialNotification);
 
     Set<MaterialNotification> findNotSeenMaterialNotificationByUserId(MaterialNotification materialNotification);
 

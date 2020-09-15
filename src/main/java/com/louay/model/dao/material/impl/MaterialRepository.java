@@ -14,6 +14,7 @@ import java.util.*;
 
 @Repository
 public class MaterialRepository extends CommonDaoImpl<CourseMaterials> implements MaterialDao {
+
     private static final long serialVersionUID = 2468261093806351312L;
 
     @Override
@@ -131,7 +132,7 @@ public class MaterialRepository extends CommonDaoImpl<CourseMaterials> implement
         String key = generalSearch.getKey() + "%";
         int firstResultValue = (generalSearch.getPageNumber() - 1) * generalSearch.getPageSize();
         List<CourseMaterials> courseMaterialsList = getEntityManager().createQuery("SELECT cm FROM " +
-                "CourseMaterials cm WHERE cm.user.email LIKE :email", CourseMaterials.class)
+                "CourseMaterials cm JOIN FETCH cm.course WHERE cm.user.email LIKE :email", CourseMaterials.class)
                 .setParameter("email", key)
                 .setFirstResult(firstResultValue)
                 .setMaxResults(generalSearch.getPageSize())
@@ -142,7 +143,7 @@ public class MaterialRepository extends CommonDaoImpl<CourseMaterials> implement
 
     @Override
     public Long getCountCourseMaterialsLikePagination(GeneralSearch generalSearch) {
-        String key = generalSearch.getKey()+"%";
+        String key = generalSearch.getKey() + "%";
         return getEntityManager().createQuery("SELECT COUNT(cm) FROM " +
                 "CourseMaterials cm WHERE cm.user.email LIKE :email", Long.class)
                 .setParameter("email", key)

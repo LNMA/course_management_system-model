@@ -25,7 +25,7 @@ public class FeedbackNotification extends UserNotification {
     @Transient
     @Override
     public String toString() {
-        return "FeedbackNotification{" +
+        return super.toString() + ", FeedbackNotification{" +
                 "courseFeedback=" + courseFeedback.getFeedbackID() +
                 '}';
     }

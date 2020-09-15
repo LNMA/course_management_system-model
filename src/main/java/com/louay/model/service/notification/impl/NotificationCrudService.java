@@ -12,11 +12,12 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.Set;
 
 @Service
 public class NotificationCrudService implements NotificationService, Serializable {
-    private static final long serialVersionUID = 2854965535778062593L;
+    private static final long serialVersionUID = 2281183835520733663L;
     private final UserNotificationDao userNotificationDao;
 
     @Autowired
@@ -35,6 +36,12 @@ public class NotificationCrudService implements NotificationService, Serializabl
     @Override
     public UserNotification createUserNotification(UserNotification userNotification) {
         return getUserNotificationDao().save(userNotification);
+    }
+
+    @Transactional
+    @Override
+    public List<UserNotification> createUserNotificationFromIterable(Iterable<UserNotification> notificationIterable) {
+        return (List<UserNotification>) getUserNotificationDao().saveAll(notificationIterable);
     }
 
     @Transactional
@@ -63,6 +70,12 @@ public class NotificationCrudService implements NotificationService, Serializabl
 
     @Transactional
     @Override
+    public List<FeedbackNotification> createFeedbackNotificationFromIterable(Iterable<FeedbackNotification> notificationIterable) {
+        return (List<FeedbackNotification>) getUserNotificationDao().saveAll(notificationIterable);
+    }
+
+    @Transactional
+    @Override
     public FeedbackNotification deleteFeedbackNotificationByNotificationId(FeedbackNotification feedbackNotification) {
         return getUserNotificationDao().delete(feedbackNotification);
     }
@@ -87,6 +100,12 @@ public class NotificationCrudService implements NotificationService, Serializabl
 
     @Transactional
     @Override
+    public List<MaterialNotification> createMaterialNotificationFromIterable(Iterable<MaterialNotification> notificationIterable) {
+        return (List<MaterialNotification>) getUserNotificationDao().saveAll(notificationIterable);
+    }
+
+    @Transactional
+    @Override
     public MaterialNotification deleteMaterialNotificationByNotificationId(MaterialNotification materialNotification) {
         return getUserNotificationDao().delete(materialNotification);
     }
@@ -105,19 +124,19 @@ public class NotificationCrudService implements NotificationService, Serializabl
 
     @Transactional
     @Override
-    public Integer getCountNotSeenUserNotificationByUserId(UserNotification userNotification) {
+    public Long getCountNotSeenUserNotificationByUserId(UserNotification userNotification) {
         return getUserNotificationDao().getCountNotSeenUserNotificationByUserId(userNotification);
     }
 
     @Transactional
     @Override
-    public Integer getCountNotSeenFeedbackNotificationByUserId(FeedbackNotification feedbackNotification) {
+    public Long getCountNotSeenFeedbackNotificationByUserId(FeedbackNotification feedbackNotification) {
         return getUserNotificationDao().getCountNotSeenFeedbackNotificationByUserId(feedbackNotification);
     }
 
     @Transactional
     @Override
-    public Integer getCountNotSeenMaterialNotificationByUserId(MaterialNotification materialNotification) {
+    public Long getCountNotSeenMaterialNotificationByUserId(MaterialNotification materialNotification) {
         return getUserNotificationDao().getCountNotSeenMaterialNotificationByUserId(materialNotification);
     }
 

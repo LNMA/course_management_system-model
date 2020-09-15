@@ -25,7 +25,7 @@ public class MaterialNotification extends UserNotification {
     @Transient
     @Override
     public String toString() {
-        return "MaterialNotification{" +
+        return super.toString() + ", MaterialNotification{" +
                 "courseMaterials=" + courseMaterials.getMaterialID() +
                 '}';
     }

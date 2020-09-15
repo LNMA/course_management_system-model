@@ -13,12 +13,12 @@ import java.util.Set;
 
 @Service
 public class CourseMemberCrudService implements CourseMemberService, Serializable {
-    private static final long serialVersionUID = -1291056893222662927L;
+    private static final long serialVersionUID = -8433102553173417770L;
     private final CourseMemberDao courseMemberDao;
 
     @Autowired
     public CourseMemberCrudService(CourseMemberDao courseMemberDao) {
-        if (courseMemberDao == null){
+        if (courseMemberDao == null) {
             throw new IllegalArgumentException("DAO cannot be null at CourseMemberCrudService.class");
         }
         this.courseMemberDao = courseMemberDao;
@@ -66,7 +66,13 @@ public class CourseMemberCrudService implements CourseMemberService, Serializabl
 
     @Transactional(isolation = Isolation.READ_COMMITTED, readOnly = true)
     @Override
-    public Set<CourseMembers> findCourseMemberByCourseId(CourseMembers courseMembers) {
-        return getCourseMemberDao().findCourseMemberByCourseId(courseMembers);
+    public Set<CourseMembers> findCourseMemberEagerStudentByCourseId(CourseMembers courseMembers) {
+        return getCourseMemberDao().findCourseMemberEagerStudentByCourseId(courseMembers);
+    }
+
+    @Transactional(isolation = Isolation.READ_COMMITTED, readOnly = true)
+    @Override
+    public Set<CourseMembers> findLazyCourseMemberByCourseId(CourseMembers courseMembers) {
+        return getCourseMemberDao().findLazyCourseMemberByCourseId(courseMembers);
     }
 }

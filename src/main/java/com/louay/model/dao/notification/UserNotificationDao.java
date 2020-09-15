@@ -9,11 +9,11 @@ import com.louay.model.entity.notification.UserNotification;
 import java.util.Set;
 
 public interface UserNotificationDao extends GenericDao<UserNotification>, CommonDao<UserNotification> {
-    Integer getCountNotSeenUserNotificationByUserId(UserNotification userNotification);
+    Long getCountNotSeenUserNotificationByUserId(UserNotification userNotification);
 
-    Integer getCountNotSeenFeedbackNotificationByUserId(FeedbackNotification feedbackNotification);
+    Long getCountNotSeenFeedbackNotificationByUserId(FeedbackNotification feedbackNotification);
 
-    Integer getCountNotSeenMaterialNotificationByUserId(MaterialNotification materialNotification);
+    Long getCountNotSeenMaterialNotificationByUserId(MaterialNotification materialNotification);
 
     Set<MaterialNotification> findNotSeenMaterialNotificationByUserId(MaterialNotification materialNotification);
 

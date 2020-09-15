@@ -11,5 +11,7 @@ public interface CourseMemberDao extends GenericDao<CourseMembers>, CommonDao<Co
 
     Boolean isStudentMemberAtThisCourse(CourseMembers courseMembers);
 
-    Set<CourseMembers> findCourseMemberByCourseId(CourseMembers courseMembers);
+    Set<CourseMembers> findCourseMemberEagerStudentByCourseId(CourseMembers courseMembers);
+
+    Set<CourseMembers> findLazyCourseMemberByCourseId(CourseMembers courseMembers);
 }
