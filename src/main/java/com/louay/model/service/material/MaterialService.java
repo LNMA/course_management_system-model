@@ -3,6 +3,7 @@ package com.louay.model.service.material;
 import com.louay.model.entity.material.CourseMaterials;
 import com.louay.model.entity.material.FileMaterials;
 import com.louay.model.entity.material.TextMaterials;
+import com.louay.model.entity.wrapper.CourseSearch;
 import com.louay.model.entity.wrapper.FileMaterialWithOutFile;
 import com.louay.model.entity.wrapper.GeneralSearch;
 import com.louay.model.entity.wrapper.MaterialWithOutContent;
@@ -41,4 +42,8 @@ public interface MaterialService {
     Set<CourseMaterials> findCourseMaterialsLikeForSearch(GeneralSearch generalSearch);
 
     Long getCountCourseMaterialsLikeForSearch(GeneralSearch generalSearch);
+
+    Set<CourseMaterials> findCourseMaterialsByMaterialId(Iterable<CourseMaterials> materialsIterable);
+
+    Set<CourseMaterials> findCourseMaterialsLikeToCourseSearch(CourseSearch courseSearch);
 }

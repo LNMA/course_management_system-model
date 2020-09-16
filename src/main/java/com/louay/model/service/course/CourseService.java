@@ -25,4 +25,6 @@ public interface CourseService {
     Set<Courses> findCourseLikeForSearch(GeneralSearch generalSearch);
 
     Long getCountCourseLikeForSearch(GeneralSearch generalSearch);
+
+    Set<Courses> findCourseByInstructorId(Courses courses);
 }

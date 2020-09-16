@@ -22,21 +22,21 @@ import java.util.Objects;
 @JsonIgnoreProperties(value = {"materialDate"}, allowGetters = true)
 @Inheritance(strategy = InheritanceType.JOINED)
 @Polymorphism(type = PolymorphismType.EXPLICIT)
-public abstract class CourseMaterials implements Comparable<CourseMaterials>, Serializable {
-    private static final long serialVersionUID = -7030593225883391169L;
+public class CourseMaterials implements Comparable<CourseMaterials>, Serializable {
+    private static final long serialVersionUID = -3651014107458022606L;
     @Id
     @Column(name = "material_id", unique = true, nullable = false, columnDefinition = "BIGINT(20)")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long materialID;
 
-    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    //@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "course_id", referencedColumnName = "course_id", columnDefinition = "BIGINT(20)", foreignKey =
     @ForeignKey(name = "fk_courses_course_id_courses_materials_course_id", foreignKeyDefinition = "FOREIGN KEY " +
             "(course_id) REFERENCES courses (course_id) ON DELETE CASCADE ON UPDATE CASCADE"), nullable = false)
     private Courses course;
 
-    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    //@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", referencedColumnName = "user_id", columnDefinition = "VARCHAR(200)", foreignKey =
     @ForeignKey(name = "fk_users_details_id_courses_materials_user_id", foreignKeyDefinition = "FOREIGN KEY (user_id)" +
@@ -84,7 +84,7 @@ public abstract class CourseMaterials implements Comparable<CourseMaterials>, Se
         return this.materialDate.getTime().toString();
     }
 
-    public ClassName getClassName(){
+    public ClassName getClassName() {
         return ClassName.COURSE_MATERIAL;
     }
 

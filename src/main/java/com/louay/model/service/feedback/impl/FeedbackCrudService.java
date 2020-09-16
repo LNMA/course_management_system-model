@@ -6,6 +6,7 @@ import com.louay.model.entity.feedback.CourseFeedback;
 import com.louay.model.entity.feedback.FileFeedback;
 import com.louay.model.entity.feedback.FileMessageFeedback;
 import com.louay.model.entity.feedback.MessageFeedback;
+import com.louay.model.entity.wrapper.CourseSearch;
 import com.louay.model.entity.wrapper.GeneralSearch;
 import com.louay.model.service.feedback.FeedbackService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +19,7 @@ import java.util.Set;
 
 @Service
 public class FeedbackCrudService implements FeedbackService, Serializable {
-    private static final long serialVersionUID = 8904792140268539111L;
+    private static final long serialVersionUID = -6176226336982917221L;
     private final FeedbackDao feedbackDao;
     private final CourseFeedbackDao courseFeedbackDao;
 
@@ -57,10 +58,16 @@ public class FeedbackCrudService implements FeedbackService, Serializable {
         return getCourseFeedbackDao().update(courseFeedback);
     }
 
-    @Transactional
+    @Transactional(isolation = Isolation.READ_COMMITTED, readOnly = true)
     @Override
     public CourseFeedback findCourseFeedbackByFeedbackId(CourseFeedback courseFeedback) {
         return getCourseFeedbackDao().findOneById(courseFeedback);
+    }
+
+    @Transactional(isolation = Isolation.READ_COMMITTED, readOnly = true)
+    @Override
+    public Set<CourseFeedback> findCourseFeedbackByFeedbackId(Iterable<CourseFeedback> courseFeedbackIterable) {
+        return (Set<CourseFeedback>) getCourseFeedbackDao().findAllById(courseFeedbackIterable);
     }
 
     @Transactional
@@ -157,5 +164,11 @@ public class FeedbackCrudService implements FeedbackService, Serializable {
     @Override
     public Long getCountCourseFeedbackLikeForSearch(GeneralSearch generalSearch) {
         return getCourseFeedbackDao().getCountCourseFeedbackLikePagination(generalSearch);
+    }
+
+    @Transactional
+    @Override
+    public Set<CourseFeedback> findCourseFeedbackLikeToCourseSearch(CourseSearch courseSearch) {
+        return getCourseFeedbackDao().findCourseFeedbackLikeToCourseSearch(courseSearch);
     }
 }

@@ -9,15 +9,16 @@ import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.Serializable;
+import java.util.Set;
 
 @Service
 public class CourseMemberCrudService implements CourseMemberService, Serializable {
-    private static final long serialVersionUID = -2184174840391078705L;
+    private static final long serialVersionUID = -8433102553173417770L;
     private final CourseMemberDao courseMemberDao;
 
     @Autowired
     public CourseMemberCrudService(CourseMemberDao courseMemberDao) {
-        if (courseMemberDao == null){
+        if (courseMemberDao == null) {
             throw new IllegalArgumentException("DAO cannot be null at CourseMemberCrudService.class");
         }
         this.courseMemberDao = courseMemberDao;
@@ -55,5 +56,23 @@ public class CourseMemberCrudService implements CourseMemberService, Serializabl
     @Override
     public CourseMembers findMemberByMemberId(CourseMembers courseMembers) {
         return getCourseMemberDao().findOneById(courseMembers);
+    }
+
+    @Transactional
+    @Override
+    public Boolean isStudentMemberAtThisCourse(CourseMembers courseMembers) {
+        return getCourseMemberDao().isStudentMemberAtThisCourse(courseMembers);
+    }
+
+    @Transactional(isolation = Isolation.READ_COMMITTED, readOnly = true)
+    @Override
+    public Set<CourseMembers> findCourseMemberEagerStudentByCourseId(CourseMembers courseMembers) {
+        return getCourseMemberDao().findCourseMemberEagerStudentByCourseId(courseMembers);
+    }
+
+    @Transactional(isolation = Isolation.READ_COMMITTED, readOnly = true)
+    @Override
+    public Set<CourseMembers> findLazyCourseMemberByCourseId(CourseMembers courseMembers) {
+        return getCourseMemberDao().findLazyCourseMemberByCourseId(courseMembers);
     }
 }

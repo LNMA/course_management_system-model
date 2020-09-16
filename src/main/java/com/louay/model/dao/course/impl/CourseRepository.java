@@ -14,7 +14,7 @@ import java.util.*;
 
 @Repository
 public class CourseRepository extends CommonDaoImpl<Courses> implements CourseDao {
-    private static final long serialVersionUID = 9029899314924270671L;
+    private static final long serialVersionUID = -8469609201518328330L;
 
     @Override
     public <S extends Courses> Boolean isExist(S entity) {
@@ -118,5 +118,14 @@ public class CourseRepository extends CommonDaoImpl<Courses> implements CourseDa
                 .setMaxResults(1)
                 .getResultList()
                 .get(0);
+    }
+
+    @Override
+    public Set<Courses> findCourseByInstructorId(Courses courses) {
+        List<Courses> coursesList = getEntityManager().createQuery("SELECT c FROM Courses c WHERE " +
+                "c.instructor.email = :email", Courses.class)
+                .setParameter("email", courses.getInstructor().getEmail())
+                .getResultList();
+        return new HashSet<>(coursesList);
     }
 }

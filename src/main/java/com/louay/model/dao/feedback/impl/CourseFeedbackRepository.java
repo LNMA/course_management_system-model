@@ -3,6 +3,7 @@ package com.louay.model.dao.feedback.impl;
 import com.louay.model.dao.CommonDaoImpl;
 import com.louay.model.dao.feedback.CourseFeedbackDao;
 import com.louay.model.entity.feedback.CourseFeedback;
+import com.louay.model.entity.wrapper.CourseSearch;
 import com.louay.model.entity.wrapper.GeneralSearch;
 import org.springframework.stereotype.Repository;
 
@@ -10,7 +11,7 @@ import java.util.*;
 
 @Repository
 public class CourseFeedbackRepository extends CommonDaoImpl<CourseFeedback> implements CourseFeedbackDao {
-    private static final long serialVersionUID = 7489676737444211990L;
+    private static final long serialVersionUID = 4221364226435777425L;
 
     @Override
     public <S extends CourseFeedback> Boolean isExist(S entity) {
@@ -85,7 +86,7 @@ public class CourseFeedbackRepository extends CommonDaoImpl<CourseFeedback> impl
 
     @Override
     public Set<CourseFeedback> findCourseFeedbackLikePagination(GeneralSearch generalSearch) {
-        String key = generalSearch.getKey()+"%";
+        String key = generalSearch.getKey() + "%";
         int firstResultValue = (generalSearch.getPageNumber() - 1) * generalSearch.getPageSize();
         List<CourseFeedback> courseFeedbackList = getEntityManager().createQuery("SELECT cf FROM CourseFeedback cf WHERE " +
                 "cf.user.email LIKE :email", CourseFeedback.class)
@@ -99,12 +100,24 @@ public class CourseFeedbackRepository extends CommonDaoImpl<CourseFeedback> impl
 
     @Override
     public Long getCountCourseFeedbackLikePagination(GeneralSearch generalSearch) {
-        String key = generalSearch.getKey()+"%";
+        String key = generalSearch.getKey() + "%";
         return getEntityManager().createQuery("SELECT COUNT(cf) FROM CourseFeedback cf WHERE " +
                 "cf.user.email LIKE :email", Long.class)
                 .setParameter("email", key)
                 .setMaxResults(1)
                 .getResultList()
                 .get(0);
+    }
+
+    @Override
+    public Set<CourseFeedback> findCourseFeedbackLikeToCourseSearch(CourseSearch courseSearch) {
+        String key = courseSearch.getKey() + "%";
+        List<CourseFeedback> courseFeedbackList = getEntityManager().createQuery("SELECT cf FROM CourseFeedback " +
+                "cf WHERE cf.user.email LIKE :email AND cf.course.courseID = :courseID", CourseFeedback.class)
+                .setParameter("email", key)
+                .setParameter("courseID", courseSearch.getCourses().getCourseID())
+                .getResultList();
+
+        return new HashSet<>(courseFeedbackList);
     }
 }
