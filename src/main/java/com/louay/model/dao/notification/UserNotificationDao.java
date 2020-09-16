@@ -18,4 +18,8 @@ public interface UserNotificationDao extends GenericDao<UserNotification>, Commo
     Set<MaterialNotification> findNotSeenMaterialNotificationByUserId(MaterialNotification materialNotification);
 
     Set<FeedbackNotification> findNotSeenFeedbackNotificationByUserId(FeedbackNotification feedbackNotification);
+
+    Set<MaterialNotification> findNotSeenMaterialNotificationByUserIdAndCourseId(MaterialNotification materialNotification);
+
+    Set<FeedbackNotification> findNotSeenFeedbackNotificationByUserIdAndCourseId(FeedbackNotification feedbackNotification);
 }

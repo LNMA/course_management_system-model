@@ -4,6 +4,7 @@ import com.louay.model.dao.material.MaterialDao;
 import com.louay.model.entity.material.CourseMaterials;
 import com.louay.model.entity.material.FileMaterials;
 import com.louay.model.entity.material.TextMaterials;
+import com.louay.model.entity.wrapper.CourseSearch;
 import com.louay.model.entity.wrapper.FileMaterialWithOutFile;
 import com.louay.model.entity.wrapper.GeneralSearch;
 import com.louay.model.entity.wrapper.MaterialWithOutContent;
@@ -18,7 +19,7 @@ import java.util.Set;
 
 @Service
 public class MaterialCrudService implements MaterialService, Serializable {
-    private static final long serialVersionUID = 2922383450659806682L;
+    private static final long serialVersionUID = 6039587076313364033L;
     private final MaterialDao materialDao;
 
     @Autowired
@@ -132,6 +133,12 @@ public class MaterialCrudService implements MaterialService, Serializable {
     @Transactional(isolation = Isolation.READ_COMMITTED, readOnly = true)
     @Override
     public Set<CourseMaterials> findCourseMaterialsByMaterialId(Iterable<CourseMaterials> materialsIterable) {
-        return (Set<CourseMaterials>) getMaterialDao().findAllById(materialsIterable);
+        return getMaterialDao().findCourseMaterialEagerCourseByMaterialId(materialsIterable);
+    }
+
+    @Transactional(isolation = Isolation.READ_COMMITTED, readOnly = true)
+    @Override
+    public Set<CourseMaterials> findCourseMaterialsLikeToCourseSearch(CourseSearch courseSearch) {
+        return getMaterialDao().findCourseMaterialsLikeToCourseSearch(courseSearch);
     }
 }

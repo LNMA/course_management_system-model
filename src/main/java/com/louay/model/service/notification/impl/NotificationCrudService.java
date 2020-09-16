@@ -17,7 +17,7 @@ import java.util.Set;
 
 @Service
 public class NotificationCrudService implements NotificationService, Serializable {
-    private static final long serialVersionUID = 2281183835520733663L;
+    private static final long serialVersionUID = 1812068406345569440L;
     private final UserNotificationDao userNotificationDao;
 
     @Autowired
@@ -86,6 +86,12 @@ public class NotificationCrudService implements NotificationService, Serializabl
         return getUserNotificationDao().update(feedbackNotification);
     }
 
+    @Transactional
+    @Override
+    public List<FeedbackNotification> updateFeedbackNotification(Iterable<FeedbackNotification> feedbackNotificationIterable) {
+        return (List<FeedbackNotification>) getUserNotificationDao().updateAll(feedbackNotificationIterable);
+    }
+
     @Transactional(isolation = Isolation.READ_COMMITTED, readOnly = true)
     @Override
     public FeedbackNotification findFeedbackNotificationByNotificationId(FeedbackNotification feedbackNotification) {
@@ -114,6 +120,12 @@ public class NotificationCrudService implements NotificationService, Serializabl
     @Override
     public MaterialNotification updateMaterialNotification(MaterialNotification materialNotification) {
         return getUserNotificationDao().update(materialNotification);
+    }
+
+    @Transactional
+    @Override
+    public List<MaterialNotification> updateMaterialNotification(Iterable<MaterialNotification> materialNotificationIterable) {
+        return (List<MaterialNotification>) getUserNotificationDao().updateAll(materialNotificationIterable);
     }
 
     @Transactional(isolation = Isolation.READ_COMMITTED, readOnly = true)
@@ -150,5 +162,17 @@ public class NotificationCrudService implements NotificationService, Serializabl
     @Override
     public Set<FeedbackNotification> findNotSeenFeedbackNotificationByUserId(FeedbackNotification feedbackNotification) {
         return getUserNotificationDao().findNotSeenFeedbackNotificationByUserId(feedbackNotification);
+    }
+
+    @Transactional(isolation = Isolation.READ_COMMITTED, readOnly = true)
+    @Override
+    public Set<MaterialNotification> findNotSeenMaterialNotificationByUserIdAndCourseId(MaterialNotification materialNotification) {
+        return getUserNotificationDao().findNotSeenMaterialNotificationByUserIdAndCourseId(materialNotification);
+    }
+
+    @Transactional(isolation = Isolation.READ_COMMITTED, readOnly = true)
+    @Override
+    public Set<FeedbackNotification> findNotSeenFeedbackNotificationByUserIdAndCourseId(FeedbackNotification feedbackNotification) {
+        return getUserNotificationDao().findNotSeenFeedbackNotificationByUserIdAndCourseId(feedbackNotification);
     }
 }

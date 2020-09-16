@@ -12,7 +12,7 @@ import java.util.*;
 
 @Repository
 public class UserNotificationRepository extends CommonDaoImpl<UserNotification> implements UserNotificationDao {
-    private static final long serialVersionUID = -4670673171379886963L;
+    private static final long serialVersionUID = -4247890567071143474L;
 
     @Override
     public <S extends UserNotification> Boolean isExist(S entity) {
@@ -120,6 +120,34 @@ public class UserNotificationRepository extends CommonDaoImpl<UserNotification> 
                         "fn.users.email = :email AND fn.isSeen = :isSeen " +
                         "AND fn.notificationType = :notificationType", FeedbackNotification.class)
                 .setParameter("email", feedbackNotification.getUsers().getEmail())
+                .setParameter("isSeen", false)
+                .setParameter("notificationType", NotificationType.FEEDBACK)
+                .getResultList();
+        return new HashSet<>(notificationList);
+    }
+
+    @Override
+    public Set<MaterialNotification> findNotSeenMaterialNotificationByUserIdAndCourseId(MaterialNotification materialNotification) {
+        List<MaterialNotification> notificationList = getEntityManager().createQuery(
+                "SELECT mn FROM MaterialNotification mn WHERE " +
+                        "mn.users.email = :email AND mn.course.courseID = :courseID AND mn.isSeen = :isSeen " +
+                        "AND mn.notificationType = :notificationType", MaterialNotification.class)
+                .setParameter("email", materialNotification.getUsers().getEmail())
+                .setParameter("courseID", materialNotification.getCourse().getCourseID())
+                .setParameter("isSeen", false)
+                .setParameter("notificationType", NotificationType.MATERIAL)
+                .getResultList();
+        return new HashSet<>(notificationList);
+    }
+
+    @Override
+    public Set<FeedbackNotification> findNotSeenFeedbackNotificationByUserIdAndCourseId(FeedbackNotification feedbackNotification) {
+        List<FeedbackNotification> notificationList = getEntityManager().createQuery(
+                "SELECT fn FROM FeedbackNotification fn WHERE " +
+                        "fn.users.email = :email AND fn.course.courseID = :courseID AND fn.isSeen = :isSeen " +
+                        "AND fn.notificationType = :notificationType", FeedbackNotification.class)
+                .setParameter("email", feedbackNotification.getUsers().getEmail())
+                .setParameter("courseID", feedbackNotification.getCourse().getCourseID())
                 .setParameter("isSeen", false)
                 .setParameter("notificationType", NotificationType.FEEDBACK)
                 .getResultList();

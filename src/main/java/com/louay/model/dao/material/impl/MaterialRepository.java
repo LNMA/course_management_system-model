@@ -5,6 +5,7 @@ import com.louay.model.dao.material.MaterialDao;
 import com.louay.model.entity.material.CourseMaterials;
 import com.louay.model.entity.material.FileMaterials;
 import com.louay.model.entity.material.TextMaterials;
+import com.louay.model.entity.wrapper.CourseSearch;
 import com.louay.model.entity.wrapper.FileMaterialWithOutFile;
 import com.louay.model.entity.wrapper.GeneralSearch;
 import com.louay.model.entity.wrapper.MaterialWithOutContent;
@@ -14,8 +15,7 @@ import java.util.*;
 
 @Repository
 public class MaterialRepository extends CommonDaoImpl<CourseMaterials> implements MaterialDao {
-
-    private static final long serialVersionUID = 2468261093806351312L;
+    private static final long serialVersionUID = -2055998155570229002L;
 
     @Override
     public <S extends CourseMaterials> Boolean isExist(S entity) {
@@ -150,5 +150,31 @@ public class MaterialRepository extends CommonDaoImpl<CourseMaterials> implement
                 .setMaxResults(1)
                 .getResultList()
                 .get(0);
+    }
+
+    @Override
+    public Set<CourseMaterials> findCourseMaterialEagerCourseByMaterialId(Iterable<CourseMaterials> materialsIterable) {
+        Set<CourseMaterials> courseMaterialsSet = new HashSet<>();
+        for (CourseMaterials cm : materialsIterable) {
+            CourseMaterials courseMaterials = getEntityManager().createQuery("SELECT cm FROM CourseMaterials cm " +
+                    "JOIN FETCH cm.course WHERE cm.materialID = :materialID", CourseMaterials.class)
+                    .setParameter("materialID", cm.getMaterialID())
+                    .getSingleResult();
+            courseMaterialsSet.add(courseMaterials);
+        }
+        return courseMaterialsSet;
+    }
+
+    @Override
+    public Set<CourseMaterials> findCourseMaterialsLikeToCourseSearch(CourseSearch courseSearch) {
+        String key = courseSearch.getKey() + "%";
+        List<CourseMaterials> courseMaterialsList = getEntityManager().createQuery("SELECT cm FROM " +
+                "CourseMaterials cm JOIN FETCH cm.course WHERE cm.user.email LIKE :email " +
+                "AND cm.course.courseID = :courseID", CourseMaterials.class)
+                .setParameter("email", key)
+                .setParameter("courseID", courseSearch.getCourses().getCourseID())
+                .getResultList();
+
+        return new HashSet<>(courseMaterialsList);
     }
 }

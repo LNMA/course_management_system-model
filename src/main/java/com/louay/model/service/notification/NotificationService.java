@@ -26,6 +26,8 @@ public interface NotificationService {
 
     FeedbackNotification updateFeedbackNotification(FeedbackNotification feedbackNotification);
 
+    List<FeedbackNotification> updateFeedbackNotification(Iterable<FeedbackNotification> feedbackNotificationIterable);
+
     FeedbackNotification findFeedbackNotificationByNotificationId(FeedbackNotification feedbackNotification);
 
     MaterialNotification createMaterialNotification(MaterialNotification materialNotification);
@@ -35,6 +37,8 @@ public interface NotificationService {
     MaterialNotification deleteMaterialNotificationByNotificationId(MaterialNotification materialNotification);
 
     MaterialNotification updateMaterialNotification(MaterialNotification materialNotification);
+
+    List<MaterialNotification> updateMaterialNotification(Iterable<MaterialNotification> materialNotificationIterable);
 
     MaterialNotification findMaterialNotificationByNotificationId(MaterialNotification materialNotification);
 
@@ -47,4 +51,8 @@ public interface NotificationService {
     Set<MaterialNotification> findNotSeenMaterialNotificationByUserId(MaterialNotification materialNotification);
 
     Set<FeedbackNotification> findNotSeenFeedbackNotificationByUserId(FeedbackNotification feedbackNotification);
+
+    Set<MaterialNotification> findNotSeenMaterialNotificationByUserIdAndCourseId(MaterialNotification materialNotification);
+
+    Set<FeedbackNotification> findNotSeenFeedbackNotificationByUserIdAndCourseId(FeedbackNotification feedbackNotification);
 }
