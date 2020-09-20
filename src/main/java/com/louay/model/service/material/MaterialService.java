@@ -45,5 +45,7 @@ public interface MaterialService {
 
     Set<CourseMaterials> findCourseMaterialsByMaterialId(Iterable<CourseMaterials> materialsIterable);
 
+    CourseMaterials deleteCourseMaterialsByMaterialId(CourseMaterials courseMaterials);
+
     Set<CourseMaterials> findCourseMaterialsLikeToCourseSearch(CourseSearch courseSearch);
 }
