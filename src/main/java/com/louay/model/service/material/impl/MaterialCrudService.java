@@ -19,7 +19,7 @@ import java.util.Set;
 
 @Service
 public class MaterialCrudService implements MaterialService, Serializable {
-    private static final long serialVersionUID = 6039587076313364033L;
+    private static final long serialVersionUID = -7935057248268239518L;
     private final MaterialDao materialDao;
 
     @Autowired
@@ -134,6 +134,12 @@ public class MaterialCrudService implements MaterialService, Serializable {
     @Override
     public Set<CourseMaterials> findCourseMaterialsByMaterialId(Iterable<CourseMaterials> materialsIterable) {
         return getMaterialDao().findCourseMaterialEagerCourseByMaterialId(materialsIterable);
+    }
+
+    @Transactional
+    @Override
+    public CourseMaterials deleteCourseMaterialsByMaterialId(CourseMaterials courseMaterials) {
+        return getMaterialDao().delete(courseMaterials);
     }
 
     @Transactional(isolation = Isolation.READ_COMMITTED, readOnly = true)

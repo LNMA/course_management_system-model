@@ -51,7 +51,7 @@ public abstract class CommonDaoImpl<T> implements CommonDao<T>, Serializable {
             getEntityManager().merge(entity);
             return entity;
         } else {
-            throw new UnsupportedOperationException("Can not update not exist account!.");
+            throw new UnsupportedOperationException("Can not update not exist entity!.");
         }
     }
 
