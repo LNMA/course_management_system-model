@@ -15,7 +15,7 @@ import java.util.Objects;
         @Index(name = "notifications_user_id_IX", columnList = "user_id"),
         @Index(name = "notifications_course_id_IX", columnList = "course_id"),
         @Index(name = "notifications_material_id_IX", columnList = "material_id"),
-        @Index(name = "notifications_feedback_id_IX", columnList = "material_id")
+        @Index(name = "notifications_feedback_id_IX", columnList = "feedback_id")
 })
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "kind", columnDefinition = "TINYINT(1)", discriminatorType = DiscriminatorType.INTEGER)

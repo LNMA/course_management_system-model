@@ -8,8 +8,7 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "users_roles", indexes = {
-        @Index(name = "users_roles_role_id_UNIQUE", columnList = "role_id", unique = true),
-        @Index(name = "users_roles_user_id_UNIQUE", columnList = "user_id", unique = true)})
+        @Index(name = "users_roles_role_id_UNIQUE", columnList = "role_id", unique = true)})
 public class UsersRoles implements Comparable<UsersRoles>, Serializable {
     private static final long serialVersionUID = 6558013226551832736L;
     @Id
@@ -19,7 +18,7 @@ public class UsersRoles implements Comparable<UsersRoles>, Serializable {
             "REFERENCES users (email) ON DELETE CASCADE ON UPDATE CASCADE"), columnDefinition = "VARCHAR(200)")
     private Admin users;
 
-    @OneToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY, targetEntity = AccountsRoles.class)
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, targetEntity = AccountsRoles.class)
     @JoinColumn(name = "role_id", referencedColumnName = "role_id", nullable = false, unique = true, foreignKey =
     @ForeignKey(name = "fk_roles_role_id_users_roles_role_id", foreignKeyDefinition = "FOREIGN KEY (role_id) " +
             "REFERENCES roles (role_id) ON DELETE CASCADE ON UPDATE CASCADE"), columnDefinition = "BIGINT(20)")
