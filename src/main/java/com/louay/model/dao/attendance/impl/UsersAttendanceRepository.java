@@ -3,13 +3,15 @@ package com.louay.model.dao.attendance.impl;
 import com.louay.model.dao.CommonDaoImpl;
 import com.louay.model.dao.attendance.UsersAttendanceDao;
 import com.louay.model.entity.courses.members.UsersAttendance;
+import com.louay.model.entity.wrapper.StudentAttendanceReport;
 import org.springframework.stereotype.Repository;
 
+import javax.persistence.TemporalType;
 import java.util.*;
 
 @Repository
 public class UsersAttendanceRepository extends CommonDaoImpl<UsersAttendance> implements UsersAttendanceDao {
-    private static final long serialVersionUID = 3366538993387667661L;
+    private static final long serialVersionUID = -3087997609004929270L;
 
     @Override
     public <S extends UsersAttendance> Boolean isExist(S entity) {
@@ -60,5 +62,25 @@ public class UsersAttendanceRepository extends CommonDaoImpl<UsersAttendance> im
             result.add(entityFound);
         }
         return result;
+    }
+
+    @Override
+    public List<UsersAttendance> findUsersAttendanceByCourseAndDate(
+            StudentAttendanceReport studentAttendanceReport) {
+        return getEntityManager().createQuery("SELECT ua FROM " +
+                "UsersAttendance ua JOIN FETCH ua.student WHERE ua.attendanceDate >= :fromDate " +
+                "AND ua.attendanceDate <= :toDate AND ua.course.courseID = :courseId", UsersAttendance.class)
+                .setParameter("courseId", studentAttendanceReport.getUsersAttendance().getCourse().getCourseID())
+                .setParameter("fromDate", studentAttendanceReport.getFromDate(), TemporalType.TIMESTAMP)
+                .setParameter("toDate", studentAttendanceReport.getToDate(), TemporalType.TIMESTAMP)
+                .getResultList();
+    }
+
+    @Override
+    public List<UsersAttendance> findUsersAttendanceByCourse(UsersAttendance usersAttendance) {
+        return getEntityManager().createQuery("SELECT ua FROM " +
+                "UsersAttendance ua JOIN FETCH ua.student WHERE ua.course.courseID = :courseId", UsersAttendance.class)
+                .setParameter("courseId", usersAttendance.getCourse().getCourseID())
+                .getResultList();
     }
 }

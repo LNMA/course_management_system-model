@@ -37,8 +37,8 @@ public class PersistenceJPAConfig {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
         dataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
         dataSource.setUrl("jdbc:mysql://localhost:3306/course_management_system");
-        dataSource.setUsername("root");
-        dataSource.setPassword("1729384#General");
+        dataSource.setUsername("root");//TODO : database username
+        dataSource.setPassword("1729384#General");// TODO : database password
         /*
         StackTraceElement[] st = Thread.currentThread().getStackTrace();
         System.out.println("create connection called from " + st[2]);
