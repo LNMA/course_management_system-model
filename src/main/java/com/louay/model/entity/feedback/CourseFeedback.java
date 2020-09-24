@@ -125,7 +125,7 @@ public class CourseFeedback implements Serializable, Comparable<CourseFeedback> 
         return commentTreeSet;
     }
 
-    public ClassName getClassName(){
+    public ClassName getClassName() {
         return ClassName.COURSE_FEEDBACK;
     }
 
@@ -136,10 +136,10 @@ public class CourseFeedback implements Serializable, Comparable<CourseFeedback> 
             return 0;
         }
         if (this.feedbackDate.after(o.getFeedbackDate())) {
-            return 1;
+            return -1;
         }
         if (this.feedbackDate.before(o.getFeedbackDate())) {
-            return -1;
+            return 1;
         }
         return 0;
     }

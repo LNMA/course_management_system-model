@@ -8,7 +8,7 @@ model component of course management system.
 ## Deploy
 
 1. Make sure you have [JDK 11](https://www.oracle.com/java/technologies/javase-downloads.html) && [tomcat v9.0.37](https://archive.apache.org/dist/tomcat/tomcat-9/) && [mysql v8.0.21](https://downloads.mysql.com/archives/installer/) .
-2. you can found project dumps at dumps file in the repository, and contain two dumps 1.empty schema 2.schema with pre-register admin with password `12345678`.
+2. Add project schema to your db; you can found project dumps at dumps file in the repository, and contain two dumps 1.empty schema 2.schema with pre-register admin with password `12345678`.
 >If you want ddl build schema, creat empty schema (In our case schema name: `course_management_system`) then run `com.louay.model.config.MySpringBootJDBCApplication` class.  
 3. Edit TODO commit, and will be your db username and password.
 4. Add to your Run/Debug configuration `com.louay.model.config.MySpringBootJDBCApplication` class.
